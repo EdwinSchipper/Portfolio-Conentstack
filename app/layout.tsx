@@ -1,6 +1,7 @@
 import type { Metadata } from "next"; // Importing the Metadata type from Next.js
 import "./globals.css"; // Importing global CSS styles
 import Header from "@/components/ui/header";
+import Footer from "@/components/ui/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body>
         <Header />
         <main className="max-w-(--breakpoint-md) mx-auto">{children}</main>
+        <Footer />
       </body>
       {/* Rendering the children components inside the body */}
     </html>
