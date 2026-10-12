@@ -5,6 +5,9 @@ import Page from "@/components/Page";
 // Importing the Preview component to render live preview content
 import Preview from "@/components/Preview";
 
+// Ensure the page always fetches fresh content from Contentstack on production requests
+export const dynamic = "force-dynamic";
+
 // Home page component - serves as the main entry point for the application
 // This is an async server component that can fetch data at build time or request time
 export default async function Home() {

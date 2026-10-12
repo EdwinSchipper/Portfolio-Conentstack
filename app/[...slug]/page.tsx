@@ -19,6 +19,9 @@ import Page from "@/components/Page"; // Importing the Page component to render 
 import Preview from "@/components/Preview"; // Importing the Preview component to handle real-time Live Preview updates
 import { notFound } from "next/navigation"; // Importing Next.js official 404 navigation handler
 
+// Ensure subpages always fetch fresh content from Contentstack in production
+export const dynamic = "force-dynamic";
+
 export default async function DynamicRoute({
   params,
 }: {
