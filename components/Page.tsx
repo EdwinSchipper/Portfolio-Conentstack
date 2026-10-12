@@ -61,7 +61,7 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
         Adds empty block class when no blocks exist for better editing experience
       */}
       <div
-        className={`space-y-8 max-w-full mt-8 ${!page?.blocks || page.blocks.length === 0
+        className={`grid grid-cols-1 md:grid-cols-12 gap-8 max-w-full mt-8 ${!page?.blocks || page.blocks.length === 0
           ? VB_EmptyBlockParentClass // Special class for empty state in Visual Builder
           : ""
           }`}
@@ -73,6 +73,7 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
             key={
               item.service_card?._metadata?.uid ||
               item.block?._metadata?.uid ||
+              item.featured_projects?._metadata?.uid ||
               `block-${index}`
             }
             block={item}

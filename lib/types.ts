@@ -98,10 +98,12 @@ export interface ServiceCardBlock {
   _version?: number;
   card_title?: string;
   card_text?: string;
+  grid_size?: "1" | "2" | "3" | string;
   _metadata?: { uid: string };
   $?: {
     card_title?: CSLPFieldMapping;
     card_text?: CSLPFieldMapping;
+    grid_size?: CSLPFieldMapping;
   };
 }
 

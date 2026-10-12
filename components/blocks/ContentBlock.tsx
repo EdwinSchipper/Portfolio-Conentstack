@@ -13,7 +13,7 @@ export default function ContentBlock({ data, previewAttr }: ContentBlockProps) {
   return (
     <div
       {...previewAttr}
-      className={`flex flex-col md:flex-row items-center space-y-4 md:space-y-0 bg-white ${
+      className={`col-span-full flex flex-col md:flex-row items-center space-y-4 md:space-y-0 bg-white ${
         isImageLeft ? "md:flex-row" : "md:flex-row-reverse"
       }`}
     >

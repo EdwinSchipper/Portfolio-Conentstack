@@ -15,7 +15,7 @@ export default function FeaturedProjectsBlock({
   const projects = data.projects || [];
 
   return (
-    <section {...previewAttr} className="py-8">
+    <section {...previewAttr} className="col-span-full py-8">
       {/* Section Title */}
       {data.section_title && (
         <div className="flex items-center justify-between mb-8">
