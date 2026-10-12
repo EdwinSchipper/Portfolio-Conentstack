@@ -159,11 +159,76 @@ export interface ExperienceTimelineBlock {
   };
 }
 
+export interface CompactTimelineRole {
+  role_title?: string;
+  title?: string;
+  period?: string;
+  _metadata?: { uid: string };
+  $?: {
+    role_title?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    period?: CSLPFieldMapping;
+  };
+}
+
+export interface CompactTimelineCompany {
+  company_name?: string;
+  title?: string;
+  roles?: CompactTimelineRole[];
+  _metadata?: { uid: string };
+  $?: {
+    company_name?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    roles?: CSLPFieldMapping;
+  };
+}
+
+export interface SplitSectionBlock {
+  _version?: number;
+  label?: string;
+  title?: string;
+  intro?: string;
+  image?: File | null;
+  button_text?: string;
+  button_url?: string;
+  button?: Link;
+  show_social_links?: boolean;
+  social_website?: string;
+  social_phone?: string;
+  social_email?: string;
+  content_type?: "text" | "timeline" | string;
+  body_text?: string;
+  timeline_items?: CompactTimelineCompany[];
+  _metadata?: { uid: string };
+  $?: {
+    label?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    intro?: CSLPFieldMapping;
+    image?: CSLPFieldMapping;
+    button_text?: CSLPFieldMapping;
+    button_url?: CSLPFieldMapping;
+    button?: CSLPFieldMapping;
+    body_text?: CSLPFieldMapping;
+    timeline_items?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+}
+
 export interface Blocks extends SystemFields {
   block?: Block;
   service_card?: ServiceCardBlock;
   featured_projects?: FeaturedProjectsBlock;
   experience_timeline?: ExperienceTimelineBlock;
+  split_section?: SplitSectionBlock;
+  grid_section?: any;
+  layout?: {
+    split_section?: any[];
+    grid_section?: any[];
+    grid?: any[];
+    _metadata?: { uid: string };
+    $?: Record<string, any>;
+    [key: string]: any;
+  };
 }
 
 export interface Page extends SystemFields {

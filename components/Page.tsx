@@ -75,6 +75,9 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
               item.block?._metadata?.uid ||
               item.featured_projects?._metadata?.uid ||
               item.experience_timeline?._metadata?.uid ||
+              item.split_section?._metadata?.uid ||
+              item.grid_section?._metadata?.uid ||
+              item.layout?._metadata?.uid ||
               `block-${index}`
             }
             block={item}
