@@ -94,8 +94,20 @@ export interface Block {
   };
 }
 
+export interface ServiceCardBlock {
+  _version?: number;
+  card_title?: string;
+  card_text?: string;
+  _metadata?: { uid: string };
+  $?: {
+    card_title?: CSLPFieldMapping;
+    card_text?: CSLPFieldMapping;
+  };
+}
+
 export interface Blocks extends SystemFields {
-  block: Block;
+  block?: Block;
+  service_card?: ServiceCardBlock;
 }
 
 export interface Page extends SystemFields {
