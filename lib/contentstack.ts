@@ -4,8 +4,8 @@ import contentstack, { QueryOperation } from "@contentstack/delivery-sdk";
 // Importing Contentstack Live Preview utilities and stack SDK
 import ContentstackLivePreview, { IStackSdk } from "@contentstack/live-preview-utils";
 
-// Importing the Page type definition
-import { Page } from "./types";
+// Importing Page and PortfolioItem type definitions
+import { Page, PortfolioItem } from "./types";
 
 // helper functions to retrieve Contentstack endpoints for a given region
 import { getContentstackEndpoint, type ContentstackEndpoints } from "@contentstack/utils";
@@ -87,4 +87,60 @@ export async function getPage(url: string) {
 
     return entry; // Returning the fetched entry
   }
+}
+
+// Function to fetch a single portfolio item by URL
+export async function getPortfolioItemByUrl(url: string) {
+  const result = await stack
+    .contentType("portfolio_item")
+    .entry()
+    .query()
+    .where("url", QueryOperation.EQUALS, url)
+    .find<PortfolioItem>();
+
+  if (result.entries && result.entries.length > 0) {
+    const entry = result.entries[0];
+
+    if (isPreview) {
+      contentstack.Utils.addEditableTags(entry, "portfolio_item", true);
+    }
+
+    return entry;
+  }
+}
+
+// Function to fetch multiple portfolio items with optional pagination and category filtering
+export async function getPortfolioItems({
+  limit = 9,
+  skip = 0,
+  category,
+}: {
+  limit?: number;
+  skip?: number;
+  category?: string;
+} = {}) {
+  let query = stack
+    .contentType("portfolio_item")
+    .entry()
+    .query()
+    .limit(limit)
+    .skip(skip)
+    .includeCount();
+
+  if (category && category !== "Alles") {
+    query = query.where("category", QueryOperation.EQUALS, category);
+  }
+
+  const result = await query.find<PortfolioItem>();
+
+  if (isPreview && result.entries) {
+    result.entries.forEach((entry) => {
+      contentstack.Utils.addEditableTags(entry, "portfolio_item", true);
+    });
+  }
+
+  return {
+    items: result.entries || [],
+    total: result.count || 0,
+  };
 }

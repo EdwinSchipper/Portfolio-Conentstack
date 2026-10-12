@@ -138,3 +138,28 @@ export interface Page extends SystemFields {
     [key: string]: CSLPFieldMapping | undefined; // Allow dynamic block indexing
   };
 }
+
+export interface PortfolioItem extends SystemFields {
+  uid: string;
+  _version?: number;
+  title: string;
+  url?: string;
+  date?: string;
+  category?: string | string[];
+  select?: string | string[];
+  project_tag?: string;
+  featured_image?: File | null;
+  description?: string;
+  content?: string;
+  $?: {
+    title?: CSLPFieldMapping;
+    url?: CSLPFieldMapping;
+    date?: CSLPFieldMapping;
+    category?: CSLPFieldMapping;
+    select?: CSLPFieldMapping;
+    project_tag?: CSLPFieldMapping;
+    featured_image?: CSLPFieldMapping;
+    description?: CSLPFieldMapping;
+    content?: CSLPFieldMapping;
+  };
+}

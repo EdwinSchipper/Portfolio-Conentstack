@@ -14,10 +14,12 @@
  */
 
 
-import { getPage, isPreview } from "@/lib/contentstack"; // Importing Contentstack query function and preview mode flag
-import Page from "@/components/Page"; // Importing the Page component to render static content
-import Preview from "@/components/Preview"; // Importing the Preview component to handle real-time Live Preview updates
-import { notFound } from "next/navigation"; // Importing Next.js official 404 navigation handler
+import { getPage, getPortfolioItemByUrl, isPreview } from "@/lib/contentstack";
+import Page from "@/components/Page";
+import Preview from "@/components/Preview";
+import PortfolioDetail from "@/components/portfolio/PortfolioDetail";
+import PortfolioPreview from "@/components/portfolio/PortfolioPreview";
+import { notFound } from "next/navigation";
 
 // Ensure subpages always fetch fresh content from Contentstack in production
 export const dynamic = "force-dynamic";
@@ -30,23 +32,28 @@ export default async function DynamicRoute({
   // Await the asynchronous params object (standard Next.js 15+ App Router)
   const { slug } = await params;
 
-  // Reconstruct the URL path matching Contentstack's entry URL field (e.g., "/about")
+  // Reconstruct the URL path matching Contentstack's entry URL field (e.g., "/about" or "/demo-project")
   const path = `/${slug.join("/")}`;
 
-  // Fetch the page entry from Contentstack by URL
+  // 1. Check if there is a 'page' entry matching this URL
   const page = await getPage(path);
-
-  // Return a 404 page if no entry was found and we are not in preview mode
-  if (!page && !isPreview) {
-    notFound();
+  if (page) {
+    if (isPreview) {
+      return <Preview path={path} initialPage={page} />;
+    }
+    return <Page page={page} />;
   }
 
-  // In preview mode, render client Preview component to sync with Visual Builder
-  if (isPreview) {
-    return <Preview path={path} initialPage={page} />;
+  // 2. Check if there is a 'portfolio_item' entry matching this URL
+  const portfolioItem = await getPortfolioItemByUrl(path);
+  if (portfolioItem) {
+    if (isPreview) {
+      return <PortfolioPreview path={path} initialItem={portfolioItem} />;
+    }
+    return <PortfolioDetail item={portfolioItem} />;
   }
 
-  // Render the static page component
-  return <Page page={page} />;
+  // 3. Return 404 if no matching entry exists in either content type
+  notFound();
 }
 
