@@ -2,6 +2,7 @@ import { Blocks } from "@/lib/types";
 import ServiceCardBlock from "./ServiceCardBlock";
 import ContentBlock from "./ContentBlock";
 import FeaturedProjectsBlock from "./FeaturedProjectsBlock";
+import ExperienceTimelineBlock from "./ExperienceTimelineBlock";
 
 interface BlockRendererProps {
   block: Blocks;
@@ -42,6 +43,15 @@ export default function BlockRenderer({
     return (
       <ContentBlock
         data={block.block}
+        previewAttr={blockPreviewAttr}
+      />
+    );
+  }
+
+  if (block.experience_timeline) {
+    return (
+      <ExperienceTimelineBlock
+        data={block.experience_timeline}
         previewAttr={blockPreviewAttr}
       />
     );

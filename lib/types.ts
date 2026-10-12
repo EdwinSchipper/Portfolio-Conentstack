@@ -118,10 +118,52 @@ export interface FeaturedProjectsBlock {
   };
 }
 
+export interface ExperienceRole {
+  title?: string;
+  period?: string;
+  role_type?: "core" | "secondary" | string;
+  badge?: string;
+  description?: string;
+  _metadata?: { uid: string };
+  $?: {
+    title?: CSLPFieldMapping;
+    period?: CSLPFieldMapping;
+    role_type?: CSLPFieldMapping;
+    badge?: CSLPFieldMapping;
+    description?: CSLPFieldMapping;
+  };
+}
+
+export interface ExperienceCompany {
+  company_name?: string;
+  company_period?: string;
+  roles?: ExperienceRole[];
+  _metadata?: { uid: string };
+  $?: {
+    company_name?: CSLPFieldMapping;
+    company_period?: CSLPFieldMapping;
+    roles?: CSLPFieldMapping;
+  };
+}
+
+export interface ExperienceTimelineBlock {
+  _version?: number;
+  section_title?: string;
+  companies?: ExperienceCompany[];
+  experience_timeline?: any;
+  _metadata?: { uid: string };
+  $?: {
+    section_title?: CSLPFieldMapping;
+    companies?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+}
+
 export interface Blocks extends SystemFields {
   block?: Block;
   service_card?: ServiceCardBlock;
   featured_projects?: FeaturedProjectsBlock;
+  experience_timeline?: ExperienceTimelineBlock;
 }
 
 export interface Page extends SystemFields {
