@@ -74,6 +74,7 @@ export async function getPage(url: string) {
   const result = await stack
     .contentType("page") // Specifying the content type as "page"
     .entry() // Accessing the entry
+    .includeReference(["blocks.featured_projects.projects"]) // Populating referenced portfolio items
     .query() // Creating a query
     .where("url", QueryOperation.EQUALS, url) // Filtering entries by URL
     .find<Page>(); // Executing the query and expecting a result of type Page

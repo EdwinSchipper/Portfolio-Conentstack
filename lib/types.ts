@@ -105,9 +105,21 @@ export interface ServiceCardBlock {
   };
 }
 
+export interface FeaturedProjectsBlock {
+  _version?: number;
+  section_title?: string;
+  projects?: PortfolioItem[];
+  _metadata?: { uid: string };
+  $?: {
+    section_title?: CSLPFieldMapping;
+    projects?: CSLPFieldMapping;
+  };
+}
+
 export interface Blocks extends SystemFields {
   block?: Block;
   service_card?: ServiceCardBlock;
+  featured_projects?: FeaturedProjectsBlock;
 }
 
 export interface Page extends SystemFields {

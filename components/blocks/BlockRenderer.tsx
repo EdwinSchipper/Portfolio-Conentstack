@@ -1,6 +1,7 @@
 import { Blocks } from "@/lib/types";
 import ServiceCardBlock from "./ServiceCardBlock";
 import ContentBlock from "./ContentBlock";
+import FeaturedProjectsBlock from "./FeaturedProjectsBlock";
 
 interface BlockRendererProps {
   block: Blocks;
@@ -18,6 +19,15 @@ export default function BlockRenderer({
   pagePreviewAttr,
 }: BlockRendererProps) {
   const blockPreviewAttr = pagePreviewAttr?.[`blocks__${index}`];
+
+  if (block.featured_projects) {
+    return (
+      <FeaturedProjectsBlock
+        data={block.featured_projects}
+        previewAttr={blockPreviewAttr}
+      />
+    );
+  }
 
   if (block.service_card) {
     return (
