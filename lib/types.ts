@@ -165,6 +165,7 @@ export interface GridContentLeft {
   quote_left?: string;
   text_left?: string;
   image_left?: File;
+  button_left?: Link;
   _metadata?: { uid: string };
   $?: {
     label_left?: CSLPFieldMapping;
@@ -172,6 +173,7 @@ export interface GridContentLeft {
     quote_left?: CSLPFieldMapping;
     text_left?: CSLPFieldMapping;
     image_left?: CSLPFieldMapping;
+    button_left?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;
@@ -184,6 +186,7 @@ export interface GridContentRight {
   image_right?: File;
   quote_right?: string;
   text_right_extended?: string;
+  button_right?: Link;
   _metadata?: { uid: string };
   $?: {
     label_right?: CSLPFieldMapping;
@@ -192,6 +195,7 @@ export interface GridContentRight {
     image_right?: CSLPFieldMapping;
     quote_right?: CSLPFieldMapping;
     text_right_extended?: CSLPFieldMapping;
+    button_right?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;

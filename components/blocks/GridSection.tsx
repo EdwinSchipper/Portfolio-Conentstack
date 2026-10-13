@@ -1,5 +1,6 @@
 import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
+import Link from "next/link";
 import { CSLPAttribute, GridSectionBlock } from "@/lib/types";
 
 /** Container widths - Contentstack (Mobile-first). */
@@ -111,6 +112,18 @@ export default function GridSection({
                   }}
                 />
               )}
+
+              {contentLeft.button_left?.href && contentLeft.button_left?.title && (
+                <div className="pt-2">
+                  <Link
+                    href={contentLeft.button_left.href}
+                    {...(contentLeft?.$?.button_left)}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#1b1f24] hover:bg-black text-white text-sm font-semibold rounded-xl shadow-sm transition duration-200"
+                  >
+                    <span>{contentLeft.button_left.title}</span>
+                  </Link>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -177,6 +190,18 @@ export default function GridSection({
                   }}
                   className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
                 />
+              )}
+
+              {contentRight.button_right?.href && contentRight.button_right?.title && (
+                <div className="pt-2">
+                  <Link
+                    href={contentRight.button_right.href}
+                    {...(contentRight?.$?.button_right)}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#1b1f24] hover:bg-black text-white text-sm font-semibold rounded-xl shadow-sm transition duration-200"
+                  >
+                    <span>{contentRight.button_right.title}</span>
+                  </Link>
+                </div>
               )}
             </div>
           )}
