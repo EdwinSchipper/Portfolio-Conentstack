@@ -159,30 +159,57 @@ export interface ExperienceTimelineBlock {
   };
 }
 
+export interface GridContentLeft {
+  label_left?: string;
+  title_h1?: string;
+  quote_left?: string;
+  text_left?: string;
+  image_left?: File;
+  _metadata?: { uid: string };
+  $?: {
+    label_left?: CSLPFieldMapping;
+    title_h1?: CSLPFieldMapping;
+    quote_left?: CSLPFieldMapping;
+    text_left?: CSLPFieldMapping;
+    image_left?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+export interface GridContentRight {
+  label_right?: string;
+  title_h1r?: string;
+  text_right?: string;
+  image_right?: File;
+  quote_right?: string;
+  text_right_extended?: string;
+  _metadata?: { uid: string };
+  $?: {
+    label_right?: CSLPFieldMapping;
+    title_h1r?: CSLPFieldMapping;
+    text_right?: CSLPFieldMapping;
+    image_right?: CSLPFieldMapping;
+    quote_right?: CSLPFieldMapping;
+    text_right_extended?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface GridSectionBlock {
   container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
   left_col_span?: number | string; /** Col span 1-12 for left column */
   right_col_span?: number | string; /** Col span 1-12 for right column */
-  modular_blocks?: Array<{
-    left_col_span?: {
-      text_block_left?: string;
-      _metadata?: { uid: string };
-      $?: Record<string, any>;
-      [key: string]: any;
-    };
-    right_col_span?: {
-      text_block_right?: string;
-      _metadata?: { uid: string };
-      $?: Record<string, any>;
-      [key: string]: any;
-    };
-    [key: string]: any;
-  }>;
+  content_left?: GridContentLeft;
+  content_right?: GridContentRight;
   _metadata?: { uid: string };
   $?: {
     container_width?: CSLPFieldMapping;
     left_col_span?: CSLPFieldMapping;
     right_col_span?: CSLPFieldMapping;
+    content_left?: CSLPFieldMapping;
+    content_right?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;
