@@ -3,7 +3,6 @@ import ServiceCardBlock from "./ServiceCardBlock";
 import ContentBlock from "./ContentBlock";
 import FeaturedProjectsBlock from "./FeaturedProjectsBlock";
 import ExperienceTimelineBlock from "./ExperienceTimelineBlock";
-import { SplitSectionLayout } from "./SplitSectionBlock";
 import GridSection from "./GridSection";
 
 interface BlockRendererProps {
@@ -68,35 +67,5 @@ export default function BlockRenderer({
     );
   }
 
-  if (block.split_section) {
-    const raw: any =
-      (block.split_section as any).grid ||
-      (block.split_section as any).grid_section ||
-      block.split_section;
-    const items = Array.isArray(raw) ? raw : [raw];
-
-    return (
-      <SplitSectionLayout
-        items={items}
-        previewAttr={blockPreviewAttr}
-      />
-    );
-  }
-
-  if (block.layout) {
-    const raw =
-      block.layout.grid_section ||
-      block.layout.split_section ||
-      block.layout.grid ||
-      block.layout;
-    const items = Array.isArray(raw) ? raw : [raw];
-
-    return (
-      <SplitSectionLayout
-        items={items}
-        previewAttr={blockPreviewAttr}
-      />
-    );
-  }
   return null;
 }

@@ -32,9 +32,7 @@ export default function GridSection({
   data: GridSectionBlock;
   previewAttr?: CSLPAttribute;
 }) {
-  const containerClass =
-    containerWidths[data?.container_width?.toLowerCase() ?? "default"] ??
-    containerWidths.default;
+  const containerClass = containerWidths[data?.container_width?.toLowerCase() ?? "default"] ?? containerWidths.default;
   const leftCol = colSpans[String(data?.left_col_span)] ?? colSpans["5"];
   const rightCol = colSpans[String(data?.right_col_span)] ?? colSpans["7"];
 
@@ -50,7 +48,6 @@ export default function GridSection({
           {leftBlock?.text_block_left && (
             <div
               {...(leftBlock?.$?.text_block_left)}
-              className="prose max-w-none"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(leftBlock.text_block_left),
               }}
@@ -62,7 +59,6 @@ export default function GridSection({
           {rightBlock?.text_block_right && (
             <div
               {...(rightBlock?.$?.text_block_right)}
-              className="prose max-w-none"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(rightBlock.text_block_right),
               }}
