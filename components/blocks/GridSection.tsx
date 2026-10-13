@@ -124,6 +124,59 @@ export default function GridSection({
                   </Link>
                 </div>
               )}
+
+              {/* Cards grid (Multiple) */}
+              {contentLeft.cards && contentLeft.cards.length > 0 && (
+                <div
+                  {...(contentLeft?.$?.cards)}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6"
+                >
+                  {contentLeft.cards.map((card, cardIdx) => {
+                    const cardTag = card.tag || card.title;
+                    const cardText = card.text || card.description;
+
+                    return (
+                      <div
+                        key={card._metadata?.uid || `left-card-${cardIdx}`}
+                        className="flex flex-col h-full"
+                      >
+                        {card.image?.url && (
+                          <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4 shadow-sm bg-gray-100">
+                            <Image
+                              src={card.image.url}
+                              alt={card.image.title || cardTag || "Image"}
+                              fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              className="object-cover"
+                              {...(card.image?.$ && card.image?.$.url)}
+                            />
+                          </div>
+                        )}
+
+                        {cardTag && (
+                          <div className="mb-3">
+                            <span
+                              {...(card?.$ && (card?.$.tag || card?.$.title))}
+                              className="inline-block px-3 py-1 bg-white border border-gray-200/90 rounded-lg text-xs font-mono font-medium text-gray-800 shadow-2xs"
+                            >
+                              {cardTag}
+                            </span>
+                          </div>
+                        )}
+
+                        {cardText && (
+                          <p
+                            {...(card?.$ && (card?.$.text || card?.$.description))}
+                            className="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-line"
+                          >
+                            {cardText}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -201,6 +254,59 @@ export default function GridSection({
                   >
                     <span>{contentRight.button_right.title}</span>
                   </Link>
+                </div>
+              )}
+
+              {/* Cards grid (Multiple) */}
+              {contentRight.cards && contentRight.cards.length > 0 && (
+                <div
+                  {...(contentRight?.$?.cards)}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6"
+                >
+                  {contentRight.cards.map((card, cardIdx) => {
+                    const cardTag = card.tag || card.title;
+                    const cardText = card.text || card.description;
+
+                    return (
+                      <div
+                        key={card._metadata?.uid || `right-card-${cardIdx}`}
+                        className="flex flex-col h-full"
+                      >
+                        {card.image?.url && (
+                          <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4 shadow-sm bg-gray-100">
+                            <Image
+                              src={card.image.url}
+                              alt={card.image.title || cardTag || "Image"}
+                              fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              className="object-cover"
+                              {...(card.image?.$ && card.image?.$.url)}
+                            />
+                          </div>
+                        )}
+
+                        {cardTag && (
+                          <div className="mb-3">
+                            <span
+                              {...(card?.$ && (card?.$.tag || card?.$.title))}
+                              className="inline-block px-3 py-1 bg-white border border-gray-200/90 rounded-lg text-xs font-mono font-medium text-gray-800 shadow-2xs"
+                            >
+                              {cardTag}
+                            </span>
+                          </div>
+                        )}
+
+                        {cardText && (
+                          <p
+                            {...(card?.$ && (card?.$.text || card?.$.description))}
+                            className="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-line"
+                          >
+                            {cardText}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>

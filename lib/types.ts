@@ -99,11 +99,17 @@ export interface ServiceCardBlock {
   card_title?: string;
   card_text?: string;
   grid_size?: "1" | "2" | "3" | string;
+  card_variant?: "Default" | "Image Tag" | string;
+  variant?: string;
+  image?: File;
   _metadata?: { uid: string };
   $?: {
     card_title?: CSLPFieldMapping;
     card_text?: CSLPFieldMapping;
     grid_size?: CSLPFieldMapping;
+    card_variant?: CSLPFieldMapping;
+    variant?: CSLPFieldMapping;
+    image?: CSLPFieldMapping;
   };
 }
 
@@ -159,6 +165,24 @@ export interface ExperienceTimelineBlock {
   };
 }
 
+export interface GridCard {
+  image?: File;
+  tag?: string;
+  title?: string;
+  text?: string;
+  description?: string;
+  _metadata?: { uid: string };
+  $?: {
+    image?: CSLPFieldMapping;
+    tag?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    text?: CSLPFieldMapping;
+    description?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface GridContentLeft {
   label_left?: string;
   title_h1?: string;
@@ -166,6 +190,7 @@ export interface GridContentLeft {
   text_left?: string;
   image_left?: File;
   button_left?: Link;
+  cards?: GridCard[];
   _metadata?: { uid: string };
   $?: {
     label_left?: CSLPFieldMapping;
@@ -174,6 +199,7 @@ export interface GridContentLeft {
     text_left?: CSLPFieldMapping;
     image_left?: CSLPFieldMapping;
     button_left?: CSLPFieldMapping;
+    cards?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;
@@ -187,6 +213,7 @@ export interface GridContentRight {
   quote_right?: string;
   text_right_extended?: string;
   button_right?: Link;
+  cards?: GridCard[];
   _metadata?: { uid: string };
   $?: {
     label_right?: CSLPFieldMapping;
@@ -196,6 +223,7 @@ export interface GridContentRight {
     quote_right?: CSLPFieldMapping;
     text_right_extended?: CSLPFieldMapping;
     button_right?: CSLPFieldMapping;
+    cards?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ServiceCardBlock as ServiceCardBlockType, CSLPAttribute } from "@/lib/types";
 
 interface ServiceCardBlockProps {
@@ -30,7 +31,56 @@ export default function ServiceCardBlock({
   previewAttr,
 }: ServiceCardBlockProps) {
   const colSpanClass = getGridColSpan(data.grid_size);
+  const variant = (data.card_variant || data.variant || "").toLowerCase();
+  const isImageVariant =
+    variant.includes("image") ||
+    variant.includes("tag") ||
+    (Boolean(data.image?.url) && variant !== "default");
 
+  // Variant: Afbeelding + Tag + Omschrijving (screenshot-stijl)
+  if (isImageVariant) {
+    return (
+      <div
+        {...previewAttr}
+        className={`flex flex-col h-full ${colSpanClass}`}
+      >
+        {data.image?.url && (
+          <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4 shadow-sm bg-gray-100">
+            <Image
+              src={data.image.url}
+              alt={data.image.title || data.card_title || "Image"}
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
+              {...(data.image?.$ && data.image?.$.url)}
+            />
+          </div>
+        )}
+
+        {data.card_title && (
+          <div className="mb-3">
+            <span
+              {...(data?.$ && data?.$.card_title)}
+              className="inline-block px-3 py-1 bg-white border border-gray-200/90 rounded-lg text-xs font-mono font-medium text-gray-800 shadow-2xs"
+            >
+              {data.card_title}
+            </span>
+          </div>
+        )}
+
+        {data.card_text && (
+          <p
+            {...(data?.$ && data?.$.card_text)}
+            className="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-line"
+          >
+            {data.card_text}
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  // Variant: Default (witte kaart met border en schaduw)
   return (
     <div
       {...previewAttr}
