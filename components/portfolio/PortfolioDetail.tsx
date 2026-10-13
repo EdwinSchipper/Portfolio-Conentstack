@@ -1,9 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
 import { PortfolioItem } from "@/lib/types";
-import { ArrowLeftIcon, CalendarIcon, TagIcon } from "@heroicons/react/24/outline";
-import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import { CalendarIcon, TagIcon } from "@heroicons/react/24/outline";
+import { Breadcrumbs, Button, Label } from "@/components/ui";
 
 interface PortfolioDetailProps {
   item: PortfolioItem;
@@ -31,34 +30,36 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
 
       {/* Back button */}
       <div className="mb-8">
-        <Link
+        <Button
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-black transition group"
+          variant="link-dark"
+          size="sm"
         >
-          <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Terug naar overzicht
-        </Link>
+          ← Terug naar overzicht
+        </Button>
       </div>
 
       {/* Meta tags & date */}
       <div className="flex flex-wrap items-center gap-3 mb-4 text-xs font-medium text-gray-500">
         {item.project_tag && (
-          <span
-            {...(item?.$ && item?.$.project_tag)}
-            className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-semibold"
+          <Label
+            variant="pill"
+            cslp={item?.$ && item?.$.project_tag}
+            className="inline-flex items-center gap-1.5"
           >
-            <TagIcon className="w-3.5 h-3.5" />
+            <TagIcon className="w-3.5 h-3.5 inline text-[#f05a46]" />
             {item.project_tag}
-          </span>
+          </Label>
         )}
 
         {categories.map((cat, idx) => (
-          <span
+          <Label
             key={idx}
-            className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full uppercase tracking-wider"
+            variant="pill"
+            cslp={item?.$ && item?.$.category}
           >
             {cat}
-          </span>
+          </Label>
         ))}
 
         {item.date && (

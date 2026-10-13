@@ -1,24 +1,18 @@
 import React from "react";
+import Label, { LabelProps } from "@/components/ui/Label";
 
-export interface CardLabelProps {
-  children?: React.ReactNode;
-  className?: string;
-  cslp?: Record<string, any>;
-}
+export type CardLabelProps = LabelProps;
 
 export default function CardLabel({
   children,
   className = "",
   cslp,
+  ...props
 }: CardLabelProps) {
-  if (!children) return null;
-
   return (
-    <span
-      {...cslp}
-      className={`text-xs font-bold tracking-widest text-[#f05a46] uppercase mb-2 block ${className}`}
-    >
+    <Label className={className} cslp={cslp} {...props}>
       {children}
-    </span>
+    </Label>
   );
 }
+

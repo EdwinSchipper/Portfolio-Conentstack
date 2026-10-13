@@ -1,24 +1,18 @@
 import React from "react";
+import Label, { LabelProps } from "@/components/ui/Label";
 
-export interface ServiceCardTagProps {
-  children?: React.ReactNode;
-  className?: string;
-  cslp?: Record<string, any>;
-}
+export type ServiceCardTagProps = LabelProps;
 
 export default function ServiceCardTag({
   children,
   className = "",
   cslp,
+  ...props
 }: ServiceCardTagProps) {
-  if (!children) return null;
-
   return (
-    <span
-      {...cslp}
-      className={`inline-block px-3 py-1 bg-white border border-gray-200/90 rounded-lg text-xs font-mono font-medium text-gray-800 shadow-2xs ${className}`}
-    >
+    <Label variant="pill" className={className} cslp={cslp} {...props}>
       {children}
-    </span>
+    </Label>
   );
 }
+

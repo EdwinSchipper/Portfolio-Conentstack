@@ -1,7 +1,11 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FeaturedProjectsBlock as FeaturedProjectsBlockType, CSLPAttribute } from "@/lib/types";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import {
+  FeaturedProjectsBlock as FeaturedProjectsBlockType,
+  CSLPAttribute,
+} from "@/lib/types";
+import { Button, Label } from "@/components/ui";
 
 interface FeaturedProjectsBlockProps {
   data: FeaturedProjectsBlockType;
@@ -41,7 +45,7 @@ export default function FeaturedProjectsBlock({
             return (
               <article
                 key={project.uid || `project-${idx}`}
-                className="group flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:border-gray-300 transition duration-300"
+                className="group flex flex-col bg-white border border-gray-200/90 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md hover:border-gray-300 transition duration-300"
               >
                 {/* Image */}
                 {project.featured_image?.url && (
@@ -54,7 +58,8 @@ export default function FeaturedProjectsBlock({
                       alt={project.featured_image.title || project.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                      {...(project.featured_image?.$ && project.featured_image?.$.url)}
                     />
                   </Link>
                 )}
@@ -62,45 +67,59 @@ export default function FeaturedProjectsBlock({
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-1">
                   {/* Tags */}
-                  <div className="flex flex-wrap items-center gap-2 mb-3">
-                    {project.project_tag && (
-                      <span className="text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-                        {project.project_tag}
-                      </span>
-                    )}
-                    {categories.map((cat, catIdx) => (
-                      <span
-                        key={catIdx}
-                        className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded"
-                      >
-                        {cat}
-                      </span>
-                    ))}
-                  </div>
+                  {(project.project_tag || categories.length > 0) && (
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                      {project.project_tag && (
+                        <Label
+                          variant="pill"
+                          cslp={project?.$ && project?.$.project_tag}
+                        >
+                          {project.project_tag}
+                        </Label>
+                      )}
+                      {categories.map((cat, catIdx) => (
+                        <Label
+                          key={catIdx}
+                          variant="pill"
+                          cslp={project?.$ && project?.$.category}
+                        >
+                          {cat}
+                        </Label>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Title */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                    <Link href={project.url || "#"}>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#f05a46] transition-colors">
+                    <Link
+                      href={project.url || "#"}
+                      {...(project?.$ && project?.$.title)}
+                    >
                       {project.title}
                     </Link>
                   </h3>
 
                   {/* Description */}
                   {project.description && (
-                    <p className="text-sm text-gray-600 line-clamp-3 mb-6 flex-1 leading-relaxed">
+                    <p
+                      {...(project?.$ && project?.$.description)}
+                      className="text-sm text-gray-600 line-clamp-3 mb-6 flex-1 leading-relaxed"
+                    >
                       {project.description}
                     </p>
                   )}
 
                   {/* Link action */}
                   <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <Link
+                    <Button
                       href={project.url || "#"}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 group-hover:text-blue-700"
+                      variant="link"
+                      arrow
+                      size="sm"
+                      cslp={project?.$ && project?.$.url}
                     >
                       Bekijk project
-                      <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                    </Button>
                   </div>
                 </div>
               </article>
@@ -115,3 +134,4 @@ export default function FeaturedProjectsBlock({
     </section>
   );
 }
+

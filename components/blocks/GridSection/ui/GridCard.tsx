@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { GridCard as GridCardType } from "@/lib/types";
+import Label from "@/components/ui/Label";
 
 export interface GridCardProps {
   card?: GridCardType;
@@ -45,12 +46,12 @@ export default function GridCard({
 
       {cardTag && (
         <div className="mb-3">
-          <span
-            {...(cardMeta && (cardMeta.tag || cardMeta.title))}
-            className="inline-block px-3 py-1 bg-white border border-gray-200/90 rounded-lg text-xs font-mono font-medium text-gray-800 shadow-2xs"
+          <Label
+            variant="pill"
+            cslp={cardMeta && (cardMeta.tag || cardMeta.title)}
           >
             {cardTag}
-          </span>
+          </Label>
         </div>
       )}
 
