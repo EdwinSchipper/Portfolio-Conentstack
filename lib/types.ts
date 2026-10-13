@@ -297,6 +297,56 @@ export interface CardSectionBlock {
   [key: string]: any;
 }
 
+export interface NumberedItem {
+  number?: string;
+  title?: string;
+  text?: string;
+  description?: string;
+  button?: Link;
+  _metadata?: { uid: string };
+  $?: {
+    number?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    text?: CSLPFieldMapping;
+    description?: CSLPFieldMapping;
+    button?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+export interface NumberedSectionBlock {
+  width?: string; /** "small" | "Default" | "Large" | "Wide" */
+  container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
+  color_mode?: "Default" | "Alt" | string; /** "Default" | "Alt" */
+  label?: string;
+  section_label?: string;
+  label_numbered?: string;
+  section_title?: string;
+  title?: string;
+  section_intro?: string;
+  columns?: "1" | "2" | "3" | string;
+  items?: NumberedItem[];
+  numbered_items?: NumberedItem[];
+  _metadata?: { uid: string };
+  $?: {
+    width?: CSLPFieldMapping;
+    container_width?: CSLPFieldMapping;
+    color_mode?: CSLPFieldMapping;
+    label?: CSLPFieldMapping;
+    section_label?: CSLPFieldMapping;
+    label_numbered?: CSLPFieldMapping;
+    section_title?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    section_intro?: CSLPFieldMapping;
+    columns?: CSLPFieldMapping;
+    items?: CSLPFieldMapping;
+    numbered_items?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface Blocks extends SystemFields {
   block?: Block;
   service_card?: ServiceCardBlock;
@@ -304,6 +354,8 @@ export interface Blocks extends SystemFields {
   experience_timeline?: ExperienceTimelineBlock;
   grid_section?: GridSectionBlock;
   card_section?: CardSectionBlock;
+  numbered_section?: NumberedSectionBlock;
+  numbered_list?: NumberedSectionBlock;
 }
 
 export interface Page extends SystemFields {

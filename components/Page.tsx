@@ -94,6 +94,8 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
               item.experience_timeline?._metadata?.uid ||
               item.grid_section?._metadata?.uid ||
               item.card_section?._metadata?.uid ||
+              item.numbered_section?._metadata?.uid ||
+              item.numbered_list?._metadata?.uid ||
               `block-${index}`
             }
             block={item}

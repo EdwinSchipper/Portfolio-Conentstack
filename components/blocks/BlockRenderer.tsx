@@ -5,6 +5,7 @@ import FeaturedProjectsBlock from "./FeaturedProjectsBlock";
 import ExperienceTimelineBlock from "./ExperienceTimelineBlock";
 import GridSection from "./GridSection";
 import CardSection from "./CardSection";
+import NumberedSection from "./NumberedSection";
 
 interface BlockRendererProps {
   block: Blocks;
@@ -72,6 +73,15 @@ export default function BlockRenderer({
     return (
       <CardSection
         data={block.card_section}
+        previewAttr={blockPreviewAttr}
+      />
+    );
+  }
+
+  if (block.numbered_section || block.numbered_list) {
+    return (
+      <NumberedSection
+        data={(block.numbered_section || block.numbered_list)!}
         previewAttr={blockPreviewAttr}
       />
     );
