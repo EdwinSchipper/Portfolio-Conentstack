@@ -249,12 +249,61 @@ export interface GridSectionBlock {
   [key: string]: any;
 }
 
+export interface CardSectionItem {
+  image?: File;
+  tag?: string;
+  title?: string;
+  text?: string;
+  description?: string;
+  button?: Link;
+  card_variant?: "Default" | "Image Tag" | string;
+  _metadata?: { uid: string };
+  $?: {
+    image?: CSLPFieldMapping;
+    tag?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    text?: CSLPFieldMapping;
+    description?: CSLPFieldMapping;
+    button?: CSLPFieldMapping;
+    card_variant?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+export interface CardSectionBlock {
+  width?: string; /** "small" | "Default" | "Large" | "Wide" */
+  container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
+  color_mode?: "Default" | "Alt" | string; /** "Default" | "Alt" */
+  label?: string;
+  label_cards?: string;
+  section_title?: string;
+  section_intro?: string;
+  columns?: "2" | "3" | "4" | string;
+  cards?: CardSectionItem[];
+  _metadata?: { uid: string };
+  $?: {
+    width?: CSLPFieldMapping;
+    container_width?: CSLPFieldMapping;
+    color_mode?: CSLPFieldMapping;
+    label?: CSLPFieldMapping;
+    label_cards?: CSLPFieldMapping;
+    section_title?: CSLPFieldMapping;
+    section_intro?: CSLPFieldMapping;
+    columns?: CSLPFieldMapping;
+    cards?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface Blocks extends SystemFields {
   block?: Block;
   service_card?: ServiceCardBlock;
   featured_projects?: FeaturedProjectsBlock;
   experience_timeline?: ExperienceTimelineBlock;
   grid_section?: GridSectionBlock;
+  card_section?: CardSectionBlock;
 }
 
 export interface Page extends SystemFields {
@@ -272,6 +321,9 @@ export interface Page extends SystemFields {
   image?: File | null;
   /** Rich Text */
   rich_text?: string;
+  /** Breadcrumbs toggle & optional custom label */
+  show_breadcrumbs?: boolean;
+  breadcrumb_title?: string;
   /** blocks */
   blocks?: Blocks[];
   /** CSLP mapping for editable fields */
@@ -281,6 +333,8 @@ export interface Page extends SystemFields {
     description?: CSLPFieldMapping;
     image?: CSLPFieldMapping;
     rich_text?: CSLPFieldMapping;
+    show_breadcrumbs?: CSLPFieldMapping;
+    breadcrumb_title?: CSLPFieldMapping;
     blocks?: CSLPFieldMapping;
     [key: string]: CSLPFieldMapping | undefined; // Allow dynamic block indexing
   };
@@ -298,6 +352,8 @@ export interface PortfolioItem extends SystemFields {
   featured_image?: File | null;
   description?: string;
   content?: string;
+  show_breadcrumbs?: boolean;
+  breadcrumb_title?: string;
   $?: {
     title?: CSLPFieldMapping;
     url?: CSLPFieldMapping;
@@ -308,5 +364,7 @@ export interface PortfolioItem extends SystemFields {
     featured_image?: CSLPFieldMapping;
     description?: CSLPFieldMapping;
     content?: CSLPFieldMapping;
+    show_breadcrumbs?: CSLPFieldMapping;
+    breadcrumb_title?: CSLPFieldMapping;
   };
 }

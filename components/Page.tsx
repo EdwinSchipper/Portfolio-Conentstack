@@ -3,6 +3,7 @@ import Image from "next/image"; // Importing Next.js optimized Image component f
 import { Page } from "@/lib/types"; // Importing the Page type definition from our types file
 import { VB_EmptyBlockParentClass } from "@contentstack/live-preview-utils"; // Importing Visual Builder class for empty block handling in Contentstack Live Preview
 import BlockRenderer from "@/components/blocks/BlockRenderer";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 // Interface defining the props for the ContentDisplay component
 interface ContentDisplayProps {
@@ -11,8 +12,24 @@ interface ContentDisplayProps {
 
 // Main component for displaying page content with Contentstack Live Preview support
 export default function ContentDisplay({ page }: ContentDisplayProps) {
+  // Breadcrumb visibility: enabled on subpages unless explicitly turned off
+  const isHome = !page?.url || page.url === "/";
+  const showBreadcrumbs = !isHome && page?.show_breadcrumbs !== false;
+  const breadcrumbTitle = page?.breadcrumb_title || page?.title;
+
   return (
     <section className="p-4">
+      {/* Breadcrumbs within page content, above title */}
+      {showBreadcrumbs && (
+        <div className="max-w-5xl mx-auto px-4 mb-4">
+          <Breadcrumbs
+            currentTitle={breadcrumbTitle}
+            currentTitleAttr={
+              page?.$ && (page?.$.breadcrumb_title || page?.$.title)
+            }
+          />
+        </div>
+      )}
 
       {/* Display page title if it exists */}
       {page?.title ? (
@@ -76,6 +93,7 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
               item.featured_projects?._metadata?.uid ||
               item.experience_timeline?._metadata?.uid ||
               item.grid_section?._metadata?.uid ||
+              item.card_section?._metadata?.uid ||
               `block-${index}`
             }
             block={item}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
 import { PortfolioItem } from "@/lib/types";
 import { ArrowLeftIcon, CalendarIcon, TagIcon } from "@heroicons/react/24/outline";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 interface PortfolioDetailProps {
   item: PortfolioItem;
@@ -17,6 +18,17 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
 
   return (
     <article className="max-w-4xl mx-auto py-8 px-4">
+      {/* Breadcrumbs */}
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Portfolio", href: "/#portfolio" },
+          { label: item.title, active: true },
+        ]}
+        currentTitleAttr={item?.$ && item?.$.title}
+        className="mb-6"
+      />
+
       {/* Back button */}
       <div className="mb-8">
         <Link
