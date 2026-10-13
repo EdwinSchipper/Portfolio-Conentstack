@@ -26,6 +26,12 @@ const colSpans: Record<string, string> = {
   "12": "col-span-12",
 };
 
+/** Color modes - Contentstack (Default of Alt achtergrond). */
+const colorModes: Record<string, string> = {
+  default: "bg-transparent",
+  alt: "bg-white py-16 md:py-24",
+};
+
 export default function GridSection({
   data,
   previewAttr,
@@ -34,6 +40,8 @@ export default function GridSection({
   previewAttr?: CSLPAttribute;
 }) {
   const containerClass = containerWidths[data?.container_width?.toLowerCase() ?? "default"] ?? containerWidths.default;
+  const colorModeKey = data?.color_mode?.toLowerCase() ?? "default";
+  const colorModeClass = colorModes[colorModeKey] ?? colorModes.default;
   const leftCol = colSpans[String(data?.left_col_span)] ?? colSpans["5"];
   const rightCol = colSpans[String(data?.right_col_span)] ?? colSpans["7"];
 
@@ -42,7 +50,11 @@ export default function GridSection({
   const contentRight = data?.content_right;
 
   return (
-    <section {...previewAttr} className="col-span-full w-full mb-20 md:mb-40 lg:mb-40">
+    <section
+      {...previewAttr}
+      data-color-mode={colorModeKey}
+      className={`col-span-full w-full mb-20 md:mb-40 lg:mb-40 ${colorModeClass}`}
+    >
       <div
         className={`grid grid-cols-1 md:grid-cols-12 mx-auto z-20 ${containerClass} px-10 sm:px-14 lg:px-12 md:px-20 mb-16 gap-14 lg:gap-x-10 xl:gap-x-24`}
       >

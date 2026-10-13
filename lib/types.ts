@@ -199,6 +199,7 @@ export interface GridContentRight {
 
 export interface GridSectionBlock {
   container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
+  color_mode?: "Default" | "Alt" | string; /** "Default" | "Alt" */
   left_col_span?: number | string; /** Col span 1-12 for left column */
   right_col_span?: number | string; /** Col span 1-12 for right column */
   content_left?: GridContentLeft;
@@ -206,6 +207,7 @@ export interface GridSectionBlock {
   _metadata?: { uid: string };
   $?: {
     container_width?: CSLPFieldMapping;
+    color_mode?: CSLPFieldMapping;
     left_col_span?: CSLPFieldMapping;
     right_col_span?: CSLPFieldMapping;
     content_left?: CSLPFieldMapping;
