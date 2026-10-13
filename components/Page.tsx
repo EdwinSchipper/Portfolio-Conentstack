@@ -19,6 +19,31 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
 
   return (
     <section className="p-4">
+
+
+      {/* Header */}
+      <div className="p-4 bg-red-200 my-20">
+
+        {/* Display page title if it exists */}
+        {page?.title ? (
+          <h1
+            className="text-4xl font-bold mb-4 text-center"
+            {...(page?.$ && page?.$.title)}
+          >
+            {page?.title} with Next
+          </h1>
+        ) : null}
+
+        {/* Display page description if it exists */}
+        {page?.description ? (
+          <p className="mb-4 text-center" {...(page?.$ && page?.$.description)}>
+            {page?.description}
+          </p>
+        ) : null}
+      </div>
+
+
+
       {/* Breadcrumbs within page content, above title */}
       {showBreadcrumbs && (
         <div className="max-w-5xl mx-auto px-4 mb-4">
@@ -31,23 +56,7 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
         </div>
       )}
 
-      {/* Display page title if it exists */}
-      {page?.title ? (
-        <h1
-          className="text-4xl font-bold mb-4 text-center"
-          // Spread live preview attributes for editing capability in Contentstack
-          {...(page?.$ && page?.$.title)}
-        >
-          {page?.title} with Next
-        </h1>
-      ) : null}
 
-      {/* Display page description if it exists */}
-      {page?.description ? (
-        <p className="mb-4 text-center" {...(page?.$ && page?.$.description)}>
-          {page?.description}
-        </p>
-      ) : null}
 
       {/* Display hero image if it exists */}
       {page?.image ? (
@@ -63,7 +72,7 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
       ) : null}
 
       {/* Display rich text content if it exists, sanitized for security */}
-      {page?.rich_text ? (
+      {/* {page?.rich_text ? (
         <div
           {...(page?.$ && page?.$.rich_text)}
           dangerouslySetInnerHTML={{
@@ -71,7 +80,7 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
           }}
           className="prose mx-auto"
         />
-      ) : null}
+      ) : null} */}
 
       {/* 
         Container for modular blocks with Visual Builder support
