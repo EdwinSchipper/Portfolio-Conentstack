@@ -214,13 +214,42 @@ export interface SplitSectionBlock {
   };
 }
 
+export interface GridSectionBlock {
+  container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
+  left_col_span?: number | string; /** Col span 1-12 for left column */
+  right_col_span?: number | string; /** Col span 1-12 for right column */
+  modular_blocks?: Array<{
+    left_col_span?: {
+      text_block_left?: string;
+      _metadata?: { uid: string };
+      $?: Record<string, any>;
+      [key: string]: any;
+    };
+    right_col_span?: {
+      text_block_right?: string;
+      _metadata?: { uid: string };
+      $?: Record<string, any>;
+      [key: string]: any;
+    };
+    [key: string]: any;
+  }>;
+  _metadata?: { uid: string };
+  $?: {
+    container_width?: CSLPFieldMapping;
+    left_col_span?: CSLPFieldMapping;
+    right_col_span?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface Blocks extends SystemFields {
   block?: Block;
   service_card?: ServiceCardBlock;
   featured_projects?: FeaturedProjectsBlock;
   experience_timeline?: ExperienceTimelineBlock;
   split_section?: SplitSectionBlock;
-  grid_section?: any;
+  grid_section?: GridSectionBlock;
   layout?: {
     split_section?: any[];
     grid_section?: any[];

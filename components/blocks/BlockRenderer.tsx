@@ -3,7 +3,8 @@ import ServiceCardBlock from "./ServiceCardBlock";
 import ContentBlock from "./ContentBlock";
 import FeaturedProjectsBlock from "./FeaturedProjectsBlock";
 import ExperienceTimelineBlock from "./ExperienceTimelineBlock";
-import SplitSectionBlock, { SplitSectionLayout } from "./SplitSectionBlock";
+import { SplitSectionLayout } from "./SplitSectionBlock";
+import GridSection from "./GridSection";
 
 interface BlockRendererProps {
   block: Blocks;
@@ -59,15 +60,9 @@ export default function BlockRenderer({
   }
 
   if (block.grid_section) {
-    const raw =
-      block.grid_section.grid ||
-      block.grid_section.split_section ||
-      block.grid_section;
-    const items = Array.isArray(raw) ? raw : [raw];
-
     return (
-      <SplitSectionLayout
-        items={items}
+      <GridSection
+        data={block.grid_section}
         previewAttr={blockPreviewAttr}
       />
     );
@@ -103,6 +98,5 @@ export default function BlockRenderer({
       />
     );
   }
-
   return null;
 }
