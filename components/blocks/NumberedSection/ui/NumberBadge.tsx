@@ -24,9 +24,11 @@ export default function NumberBadge({
   return (
     <div
       {...cslp}
-      className={`shrink-0 flex items-center justify-center w-11 h-9 sm:w-12 sm:h-10 rounded-lg sm:rounded-xl bg-[#ededeb] text-gray-900 font-mono font-bold text-xs sm:text-sm tracking-tight select-none ${className}`}
+      className={`self-start shrink-0 inline-flex items-center justify-center rounded-lg bg-border-100 dark:bg-border-200 py-2 px-3 sm:py-2.5 sm:px-3.5 select-none ${className}`}
     >
-      {numStr}
+      <span className="text-title-100 dark:text-title-200 font-playfull text-smallM sm:text-medium font-bold">
+        {numStr}
+      </span>
     </div>
   );
 }

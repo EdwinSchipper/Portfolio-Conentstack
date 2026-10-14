@@ -25,9 +25,13 @@ export default function NumberedSectionGrid({
   return (
     <div
       {...cslp}
-      className={`grid ${colGridClass} gap-x-12 lg:gap-x-16 gap-y-10 md:gap-y-12 items-start ${className}`}
+      className={`grid ${colGridClass} bg-accent8-8000 gap-y-5 gap-x-5 md:gap-y-10 md:gap-x-10 font-content items-start ${className}`}
     >
       {children}
     </div>
   );
 }
+
+
+
+// grid grid-cols-1 md:grid-cols-2 

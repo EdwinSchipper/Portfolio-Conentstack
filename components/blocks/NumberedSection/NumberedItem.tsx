@@ -26,18 +26,18 @@ export default function NumberedItem({
   const displayText = description ?? text;
 
   return (
-    <div {...cslp} className={`flex items-start gap-4 sm:gap-5 ${className}`}>
+    <div {...cslp} className={`flex gap-x-6 page-items-content ${className}`}>
       {/* Number Badge (los UI element) */}
       {number !== undefined && number !== null && (
         <NumberBadge number={number} cslp={cslp?.number} />
       )}
 
       {/* Item Content */}
-      <div className="space-y-1.5 sm:space-y-2 grow">
+      <div className="flex flex-col">
         {title && (
           <h3
             {...(cslp && cslp.title)}
-            className="text-base sm:text-lg md:text-xl font-bold text-gray-900 tracking-tight"
+            className="text-baseM sm:text-base text-title-100 dark:text-title-200 font-semibold"
           >
             {title}
           </h3>
@@ -46,7 +46,7 @@ export default function NumberedItem({
         {displayText && (
           <p
             {...(cslp && (cslp.text || cslp.description))}
-            className="text-sm sm:text-base text-gray-600 leading-relaxed whitespace-pre-line"
+            className="text-baseM sm:text-medium text-content-100 dark:text-content-200"
           >
             {displayText}
           </p>

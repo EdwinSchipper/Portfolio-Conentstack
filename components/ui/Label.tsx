@@ -18,10 +18,10 @@ function renderNumberedContent(text: string) {
   const match = text.match(/^(\d+)\s*[-—]\s*(.+)$/);
   if (match) {
     return (
-      <span className="flex items-center gap-2">
-        <span className="text-[#f05a46] font-mono">{match[1]}</span>
-        <span className="text-gray-400">—</span>
-        <span className="text-gray-700">{match[2]}</span>
+      <span className="flex gap-3 items1-center relative w-full mb-3 lg:mb-4 tracking-tight items-baseline">
+        <span className="font-bold text-accent7-900 dark:text-accent8-900 font-playfull text-label">{match[1]}</span>
+        <span className="font-medium text-accent7-900 dark:text-accent8-900 text-label">—</span>
+        <span className="font-medium uppercase text-title-100 dark:text-title-200 text-noteM md:text-note">{match[2]}</span>
       </span>
     );
   }
@@ -29,10 +29,10 @@ function renderNumberedContent(text: string) {
 }
 
 const variantStyles: Record<LabelVariant, string> = {
-  brand: "text-xs font-bold tracking-widest text-[#f05a46] uppercase mb-2 block",
-  numbered: "text-xs font-bold tracking-widest uppercase mb-2 block",
-  pill: "inline-block px-3 py-1 bg-white border border-gray-200/90 rounded-lg text-xs font-mono font-medium text-gray-800 shadow-2xs",
-  muted: "text-xs font-bold tracking-widest text-gray-500 uppercase mb-2 block",
+  brand: "bg-red-300",
+  numbered: "",
+  pill: "",
+  muted: "",
 };
 
 /**

@@ -16,7 +16,7 @@ export default function NumberedTitle({
   return (
     <h2
       {...cslp}
-      className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4 ${className}`}
+      className={`text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance ${className}`}
     >
       {children}
     </h2>

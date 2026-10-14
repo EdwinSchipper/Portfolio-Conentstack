@@ -19,7 +19,7 @@ const containerWidths: Record<string, string> = {
 
 const colorModes: Record<string, string> = {
   default: "bg-transparent",
-  alt: "bg-white py-16 md:py-24",
+  alt: "bg-background-200 dark:bg-background-900",
 };
 
 export interface NumberedSectionProps {
@@ -62,21 +62,25 @@ export default function NumberedSection({
         className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
       >
         <div className={`mx-auto px-6 sm:px-10 lg:px-12 ${containerClass}`}>
+
           {hasHeader && (
-            <NumberedSectionHeader
-              label={rawLabel}
-              title={sectionTitle}
-              intro={sectionIntro}
-              cslpLabel={
-                data?.$ &&
-                (data?.$.label ||
-                  data?.$.section_label ||
-                  data?.$.label_numbered)
-              }
-              cslpTitle={data?.$ && (data?.$.section_title || data?.$.title)}
-              cslpIntro={data?.$ && data?.$.section_intro}
-            />
+            <div className="flex flex-col mb-12 lg:mb-20">
+              <NumberedSectionHeader
+                label={rawLabel}
+                title={sectionTitle}
+                intro={sectionIntro}
+                cslpLabel={
+                  data?.$ &&
+                  (data?.$.label ||
+                    data?.$.section_label ||
+                    data?.$.label_numbered)
+                }
+                cslpTitle={data?.$ && (data?.$.section_title || data?.$.title)}
+                cslpIntro={data?.$ && data?.$.section_intro}
+              />
+            </div>
           )}
+
 
           {items.length > 0 && (
             <NumberedSectionGrid

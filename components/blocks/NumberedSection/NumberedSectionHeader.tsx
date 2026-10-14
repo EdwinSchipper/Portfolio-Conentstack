@@ -27,7 +27,7 @@ export default function NumberedSectionHeader({
   cslpIntro,
 }: NumberedSectionHeaderProps) {
   return (
-    <div {...cslp} className={`mb-12 md:mb-16 max-w-3xl ${className}`}>
+    <div {...cslp} className={`${className}`}>
       {label && <NumberedLabel cslp={cslpLabel}>{label}</NumberedLabel>}
       {title && <NumberedTitle cslp={cslpTitle}>{title}</NumberedTitle>}
       {intro && <NumberedIntro cslp={cslpIntro}>{intro}</NumberedIntro>}
