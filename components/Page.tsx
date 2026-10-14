@@ -1,4 +1,3 @@
-import DOMPurify from "isomorphic-dompurify"; // Importing DOMPurify for sanitizing HTML content to prevent XSS attacks
 import Image from "next/image"; // Importing Next.js optimized Image component for better performance
 import { Page } from "@/lib/types"; // Importing the Page type definition from our types file
 import { VB_EmptyBlockParentClass } from "@contentstack/live-preview-utils"; // Importing Visual Builder class for empty block handling in Contentstack Live Preview

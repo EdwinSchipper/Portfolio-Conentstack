@@ -1,6 +1,7 @@
 import { Blocks } from "@/lib/types";
 import ServiceCardBlock from "./ServiceCardBlock";
 import ContentBlock from "./ContentBlock";
+import CtaBlock from "./CtaBlock";
 import FeaturedProjectsBlock from "./FeaturedProjectsBlock";
 import ExperienceTimelineBlock from "./ExperienceTimelineBlock";
 import GridSection from "./GridSection";
@@ -46,6 +47,17 @@ export default function BlockRenderer({
     return (
       <ContentBlock
         data={block.block}
+        previewAttr={blockPreviewAttr}
+      />
+    );
+  }
+
+  const ctaData =
+    block.cta_resume || block.CTA_Resume || (block as any).c_t_a_resume || block.CtaBlock;
+  if (ctaData) {
+    return (
+      <CtaBlock
+        data={ctaData}
         previewAttr={blockPreviewAttr}
       />
     );

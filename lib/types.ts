@@ -94,6 +94,22 @@ export interface Block {
   };
 }
 
+export interface CtaBlock {
+  title?: string;
+  label?: string;
+  text_cta?: string;
+  image?: File | null;
+  button_cta?: Link;
+  _metadata?: { uid: string };
+  $?: {
+    title?: CSLPFieldMapping;
+    label?: CSLPFieldMapping;
+    text_cta?: CSLPFieldMapping;
+    image?: CSLPFieldMapping;
+    button_cta?: CSLPFieldMapping;
+  };
+}
+
 export interface ServiceCardBlock {
   _version?: number;
   card_title?: string;
@@ -358,6 +374,9 @@ export interface Blocks extends SystemFields {
   card_section?: CardSectionBlock;
   numbered_section?: NumberedSectionBlock;
   numbered_list?: NumberedSectionBlock;
+  cta_resume?: CtaBlock;
+  CTA_Resume?: CtaBlock;
+  CtaBlock?: CtaBlock;
 }
 
 export interface Page extends SystemFields {
