@@ -54,13 +54,13 @@ export default function FeaturedProjectsBlock({
             const postUrl = post.url || `/portfolio/${post.uid || (post as any).id || index}`;
             const imageObj =
               post.featured_image ||
-              (typeof post.portfolioImageDetail7 === "object"
-                ? post.portfolioImageDetail7
+              (typeof post.portfolioimagedetail === "object"
+                ? post.portfolioimagedetail
                 : null);
             const imageUrl =
               imageObj?.url ||
-              (typeof post.portfolioImageDetail7 === "string"
-                ? post.portfolioImageDetail7
+              (typeof post.portfolioimagedetail === "string"
+                ? post.portfolioimagedetail
                 : null);
 
             const projectTag =
