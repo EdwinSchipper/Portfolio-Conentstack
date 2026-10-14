@@ -98,16 +98,29 @@ export interface CtaBlock {
   title?: string;
   label?: string;
   text_cta?: string;
+  description?: string;
+  text?: string;
   image?: File | null;
+  image_light?: File | null;
+  image_dark?: File | null;
+  image_alt?: string;
   button_cta?: Link;
+  button_to?: string;
+  button_text?: string;
   _metadata?: { uid: string };
   $?: {
     title?: CSLPFieldMapping;
     label?: CSLPFieldMapping;
     text_cta?: CSLPFieldMapping;
+    description?: CSLPFieldMapping;
+    text?: CSLPFieldMapping;
     image?: CSLPFieldMapping;
+    image_light?: CSLPFieldMapping;
+    image_dark?: CSLPFieldMapping;
     button_cta?: CSLPFieldMapping;
+    [key: string]: any;
   };
+  [key: string]: any;
 }
 
 export interface ServiceCardBlock {

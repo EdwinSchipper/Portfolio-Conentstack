@@ -335,6 +335,13 @@ export function CardSectionHeader({
   );
 }
 
+const colGrids: Record<string, string> = {
+  "1": "grid-cols-1",
+  "2": "grid-cols-1 lg:grid-cols-2",
+  "3": "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  "4": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
+};
+
 export interface CardGridProps {
   children: React.ReactNode;
   columns?: number | string;
@@ -345,22 +352,30 @@ export interface CardGridProps {
 
 export function CardGrid({
   children,
+  columns = "3",
   containerClass = "lg:max-w-7xl",
   className = "",
   cslp,
 }: CardGridProps) {
+  const colVal = String(columns || "3").match(/[1-4]/)?.[0] || "3";
+  const colGridClass = colGrids[colVal] ?? colGrids["3"];
+
   return (
     <div
       {...cslp}
       className={`w-full flex flex-col px-10 md:px-20 xl:px-14 border-y border-border-100 dark:border-border-200 relative ${className}`}
     >
-      {/* Desktop kruisdraad / divider-lijnen op lg schermen */}
-      <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:border-border-200 -translate-x-1/2 pointer-events-none" />
-      <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-border-100 dark:border-border-200 -translate-y-1/2 pointer-events-none" />
+      {/* Desktop kruisdraad / divider-lijnen op lg schermen (alleen bij 2 kolommen) */}
+      {colVal === "2" && (
+        <>
+          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:border-border-200 -translate-x-1/2 pointer-events-none" />
+          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-border-100 dark:border-border-200 -translate-y-1/2 pointer-events-none" />
+        </>
+      )}
 
       {/* Grid container met verticale zijranden */}
       <div
-        className={`grid grid-cols-1 lg:grid-cols-2 lg:auto-rows-fr mx-auto w-full sm:max-w-xl md:max-w-3xl ${containerClass} items-start lg:items-stretch gap-0 relative z-10 border-x border-border-100 dark:border-border-200 divide-y lg:divide-y-0 divide-border-100 dark:divide-border-200`}
+        className={`grid ${colGridClass} lg:auto-rows-fr mx-auto w-full sm:max-w-xl md:max-w-3xl ${containerClass} items-start lg:items-stretch gap-0 relative z-10 border-x border-border-100 dark:border-border-200 divide-y lg:divide-y-0 divide-border-100 dark:divide-border-200`}
       >
         {children}
       </div>
@@ -374,6 +389,7 @@ export interface CardSectionProps {
   previewAttr?: CSLPAttribute;
   width?: "small" | "default" | "large" | "wide" | string;
   colorMode?: "default" | "alt" | string;
+  columns?: "1" | "2" | "3" | "4" | number | string;
   className?: string;
 }
 
@@ -386,6 +402,7 @@ export default function CardSection({
   previewAttr,
   width,
   colorMode,
+  columns,
   className = "",
 }: CardSectionProps) {
   const rawWidth = (width || data?.width || data?.container_width || "large").toLowerCase();
@@ -400,7 +417,7 @@ export default function CardSection({
     const sectionTitle = data?.section_title;
     const sectionIntro = data?.section_intro;
     const cards = data?.cards || [];
-    const colVal = String(data?.columns || "").match(/[234]/)?.[0] || "3";
+    const colVal = String(columns || data?.columns || "").match(/[1-4]/)?.[0] || "3";
 
     const hasHeader = Boolean(rawLabel || sectionTitle || sectionIntro);
 
