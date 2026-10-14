@@ -198,6 +198,47 @@ export interface ExperienceTimelineBlock {
   };
 }
 
+export interface ResumeSectionBlock {
+  _version?: number;
+  container_width?: string; /** "small" | "default" | "large" | "wide" */
+  width?: string;
+  color_mode?: "Default" | "Alt" | "default" | "alt" | string;
+  left_col_span?: number | string; /** Col span 1-12 for left column */
+  right_col_span?: number | string; /** Col span 1-12 for right column */
+  timeline_position?: "right" | "left" | "full" | "Right" | "Left" | "Full" | "rechts" | "links" | string;
+  timeline_placement?: string;
+  label?: string;
+  section_label?: string;
+  title?: string;
+  section_title_main?: string;
+  section_title?: string;
+  description?: string;
+  text?: string;
+  intro?: string;
+  button?: Link;
+  button_cta?: Link;
+  companies?: ExperienceCompany[];
+  _metadata?: { uid: string };
+  $?: {
+    container_width?: CSLPFieldMapping;
+    width?: CSLPFieldMapping;
+    color_mode?: CSLPFieldMapping;
+    left_col_span?: CSLPFieldMapping;
+    right_col_span?: CSLPFieldMapping;
+    timeline_position?: CSLPFieldMapping;
+    label?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    description?: CSLPFieldMapping;
+    text?: CSLPFieldMapping;
+    button?: CSLPFieldMapping;
+    section_title?: CSLPFieldMapping;
+    companies?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+
 export interface GridCard {
   image?: File;
   tag?: string;
@@ -387,6 +428,9 @@ export interface Blocks extends SystemFields {
   service_card?: ServiceCardBlock;
   featured_projects?: FeaturedProjectsBlock;
   experience_timeline?: ExperienceTimelineBlock;
+  resume_section?: ResumeSectionBlock;
+  grid_section_resume?: ResumeSectionBlock;
+  resume_grid_section?: ResumeSectionBlock;
   grid_section?: GridSectionBlock;
   card_section?: CardSectionBlock;
   numbered_section?: NumberedSectionBlock;

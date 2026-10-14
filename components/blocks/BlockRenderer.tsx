@@ -4,6 +4,7 @@ import ContentBlock from "./ContentBlock";
 import CtaBlock from "./CtaBlock";
 import FeaturedProjectsBlock from "./FeaturedProjectsBlock";
 import ExperienceTimelineBlock from "./ExperienceTimelineBlock";
+import ResumeSection from "./ResumeSection";
 import GridSection from "./GridSection";
 import CardSection from "./CardSection";
 import NumberedSection from "./NumberedSection";
@@ -58,6 +59,21 @@ export default function BlockRenderer({
     return (
       <CtaBlock
         data={ctaData}
+        previewAttr={blockPreviewAttr}
+      />
+    );
+  }
+
+  const resumeData =
+    block.resume_section ||
+    block.grid_section_resume ||
+    block.resume_grid_section ||
+    (block as any).Resume_Section ||
+    (block as any).resumeSection;
+  if (resumeData) {
+    return (
+      <ResumeSection
+        data={resumeData}
         previewAttr={blockPreviewAttr}
       />
     );
