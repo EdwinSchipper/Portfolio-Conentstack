@@ -1,11 +1,14 @@
+import React from "react";
 import {
   ExperienceTimelineBlock as ExperienceTimelineBlockType,
   CSLPAttribute,
 } from "@/lib/types";
+import { Label } from "@/components/ui";
 
 interface ExperienceTimelineBlockProps {
   data: ExperienceTimelineBlockType;
   previewAttr?: CSLPAttribute;
+  className?: string;
 }
 
 /**
@@ -16,9 +19,14 @@ function getInitial(name?: string): string {
   return name.trim().charAt(0).toUpperCase();
 }
 
+/**
+ * ExperienceTimelineBlock: Visual work experience timeline using project brand tokens
+ * and consistent dark/light mode borders and backgrounds.
+ */
 export default function ExperienceTimelineBlock({
   data,
   previewAttr,
+  className = "",
 }: ExperienceTimelineBlockProps) {
   // Gracefully support both direct properties and nested modular block instances
   const timelineData: ExperienceTimelineBlockType =
@@ -33,12 +41,12 @@ export default function ExperienceTimelineBlock({
   const companies = timelineData.companies || [];
 
   return (
-    <section {...previewAttr} className="col-span-full py-8">
+    <section {...previewAttr} className={`col-span-full py-8 font-content ${className}`}>
       {/* Optional Section Title */}
       {timelineData.section_title && (
         <div className="mb-10">
           <h2
-            className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight"
+            className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 tracking-tight font-content"
             {...((timelineData?.$ && timelineData?.$.section_title) ||
               (data?.$ && data?.$.section_title))}
           >
@@ -77,14 +85,14 @@ export default function ExperienceTimelineBlock({
               {roles.length > 0 && (
                 <div
                   aria-hidden="true"
-                  className="absolute left-6 md:left-8 top-14 md:top-18 bottom-4 w-[2px] bg-rose-200 -translate-x-1/2 pointer-events-none"
+                  className="absolute left-6 md:left-8 top-14 md:top-18 bottom-4 w-[2px] bg-accent7-300 dark:bg-accent8-300 -translate-x-1/2 pointer-events-none"
                 />
               )}
 
               {/* Company Logo Monogram Box */}
               <div
                 aria-hidden="true"
-                className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center font-black text-2xl md:text-3xl text-gray-900 select-none z-10"
+                className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200 shadow-sm flex items-center justify-center font-playfull font-black text-2xl md:text-3xl text-title-100 dark:text-title-200 select-none z-10"
               >
                 {getInitial(company.company_name)}
               </div>
@@ -93,7 +101,7 @@ export default function ExperienceTimelineBlock({
               <div className="mb-6 pt-1 md:pt-2">
                 {company.company_name && (
                   <h3
-                    className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight"
+                    className="text-title_3M sm:text-title_3 font-bold text-title-100 dark:text-title-200 tracking-tight"
                     {...(company?.$ && company?.$.company_name)}
                   >
                     {company.company_name}
@@ -101,7 +109,7 @@ export default function ExperienceTimelineBlock({
                 )}
                 {company.company_period && (
                   <p
-                    className="text-sm md:text-base font-semibold text-[#f05a46] mt-1"
+                    className="text-smallM md:text-small font-semibold text-accent7-900 dark:text-accent8-900 font-playfull mt-1"
                     {...(company?.$ && company?.$.company_period)}
                   >
                     {company.company_period}
@@ -124,34 +132,34 @@ export default function ExperienceTimelineBlock({
                       {/* Timeline node circle */}
                       <span
                         aria-hidden="true"
-                        className="absolute -left-6 md:-left-12 top-2.5 w-3.5 h-3.5 rounded-full border-2 border-[#f05a46] bg-white -translate-x-1/2 z-10"
+                        className="absolute -left-6 md:-left-12 top-2.5 w-3.5 h-3.5 rounded-full border-2 border-accent7-900 dark:border-accent8-900 bg-background-100 dark:bg-background-800 -translate-x-1/2 z-10"
                       />
 
                       {isCard ? (
                         /* Prominent Primary Role Card */
-                        <div className="bg-white rounded-2xl border border-gray-200/90 p-6 md:p-8 shadow-sm hover:shadow-md transition duration-200">
+                        <div className="bg-background-200 dark:bg-background-900 rounded-2xl border border-border-100 dark:border-border-200 p-6 md:p-8 shadow-sm hover:shadow-md transition duration-200">
                           <div className="flex flex-wrap items-center justify-between gap-3 mb-1">
                             {role.title && (
                               <h4
-                                className="text-xl md:text-2xl font-bold text-gray-900"
+                                className="text-title_4M sm:text-title_4 font-bold text-title-100 dark:text-title-200"
                                 {...(role?.$ && role?.$.title)}
                               >
                                 {role.title}
                               </h4>
                             )}
                             {role.badge && (
-                              <span
-                                className="px-3.5 py-1 text-xs md:text-sm font-semibold text-[#f05a46] bg-[#fff1ef] border border-[#fddbd6] rounded-full whitespace-nowrap"
-                                {...(role?.$ && role?.$.badge)}
+                              <Label
+                                variant="pill"
+                                cslp={role?.$ && role?.$.badge}
                               >
                                 {role.badge}
-                              </span>
+                              </Label>
                             )}
                           </div>
 
                           {role.period && (
                             <p
-                              className="text-sm md:text-base font-semibold text-[#f05a46] mb-3"
+                              className="text-smallM md:text-small font-semibold text-accent7-900 dark:text-accent8-900 font-playfull mb-3"
                               {...(role?.$ && role?.$.period)}
                             >
                               {role.period}
@@ -160,7 +168,7 @@ export default function ExperienceTimelineBlock({
 
                           {role.description && (
                             <p
-                              className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line"
+                              className="text-mediumM sm:text-small text-content-100 dark:text-content-200 leading-relaxed whitespace-pre-line"
                               {...(role?.$ && role?.$.description)}
                             >
                               {role.description}
@@ -172,7 +180,7 @@ export default function ExperienceTimelineBlock({
                         <div className="max-w-3xl">
                           {role.title && (
                             <h4
-                              className="text-lg md:text-xl font-bold text-gray-900"
+                              className="text-title_4M sm:text-title_4 font-bold text-title-100 dark:text-title-200"
                               {...(role?.$ && role?.$.title)}
                             >
                               {role.title}
@@ -180,7 +188,7 @@ export default function ExperienceTimelineBlock({
                           )}
                           {role.period && (
                             <p
-                              className="text-sm font-semibold text-[#f05a46] mt-0.5 mb-2"
+                              className="text-smallM md:text-small font-semibold text-accent7-900 dark:text-accent8-900 font-playfull mt-0.5 mb-2"
                               {...(role?.$ && role?.$.period)}
                             >
                               {role.period}
@@ -188,7 +196,7 @@ export default function ExperienceTimelineBlock({
                           )}
                           {role.description && (
                             <p
-                              className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line"
+                              className="text-mediumM sm:text-small text-content-100 dark:text-content-200 leading-relaxed whitespace-pre-line"
                               {...(role?.$ && role?.$.description)}
                             >
                               {role.description}
@@ -206,10 +214,10 @@ export default function ExperienceTimelineBlock({
                     {/* Timeline node for the secondary disciplines section */}
                     <span
                       aria-hidden="true"
-                      className="absolute -left-6 md:-left-12 top-6 w-3.5 h-3.5 rounded-full border-2 border-[#f05a46] bg-white -translate-x-1/2 z-10"
+                      className="absolute -left-6 md:-left-12 top-6 w-3.5 h-3.5 rounded-full border-2 border-accent7-900 dark:border-accent8-900 bg-background-100 dark:bg-background-800 -translate-x-1/2 z-10"
                     />
 
-                    <h4 className="text-xs font-bold tracking-wider text-gray-500 uppercase mb-4">
+                    <h4 className="text-noteM md:text-note font-bold tracking-wider text-content-300 dark:text-content-300 uppercase mb-4">
                       Aanvullende Disciplines
                     </h4>
 
@@ -218,11 +226,11 @@ export default function ExperienceTimelineBlock({
                       {displaySecondaryRoles.map((secRole, sIdx) => (
                         <div
                           key={secRole._metadata?.uid || `sec-role-${sIdx}`}
-                          className="bg-white rounded-2xl border border-gray-200/90 p-5 md:p-6 shadow-sm hover:shadow-md transition duration-200 flex flex-col"
+                          className="bg-background-200 dark:bg-background-900 rounded-2xl border border-border-100 dark:border-border-200 p-5 md:p-6 shadow-sm hover:shadow-md transition duration-200 flex flex-col"
                         >
                           {secRole.title && (
                             <h5
-                              className="text-base md:text-lg font-bold text-gray-900 mb-1"
+                              className="text-title_5M sm:text-title_5 font-bold text-title-100 dark:text-title-200 mb-1"
                               {...(secRole?.$ && secRole?.$.title)}
                             >
                               {secRole.title}
@@ -231,7 +239,7 @@ export default function ExperienceTimelineBlock({
 
                           {secRole.period && (
                             <p
-                              className="text-xs md:text-sm font-semibold text-[#f05a46] mb-3"
+                              className="text-smallM md:text-small font-semibold text-accent7-900 dark:text-accent8-900 font-playfull mb-3"
                               {...(secRole?.$ && secRole?.$.period)}
                             >
                               {secRole.period}
@@ -240,7 +248,7 @@ export default function ExperienceTimelineBlock({
 
                           {secRole.description && (
                             <p
-                              className="text-xs md:text-sm text-gray-600 leading-relaxed whitespace-pre-line"
+                              className="text-smallM md:text-small text-content-100 dark:text-content-200 leading-relaxed whitespace-pre-line"
                               {...(secRole?.$ && secRole?.$.description)}
                             >
                               {secRole.description}

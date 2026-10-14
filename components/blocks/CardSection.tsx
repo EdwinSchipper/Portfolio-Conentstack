@@ -2,18 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { CardSectionBlock, CardSectionItem, CSLPAttribute } from "@/lib/types";
 import { Button, Label } from "@/components/ui";
-
-const containerWidths: Record<string, string> = {
-  small: "lg:max-w-4xl",
-  default: "lg:max-w-5xl",
-  large: "lg:max-w-7xl",
-  wide: "lg:max-w-[1400px] xl:max-w-[1536px]",
-};
-
-const colorModes: Record<string, string> = {
-  default: "bg-transparent",
-  alt: "bg-background-200 dark:bg-background-900",
-};
+import { getContainerClass, getColorModeClass } from "@/lib/layout";
 
 export interface CardBoxProps {
   title?: React.ReactNode;
@@ -279,7 +268,7 @@ export function CardSectionHeader({
   label,
   title,
   intro,
-  containerClass = "lg:max-w-7xl",
+  containerClass = "w-full lg:max-w-7xl",
   className = "",
   cslp,
   cslpLabel,
@@ -353,7 +342,7 @@ export interface CardGridProps {
 export function CardGrid({
   children,
   columns = "3",
-  containerClass = "lg:max-w-7xl",
+  containerClass = "w-full lg:max-w-7xl",
   className = "",
   cslp,
 }: CardGridProps) {
@@ -405,11 +394,11 @@ export default function CardSection({
   columns,
   className = "",
 }: CardSectionProps) {
-  const rawWidth = (width || data?.width || data?.container_width || "large").toLowerCase();
-  const containerClass = containerWidths[rawWidth] ?? containerWidths.large;
+  const rawWidth = width || data?.width || data?.container_width;
+  const containerClass = getContainerClass(rawWidth, "large");
 
-  const colorModeKey = (colorMode || data?.color_mode || "default").toLowerCase();
-  const colorModeClass = colorModes[colorModeKey] ?? colorModes.default;
+  const colorModeKey = colorMode || data?.color_mode;
+  const colorModeClass = getColorModeClass(colorModeKey);
 
   // Render CMS data if passed directly (e.g. from BlockRenderer)
   if (data && !children) {

@@ -9,18 +9,7 @@ import {
   CSLPAttribute,
 } from "@/lib/types";
 import { Button, Label } from "@/components/ui";
-
-const containerWidths: Record<string, string> = {
-  small: "max-w-4xl",
-  default: "max-w-4xl xl:max-w-5xl",
-  large: "max-w-7xl",
-  wide: "container",
-};
-
-const colorModes: Record<string, string> = {
-  default: "bg-transparent",
-  alt: "bg-background-200 dark:bg-background-900 border-y border-border-100 dark:border-border-200 py-14 sm:py-32",
-};
+import { getContainerClass, getColorModeClass } from "@/lib/layout";
 
 export const colSpans: Record<string, string> = {
   "1": "col-span-12 lg:col-span-1",
@@ -314,11 +303,11 @@ export default function GridSection({
   colorMode,
   className = "",
 }: GridSectionProps) {
-  const rawWidth = (width || data?.container_width || "default").toLowerCase();
-  const containerClass = containerWidths[rawWidth] ?? containerWidths.default;
+  const rawWidth = width || data?.container_width;
+  const containerClass = getContainerClass(rawWidth, "default");
 
-  const colorModeKey = (colorMode || data?.color_mode || "default").toLowerCase();
-  const colorModeClass = colorModes[colorModeKey] ?? colorModes.default;
+  const colorModeKey = colorMode || data?.color_mode;
+  const colorModeClass = getColorModeClass(colorModeKey);
 
   if (data && !children) {
     const leftCol = data.left_col_span ?? "5";

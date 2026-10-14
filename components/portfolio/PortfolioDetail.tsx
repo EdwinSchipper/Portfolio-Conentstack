@@ -47,7 +47,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
             cslp={item?.$ && item?.$.project_tag}
             className="inline-flex items-center gap-1.5"
           >
-            <TagIcon className="w-3.5 h-3.5 inline text-[#f05a46]" />
+            <TagIcon className="w-3.5 h-3.5 inline text-accent7-900 dark:text-accent8-900" />
             {item.project_tag}
           </Label>
         )}
@@ -63,7 +63,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         ))}
 
         {item.date && (
-          <span className="inline-flex items-center gap-1 text-gray-400 ml-auto">
+          <span className="inline-flex items-center gap-1 text-content-300 dark:text-content-300 ml-auto font-playfull">
             <CalendarIcon className="w-3.5 h-3.5" />
             {item.date}
           </span>
@@ -73,7 +73,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
       {/* Title */}
       <h1
         {...(item?.$ && item?.$.title)}
-        className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4"
+        className="text-title_1M sm:text-title_1 font-bold text-title-100 dark:text-title-200 tracking-tight font-content mb-4"
       >
         {item.title}
       </h1>
@@ -82,7 +82,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
       {item.description && (
         <p
           {...(item?.$ && item?.$.description)}
-          className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed font-light"
+          className="text-mediumM sm:text-medium text-content-100 dark:text-content-200 mb-8 leading-relaxed font-content"
         >
           {item.description}
         </p>

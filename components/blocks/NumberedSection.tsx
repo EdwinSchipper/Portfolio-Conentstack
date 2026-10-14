@@ -1,18 +1,7 @@
 import React from "react";
 import { NumberedSectionBlock, CSLPAttribute } from "@/lib/types";
 import { Button, Label } from "@/components/ui";
-
-const containerWidths: Record<string, string> = {
-  small: "max-w-4xl",
-  default: "max-w-4xl xl:max-w-5xl",
-  large: "max-w-7xl",
-  wide: "container",
-};
-
-const colorModes: Record<string, string> = {
-  default: "bg-transparent",
-  alt: "bg-background-200 dark:bg-background-900 border-y border-border-100 dark:border-border-200",
-};
+import { getContainerClass, getColorModeClass } from "@/lib/layout";
 
 export interface NumberBadgeProps {
   number: number | string;
@@ -67,11 +56,11 @@ export default function NumberedSection({
   colorMode,
   className = "",
 }: NumberedSectionProps) {
-  const rawWidth = (width || data?.width || data?.container_width || "large").toLowerCase();
-  const containerClass = containerWidths[rawWidth] ?? containerWidths.large;
+  const rawWidth = width || data?.width || data?.container_width;
+  const containerClass = getContainerClass(rawWidth, "large");
 
-  const colorModeKey = (colorMode || data?.color_mode || "default").toLowerCase();
-  const colorModeClass = colorModes[colorModeKey] ?? colorModes.default;
+  const colorModeKey = colorMode || data?.color_mode;
+  const colorModeClass = getColorModeClass(colorModeKey);
 
   // Auto-wiring when Contentstack CMS data is provided
   if (data && !children) {

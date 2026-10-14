@@ -42,7 +42,7 @@ export default function FeaturedProjectsBlock({
           <div className="flex flex-col">
             <h2
               className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 font-content text-balance"
-              {...(data?.$ && (data?.$.section_title || (data?.$.title as any)))}
+              {...(data?.$ && (data?.$.section_title || (data?.$ as any)?.title))}
             >
               {sectionTitle}
             </h2>

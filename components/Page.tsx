@@ -103,24 +103,21 @@ export default function ContentDisplay({ page }: ContentDisplayProps) {
         {...(page?.$ && page?.$.blocks)}
       >
         {/* Cleanly delegate each modular block to BlockRenderer */}
-        {page?.blocks?.map((item, index) => (
-          <BlockRenderer
-            key={
-              item.service_card?._metadata?.uid ||
-              item.block?._metadata?.uid ||
-              item.featured_projects?._metadata?.uid ||
-              item.experience_timeline?._metadata?.uid ||
-              item.grid_section?._metadata?.uid ||
-              item.card_section?._metadata?.uid ||
-              item.numbered_section?._metadata?.uid ||
-              item.numbered_list?._metadata?.uid ||
-              `block-${index}`
-            }
-            block={item}
-            index={index}
-            pagePreviewAttr={page?.$}
-          />
-        ))}
+        {page?.blocks?.map((item, index) => {
+          const blockKey =
+            Object.values(item).find(
+              (b) => b && typeof b === "object" && "_metadata" in b && (b as any)._metadata?.uid
+            )?._metadata?.uid || `block-${index}`;
+
+          return (
+            <BlockRenderer
+              key={blockKey}
+              block={item}
+              index={index}
+              pagePreviewAttr={page?.$}
+            />
+          );
+        })}
       </div>
     </section>
   );

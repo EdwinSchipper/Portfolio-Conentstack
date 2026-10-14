@@ -145,12 +145,16 @@ export interface ServiceCardBlock {
 export interface FeaturedProjectsBlock {
   _version?: number;
   section_title?: string;
+  title?: string;
   projects?: PortfolioItem[];
   _metadata?: { uid: string };
   $?: {
     section_title?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
     projects?: CSLPFieldMapping;
+    [key: string]: any;
   };
+  [key: string]: any;
 }
 
 export interface ExperienceRole {
