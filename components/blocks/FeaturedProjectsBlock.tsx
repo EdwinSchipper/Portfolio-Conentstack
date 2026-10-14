@@ -7,131 +7,181 @@ import {
 } from "@/lib/types";
 import { Button, Label } from "@/components/ui";
 
-interface FeaturedProjectsBlockProps {
-  data: FeaturedProjectsBlockType;
+export interface FeaturedProjectsBlockProps {
+  data?: FeaturedProjectsBlockType;
   previewAttr?: CSLPAttribute;
+  className?: string;
 }
 
+/**
+ * FeaturedProjectsBlock: Case list matching the brand layout with desktop center divider line,
+ * alternating image/text columns, numbered labels, and direct portfolio links.
+ */
 export default function FeaturedProjectsBlock({
   data,
   previewAttr,
+  className = "",
 }: FeaturedProjectsBlockProps) {
+  if (!data) return null;
+
   const projects = data.projects || [];
+  const sectionTitle = data.section_title || (data as any).title;
 
   return (
-    <section {...previewAttr} className="col-span-full py-8">
-      {/* Section Title */}
-      {data.section_title && (
-        <div className="flex items-center justify-between mb-8">
-          <h2
-            className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight"
-            {...(data?.$ && data?.$.section_title)}
-          >
-            {data.section_title}
-          </h2>
-        </div>
-      )}
+    <section
+      {...previewAttr}
+      id="home-case-list"
+      className={`col-span-full w-full flex flex-col gap-14 md:gap-8 mb-28 sm:mb-40 lg:mb-60 px-10 sm:px-14 md:px-20 xl:px-14 border-y border-border-100 dark:border-border-200 py-14 md:py-24 relative font-content ${className}`}
+    >
+      {/* Desktop middenlijn divider */}
+      <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:border-border-200 -translate-x-1/2 pointer-events-none" />
 
-      {/* Projects Grid */}
-      {projects.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, idx) => {
-            const categories = Array.isArray(project.category)
-              ? project.category
-              : project.category
-              ? [project.category]
-              : [];
+      <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-7xl gap-14 sm:gap-20 flex flex-col relative z-10">
+        {/* Optionele sectietitel */}
+        {sectionTitle && (
+          <div className="flex flex-col">
+            <h2
+              className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 font-content text-balance"
+              {...(data?.$ && (data?.$.section_title || (data?.$.title as any)))}
+            >
+              {sectionTitle}
+            </h2>
+          </div>
+        )}
+
+        {projects.length > 0 ? (
+          projects.map((post, index) => {
+            const postUrl = post.url || `/portfolio/${post.uid || (post as any).id || index}`;
+            const imageObj =
+              post.featured_image ||
+              (typeof post.portfolioImageDetail7 === "object"
+                ? post.portfolioImageDetail7
+                : null);
+            const imageUrl =
+              imageObj?.url ||
+              (typeof post.portfolioImageDetail7 === "string"
+                ? post.portfolioImageDetail7
+                : null);
+
+            const projectTag =
+              post.project_tag ||
+              (Array.isArray(post.category) ? post.category[0] : post.category) ||
+              "Recent werk";
+
+            const projectTitle =
+              post.project_title ||
+              post.title ||
+              "Consistente Merktaal & Platform";
+
+            const projectDesc =
+              post.project_desc ||
+              post.description ||
+              "";
+
+            const company = post.company || post.title || "Project";
+            const isOdd = index % 2 !== 0;
+            const numStr = String(index + 1).padStart(2, "0");
 
             return (
               <article
-                key={project.uid || `project-${idx}`}
-                className="group flex flex-col bg-white border border-gray-200/90 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md hover:border-gray-300 transition duration-300"
+                key={post.uid || `project-${index}`}
+                className="case-card grid grid-cols-1 md:grid-cols-12 w-full gap-10 md:gap-10"
               >
-                {/* Image */}
-                {project.featured_image?.url && (
+                {/* Afbeelding kolom */}
+                <div
+                  className={`case-img col-span-1 md:col-span-7 lg:col-span-7 rounded-md overflow-hidden -mx-5 sm:mx-0 relative z-10 ${
+                    isOdd ? "md:order-2 lg:order-2" : "md:order-1 lg:order-1"
+                  }`}
+                >
                   <Link
-                    href={project.url || "#"}
-                    className="relative w-full h-52 overflow-hidden bg-gray-100 block"
+                    href={postUrl}
+                    className="block h-full w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent7-800 dark:focus-visible:ring-accent8-800"
                   >
-                    <Image
-                      src={project.featured_image.url}
-                      alt={project.featured_image.title || project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                      {...(project.featured_image?.$ && project.featured_image?.$.url)}
-                    />
+                    {imageUrl && (
+                      <Image
+                        src={imageUrl}
+                        alt={`Case study: ${company}`}
+                        width={730}
+                        height={440}
+                        loading="lazy"
+                        className="rounded-md w-full h-[220px] sm:h-[325px] md:h-[240px] lg:h-[400px] xl:h-[440px] object-cover group-hover:scale-[1.02] transition-transform duration-500 border border-border-100 dark:border-border-200"
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 730px"
+                        {...(imageObj?.$?.url || post?.$?.featured_image)}
+                      />
+                    )}
                   </Link>
-                )}
+                </div>
 
-                {/* Content */}
-                <div className="p-6 flex flex-col flex-1">
-                  {/* Tags */}
-                  {(project.project_tag || categories.length > 0) && (
-                    <div className="flex flex-wrap items-center gap-2 mb-3">
-                      {project.project_tag && (
-                        <Label
-                          variant="pill"
-                          cslp={project?.$ && project?.$.project_tag}
-                        >
-                          {project.project_tag}
-                        </Label>
-                      )}
-                      {categories.map((cat, catIdx) => (
-                        <Label
-                          key={catIdx}
-                          variant="pill"
-                          cslp={project?.$ && project?.$.category}
-                        >
-                          {cat}
-                        </Label>
-                      ))}
+                {/* Content kolom */}
+                <div
+                  className={`col-span-1 md:col-span-5 lg:col-span-5 flex flex-col justify-center ${
+                    isOdd
+                      ? "md:order-1 lg:order-1 md:pr-10 xl:pr-16"
+                      : "md:order-2 lg:order-2 md:pl-10 xl:pl-16"
+                  }`}
+                >
+                  <div className="flex flex-col gap-y-5 md:gap-y-6">
+                    {/* Genummerd label via UI component */}
+                    <div className="case-label">
+                      <Label
+                        id={`case-label-${index}`}
+                        cslp={post?.$ && (post?.$.project_tag || post?.$.category)}
+                      >
+                        {`${numStr} — ${projectTag}`}
+                      </Label>
                     </div>
-                  )}
 
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#f05a46] transition-colors">
-                    <Link
-                      href={project.url || "#"}
-                      {...(project?.$ && project?.$.title)}
-                    >
-                      {project.title}
-                    </Link>
-                  </h3>
+                    {/* Titel */}
+                    <div className="-mt-2">
+                      <h5
+                        className="case-title text-title_5M sm:text-title_5 text-title-100 dark:text-title-200 font-medium text-balance md:text-balance"
+                        {...(post?.$ && (post?.$.project_title || post?.$.title))}
+                      >
+                        <Link
+                          href={postUrl}
+                          className="hover:text-accent7-900 dark:hover:text-accent8-900 transition-colors"
+                        >
+                          {projectTitle}
+                        </Link>
+                      </h5>
+                    </div>
 
-                  {/* Description */}
-                  {project.description && (
-                    <p
-                      {...(project?.$ && project?.$.description)}
-                      className="text-sm text-gray-600 line-clamp-3 mb-6 flex-1 leading-relaxed"
-                    >
-                      {project.description}
-                    </p>
-                  )}
+                    {/* Omschrijving */}
+                    {projectDesc && (
+                      <div>
+                        <p
+                          className="case-desc text-smallM sm:text-medium text-content-300 dark:text-content-200 font-medium text-pretty md:text-balance line-clamp-3"
+                          {...(post?.$ && (post?.$.project_desc || post?.$.description))}
+                        >
+                          {projectDesc}
+                        </p>
+                      </div>
+                    )}
 
-                  {/* Link action */}
-                  <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <Button
-                      href={project.url || "#"}
-                      variant="link"
-                      arrow
-                      size="sm"
-                      cslp={project?.$ && project?.$.url}
-                    >
-                      Bekijk project
-                    </Button>
+                    {/* Button */}
+                    <div className="case-btn w-fit">
+                      <Button
+                        href={postUrl}
+                        size="sm"
+                        aria-label={`Lees de volledige case van ${company}`}
+                        cslp={post?.$ && post?.$.url}
+                      >
+                        Bekijk project
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </article>
             );
-          })}
-        </div>
-      ) : (
-        <p className="text-gray-500 text-sm italic">
-          Nog geen projecten geselecteerd voor deze sectie.
-        </p>
-      )}
+          })
+        ) : (
+          <div className="w-full py-10 flex justify-center">
+            <span className="text-content-100 dark:text-content-200 font-content text-smallM italic">
+              Geen projecten gevonden.
+            </span>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
-

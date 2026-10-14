@@ -432,9 +432,13 @@ export interface PortfolioItem extends SystemFields {
   title: string;
   url?: string;
   date?: string;
+  company?: string;
   category?: string | string[];
   select?: string | string[];
   project_tag?: string;
+  project_title?: string;
+  project_desc?: string;
+  portfolioImageDetail7?: File | string | null;
   featured_image?: File | null;
   description?: string;
   content?: string;
@@ -444,13 +448,20 @@ export interface PortfolioItem extends SystemFields {
     title?: CSLPFieldMapping;
     url?: CSLPFieldMapping;
     date?: CSLPFieldMapping;
+    company?: CSLPFieldMapping;
     category?: CSLPFieldMapping;
     select?: CSLPFieldMapping;
     project_tag?: CSLPFieldMapping;
+    project_title?: CSLPFieldMapping;
+    project_desc?: CSLPFieldMapping;
+    portfolioImageDetail7?: CSLPFieldMapping;
     featured_image?: CSLPFieldMapping;
     description?: CSLPFieldMapping;
     content?: CSLPFieldMapping;
     show_breadcrumbs?: CSLPFieldMapping;
     breadcrumb_title?: CSLPFieldMapping;
+    [key: string]: any;
   };
+  [key: string]: any;
 }
+
