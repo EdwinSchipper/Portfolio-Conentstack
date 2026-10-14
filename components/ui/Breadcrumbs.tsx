@@ -29,9 +29,9 @@ export default function Breadcrumbs({
     items && items.length > 0
       ? items
       : [
-          { label: "Home", href: "/" },
-          ...(currentTitle ? [{ label: currentTitle, active: true }] : []),
-        ];
+        { label: "Home", href: "/" },
+        ...(currentTitle ? [{ label: currentTitle, active: true }] : []),
+      ];
 
   // Don't render if there's only Home or empty
   if (breadcrumbItems.length <= 1) {
@@ -53,7 +53,7 @@ export default function Breadcrumbs({
   return (
     <nav
       aria-label="Kruimelpad"
-      className={`flex items-center text-xs sm:text-sm text-gray-500 mb-6 ${className}`}
+      className={`breadcrumbs font-content pb-14 md:pb-20 lg:pb-20 w-full flex justify-start px-10 sm:px-14 md:px-20 lg:px-12 ${className}`}
     >
       {/* SEO structured microdata */}
       <script
@@ -61,7 +61,7 @@ export default function Breadcrumbs({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <ol className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+      <ol className="flex items-center gap-1 flex-wrap">
         {breadcrumbItems.map((item, idx) => {
           const isLast = idx === breadcrumbItems.length - 1;
 
@@ -76,7 +76,7 @@ export default function Breadcrumbs({
 
               {isLast || !item.href ? (
                 <span
-                  className="font-medium text-gray-900 truncate max-w-[200px] sm:max-w-xs select-none"
+                  className="text-mediumM md:text-medium font-normal text-content-100/80 dark:text-content-200/80 truncate max-w-[200px] select-none"
                   aria-current="page"
                   {...(isLast ? currentTitleAttr : undefined)}
                 >
@@ -85,9 +85,9 @@ export default function Breadcrumbs({
               ) : (
                 <Link
                   href={item.href}
-                  className="hover:text-black transition-colors flex items-center gap-1.5 no-underline text-gray-500 hover:underline"
+                  className="text-mediumM md:text-medium font-semibold dark:font-medium text-title-100 dark:text-title-200 hover:underline"
                 >
-                  {idx === 0 && <HomeIcon className="w-3.5 h-3.5 shrink-0" />}
+
                   <span>{item.label}</span>
                 </Link>
               )}
