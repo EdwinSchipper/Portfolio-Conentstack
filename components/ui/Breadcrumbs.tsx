@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import { Icon } from "@/components/ui";
 
 export interface BreadcrumbItem {
   label: string;
@@ -68,9 +68,10 @@ export default function Breadcrumbs({
           return (
             <li key={idx} className="flex items-center gap-1.5 sm:gap-2">
               {idx > 0 && (
-                <ChevronRightIcon
-                  className="w-3.5 h-3.5 text-gray-400 stroke-2 shrink-0"
-                  aria-hidden="true"
+                <Icon
+                  name="chevron-right"
+                  size="xs"
+                  className="text-gray-400 stroke-2"
                 />
               )}
 

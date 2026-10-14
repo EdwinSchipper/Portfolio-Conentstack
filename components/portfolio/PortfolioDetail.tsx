@@ -1,8 +1,7 @@
 import Image from "next/image";
 import DOMPurify from "isomorphic-dompurify";
 import { PortfolioItem } from "@/lib/types";
-import { CalendarIcon, TagIcon } from "@heroicons/react/24/outline";
-import { Breadcrumbs, Button, Label } from "@/components/ui";
+import { Breadcrumbs, Button, Label, Icon } from "@/components/ui";
 
 interface PortfolioDetailProps {
   item: PortfolioItem;
@@ -47,7 +46,11 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
             cslp={item?.$ && item?.$.project_tag}
             className="inline-flex items-center gap-1.5"
           >
-            <TagIcon className="w-3.5 h-3.5 inline text-accent7-900 dark:text-accent8-900" />
+            <Icon
+              name="tag"
+              size="xs"
+              className="text-accent7-900 dark:text-accent8-900"
+            />
             {item.project_tag}
           </Label>
         )}
@@ -63,8 +66,11 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         ))}
 
         {item.date && (
-          <span className="inline-flex items-center gap-1 text-content-300 dark:text-content-300 ml-auto font-playfull">
-            <CalendarIcon className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-1.5 text-content-300 dark:text-content-300 ml-auto font-playfull">
+            <Icon
+              name="calendar"
+              size="xs"
+            />
             {item.date}
           </span>
         )}
