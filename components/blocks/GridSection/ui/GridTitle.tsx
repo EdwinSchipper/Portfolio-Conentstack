@@ -18,7 +18,7 @@ export default function GridTitle({
   return (
     <Component
       {...cslp}
-      className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4 ${className}`}
+      className={`text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance w-11/12 md:w-full ${className}`}
     >
       {children}
     </Component>

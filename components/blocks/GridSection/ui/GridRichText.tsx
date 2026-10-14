@@ -20,7 +20,7 @@ export default function GridRichText({
       dangerouslySetInnerHTML={{
         __html: DOMPurify.sanitize(content),
       }}
-      className={`prose prose-lg max-w-none text-gray-700 leading-relaxed ${className}`}
+      className={`text-baseM sm:text-base w-full text-content-100 dark:text-content-200 text-pretty font-normal font-content ${className}`}
     />
   );
 }

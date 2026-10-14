@@ -55,7 +55,7 @@ export default function GridColumn({
 
     return (
       <div className={`${colClass} ${className}`}>
-        <div className="space-y-4">
+        <div className="sm:space-y-8">
           {label && (
             <GridLabel cslp={cslp && (cslp.label_left || cslp.label_right)}>
               {label}

@@ -31,18 +31,20 @@ export default function CardItem({
   cslp,
 }: CardItemProps) {
   const cardImage = image || card?.image;
-  const cardTag = tag || card?.tag || title || card?.title;
+  const cardTitle = title || card?.card_title || card?.title;
+  const cardTag = tag || card?.tag;
   const cardText = text || card?.text || description || card?.description;
   const cardButton = button || card?.button;
   const cardVariant = variant || card?.card_variant?.toLowerCase() || "";
   const meta = cslp || card?.$;
 
-  const isDefaultBox = cardVariant === "default" && !cardImage?.url;
+  const isDefaultBox = !cardImage?.url || cardVariant === "default";
 
   if (isDefaultBox) {
     return (
       <CardBox
-        title={cardTag}
+        title={cardTitle}
+        tag={cardTag}
         text={cardText}
         button={cardButton}
         className={className}

@@ -56,7 +56,7 @@ export default function CardImageTag({
           {...(cslp && (cslp.text || cslp.description))}
           className="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-line grow"
         >
-          {text}
+          {text}  UU
         </p>
       )}
 
@@ -78,4 +78,3 @@ export default function CardImageTag({
     </div>
   );
 }
-

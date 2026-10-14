@@ -14,11 +14,11 @@ export default function CardTitle({
   if (!children) return null;
 
   return (
-    <h2
+    <h3
       {...cslp}
-      className={`text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-3 ${className}`}
+      className={`text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 text-balance lg:pr-10 ${className}`}
     >
       {children}
-    </h2>
+    </h3>
   );
 }

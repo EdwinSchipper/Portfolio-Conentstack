@@ -16,7 +16,7 @@ export default function CardIntro({
   return (
     <p
       {...cslp}
-      className={`text-base sm:text-lg text-gray-600 leading-relaxed whitespace-pre-line ${className}`}
+      className={`text-baseM sm:text-base text-content-100 dark:text-content-200 leading-relaxed ${className}`}
     >
       {children}
     </p>

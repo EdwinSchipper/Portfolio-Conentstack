@@ -251,8 +251,9 @@ export interface GridSectionBlock {
 
 export interface CardSectionItem {
   image?: File;
-  tag?: string;
+  card_title?: string;
   title?: string;
+  tag?: string;
   text?: string;
   description?: string;
   button?: Link;
@@ -260,8 +261,9 @@ export interface CardSectionItem {
   _metadata?: { uid: string };
   $?: {
     image?: CSLPFieldMapping;
-    tag?: CSLPFieldMapping;
+    card_title?: CSLPFieldMapping;
     title?: CSLPFieldMapping;
+    tag?: CSLPFieldMapping;
     text?: CSLPFieldMapping;
     description?: CSLPFieldMapping;
     button?: CSLPFieldMapping;

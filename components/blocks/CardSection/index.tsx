@@ -13,15 +13,15 @@ import {
 } from "./ui";
 
 const containerWidths: Record<string, string> = {
-  small: "max-w-4xl",
-  default: "max-w-4xl xl:max-w-5xl",
-  large: "max-w-7xl",
-  wide: "container",
+  small: "lg:max-w-4xl",
+  default: "lg:max-w-5xl",
+  large: "lg:max-w-7xl",
+  wide: "lg:max-w-[1400px] xl:max-w-[1536px]",
 };
 
 const colorModes: Record<string, string> = {
   default: "bg-transparent",
-  alt: "bg-white py-16 md:py-24",
+  alt: "bg-background-200 dark:bg-background-900",
 };
 
 export interface CardSectionProps {
@@ -61,31 +61,35 @@ export default function CardSection({
       <section
         {...previewAttr}
         data-color-mode={colorModeKey}
+        data-container-width={rawWidth}
         className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
       >
-        <div className={`mx-auto px-6 sm:px-10 lg:px-12 ${containerClass}`}>
-          {hasHeader && (
-            <CardSectionHeader
-              label={rawLabel}
-              title={sectionTitle}
-              intro={sectionIntro}
-              cslpLabel={data?.$ && (data?.$.label_cards || data?.$.label)}
-              cslpTitle={data?.$ && data?.$.section_title}
-              cslpIntro={data?.$ && data?.$.section_intro}
-            />
-          )}
+        {hasHeader && (
+          <CardSectionHeader
+            label={rawLabel}
+            title={sectionTitle}
+            intro={sectionIntro}
+            containerClass={containerClass}
+            cslpLabel={data?.$ && (data?.$.label_cards || data?.$.label)}
+            cslpTitle={data?.$ && data?.$.section_title}
+            cslpIntro={data?.$ && data?.$.section_intro}
+          />
+        )}
 
-          {cards.length > 0 && (
-            <CardGrid columns={colVal} cslp={data?.$ && data?.$.cards}>
-              {cards.map((card, idx) => (
-                <CardItem
-                  key={card._metadata?.uid || `card-${idx}`}
-                  card={card}
-                />
-              ))}
-            </CardGrid>
-          )}
-        </div>
+        {cards.length > 0 && (
+          <CardGrid
+            columns={colVal}
+            containerClass={containerClass}
+            cslp={data?.$ && data?.$.cards}
+          >
+            {cards.map((card, idx) => (
+              <CardItem
+                key={card._metadata?.uid || `card-${idx}`}
+                card={card}
+              />
+            ))}
+          </CardGrid>
+        )}
       </section>
     );
   }

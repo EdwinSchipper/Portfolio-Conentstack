@@ -18,15 +18,15 @@ export default function GridCards({
   return (
     <div
       {...cslp}
-      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6 ${className}`}
+      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14 lg:gap-8 ${className}`}
     >
       {cards && cards.length > 0
         ? cards.map((card, idx) => (
-            <GridCard
-              key={card._metadata?.uid || `card-${idx}`}
-              card={card}
-            />
-          ))
+          <GridCard
+            key={card._metadata?.uid || `card-${idx}`}
+            card={card}
+          />
+        ))
         : children}
     </div>
   );

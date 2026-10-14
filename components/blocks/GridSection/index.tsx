@@ -21,7 +21,7 @@ const containerWidths: Record<string, string> = {
 
 const colorModes: Record<string, string> = {
   default: "bg-transparent",
-  alt: "bg-white py-16 md:py-24",
+  alt: "bg-background-200 dark:bg-background-900",
 };
 
 export interface GridSectionProps {
@@ -60,7 +60,7 @@ export default function GridSection({
         className={`col-span-full w-full mb-20 md:mb-40 lg:mb-40 ${colorModeClass} ${className}`}
       >
         <div
-          className={`grid grid-cols-1 md:grid-cols-12 mx-auto z-20 ${containerClass} px-10 sm:px-14 lg:px-12 md:px-20 mb-16 gap-14 lg:gap-x-10 xl:gap-x-24`}
+          className={`sm:grid grid-cols-1 md:grid-cols-12 mx-auto z-20 ${containerClass} px-10 sm:px-14 lg:px-12 md:px-20 gap-14 lg:gap-x-10 xl:gap-x-24`}
         >
           {contentLeft && (
             <GridColumn span={leftCol} data={contentLeft} />
@@ -80,7 +80,7 @@ export default function GridSection({
       className={`col-span-full w-full mb-20 md:mb-40 lg:mb-40 ${colorModeClass} ${className}`}
     >
       <div
-        className={`grid grid-cols-1 md:grid-cols-12 mx-auto z-20 ${containerClass} px-10 sm:px-14 lg:px-12 md:px-20 mb-16 gap-14 lg:gap-x-10 xl:gap-x-24`}
+        className={`sm:grid grid-cols-1 md:grid-cols-12 mx-auto z-20 ${containerClass} px-10 sm:px-14 lg:px-12 md:px-20 gap-14 lg:gap-x-10 xl:gap-x-24`}
       >
         {children}
       </div>

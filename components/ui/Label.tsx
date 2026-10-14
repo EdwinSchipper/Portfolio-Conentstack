@@ -29,10 +29,10 @@ function renderNumberedContent(text: string) {
 }
 
 const variantStyles: Record<LabelVariant, string> = {
-  brand: "bg-red-300",
-  numbered: "",
-  pill: "",
-  muted: "",
+  brand: "bg-red-100",
+  numbered: "bg-green-1000",
+  pill: "badge-item inline-flex items-center justify-center whitespace-nowrap w-fit border rounded-md font-playfull text-[12px] border-border-100 dark:border-border-200 text-title-100 dark:text-title-200 bg-background-200 dark:bg-background-900 px-3 py-1.5",
+  muted: "bg-gray-100",
 };
 
 /**

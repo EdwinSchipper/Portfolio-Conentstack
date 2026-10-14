@@ -30,9 +30,9 @@ export default function GridCard({
   const cardMeta = cslp || card?.$;
 
   return (
-    <div className={`flex flex-col h-full ${className}`}>
+    <div className={`font-content flex flex-col h-full ${className}`}>
       {cardImage?.url && (
-        <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4 shadow-sm bg-gray-100">
+        <div className="relative w-full aspect-[16/10] rounded-md overflow-hidden border border-border-100 dark:border-border-200  bg-red-900">
           <Image
             src={cardImage.url}
             alt={cardImage.title || cardTag || "Image"}
@@ -45,7 +45,7 @@ export default function GridCard({
       )}
 
       {cardTag && (
-        <div className="mb-3">
+        <div className="flex flex-wrap items-center gap-1.5 md:gap-1.5 mt-10 lg:mt-10">
           <Label
             variant="pill"
             cslp={cardMeta && (cardMeta.tag || cardMeta.title)}
@@ -58,7 +58,7 @@ export default function GridCard({
       {cardText && (
         <p
           {...(cardMeta && (cardMeta.text || cardMeta.description))}
-          className="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-line"
+          className="mt-4 lg:mt-4 text-mediumM lg:text-medium font-normal text-content-100 dark:text-content-200"
         >
           {cardText}
         </p>
