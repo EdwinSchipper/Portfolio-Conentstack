@@ -160,11 +160,11 @@ export function GridCards({
     >
       {cards && cards.length > 0
         ? cards.map((card, idx) => (
-            <GridCard
-              key={card._metadata?.uid || `card-${idx}`}
-              card={card}
-            />
-          ))
+          <GridCard
+            key={card._metadata?.uid || `card-${idx}`}
+            card={card}
+          />
+        ))
         : children}
     </div>
   );
@@ -221,7 +221,7 @@ export function GridColumn({
           {title && (
             <h2
               {...(cslp && (cslp.title_h1 || cslp.title_h1r))}
-              className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance w-11/12 md:w-full"
+              className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance w-11/12 md:w-full font-content"
             >
               {title}
             </h2>
