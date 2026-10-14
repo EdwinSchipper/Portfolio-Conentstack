@@ -4,6 +4,7 @@ import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
 import { PortfolioItem, File } from "@/lib/types";
 import { Breadcrumbs, Label, Icon } from "@/components/ui";
+import PortfolioTechStack from "./PortfolioTechStack";
 
 interface PortfolioDetailProps {
   item?: PortfolioItem | null;
@@ -112,36 +113,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
     (item?.$ && (item.$.banner_visual_2 || item.$.portfolioimagedetail2)) ||
     (typeof banner2Img === "object" && banner2Img?.$ && (banner2Img as any).$.url);
 
-  // Tech stack / metadata items
-  const techStackItems =
-    item.tech_stack && item.tech_stack.length > 0
-      ? item.tech_stack
-      : item.tech_stack_items && item.tech_stack_items.length > 0
-      ? item.tech_stack_items
-      : [
-          item.date
-            ? { icon: "calendar", label: "Periode", value: item.date }
-            : null,
-          item.company
-            ? {
-                icon: "building-office-2",
-                label: "Opdrachtgever",
-                value: item.company,
-              }
-            : null,
-          item.category
-            ? {
-                icon: "tag",
-                label: "Categorie",
-                value: Array.isArray(item.category)
-                  ? item.category.join(", ")
-                  : item.category,
-              }
-            : null,
-          item.project_tag
-            ? { icon: "sparkles", label: "Rol / Type", value: item.project_tag }
-            : null,
-        ].filter(Boolean) as Array<{ icon?: string; label: string; value: string }>;
 
   return (
     <article className="w-full">
@@ -245,39 +216,11 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         </div>
       </section>
 
-      {/* 4. Tech Stack & Project Details Bar (Nuxt: #portfolio-details) */}
-      {techStackItems.length > 0 && (
-        <section
-          id="portfolio-details"
-          className="mx-auto max-w-xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl px-6 md:px-20 lg:px-12 mb-20 lg:mb-20"
-        >
-          <div className="border-y md:border-x-transparent dark:md:border-x-transparent border-border-100 dark:border-border-200 py-7 md:py-16 bg-background-200 dark:bg-background-900 sm:bg-transparent dark:sm:bg-transparent md:rounded-none">
-            <div className="grid grid-cols-1 md:flex md:flex-row justify-around gap-y-4 md:gap-y-8 px-5 md:px-0">
-              {techStackItems.map((stackItem, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-row md:flex-col items-center md:justify-center gap-4 md:gap-3 sm:gap-4 group"
-                >
-                  <div className="w-12 md:w-14 h-12 md:h-14 shrink-0 rounded-full bg-accent7-900 dark:bg-accent8-900 border-4 border-accent7-200 dark:border-accent8-300 ring-4 ring-background-100 dark:ring-background-800 flex items-center justify-center">
-                    <Icon
-                      name={stackItem.icon || "code-bracket"}
-                      className="w-4 md:w-6 h-4 md:h-6 text-title-200 dark:text-title-100"
-                    />
-                  </div>
-                  <div className="flex flex-col items-start md:items-center text-left md:text-center gap-0.5 md:gap-0">
-                    <span className="font-semibold text-content-300 dark:text-content-300 uppercase text-noteM sm:text-note shrink-0">
-                      {stackItem.label}
-                    </span>
-                    <span className="text-smallM md:text-small text-content-100 dark:text-content-200 font-medium">
-                      {stackItem.value}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* 4. Tech Stack (Alleen zichtbaar indien ingevuld in Contentstack) */}
+      <PortfolioTechStack
+        items={item.tech_stack}
+        cslp={item?.$ && item.$.tech_stack}
+      />
 
       {/* 5. Section 02: Uitdaging (Nuxt: #portfolio-section-01) */}
       <section

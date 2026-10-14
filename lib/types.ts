@@ -430,6 +430,18 @@ export interface Page extends SystemFields {
   };
 }
 
+export interface TechStackItem {
+  icon?: string;
+  label: string;
+  value: string;
+  $?: {
+    icon?: CSLPFieldMapping;
+    label?: CSLPFieldMapping;
+    value?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+}
+
 export interface PortfolioItem extends SystemFields {
   uid: string;
   _version?: number;
@@ -452,8 +464,7 @@ export interface PortfolioItem extends SystemFields {
   portfolioimagedetail3?: File | string | null;
   portfolioimagedetail3_txt?: string;
   alt_text?: string;
-  tech_stack?: Array<{ icon?: string; label: string; value: string }>;
-  tech_stack_items?: Array<{ icon?: string; label: string; value: string }>;
+  tech_stack?: TechStackItem[];
   featured_image?: File | null;
   description?: string;
   content?: string;
@@ -469,6 +480,7 @@ export interface PortfolioItem extends SystemFields {
     project_tag?: CSLPFieldMapping;
     project_title?: CSLPFieldMapping;
     project_desc?: CSLPFieldMapping;
+    tech_stack?: CSLPFieldMapping;
     portfolioimagedetail?: CSLPFieldMapping;
     banner_visual_1?: CSLPFieldMapping;
     banner_visual_2?: CSLPFieldMapping;
