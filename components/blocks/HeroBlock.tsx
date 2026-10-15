@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { BoltIcon } from "@heroicons/react/24/outline";
-import { HeroBlock as HeroBlockType, CSLPAttribute } from "@/lib/types";
+import { HeroBlock as HeroBlockType, HeroMicroLink, CSLPAttribute } from "@/lib/types";
 import { Button, Label } from "@/components/ui";
 
 export interface HeroBlockProps {
@@ -19,7 +19,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
     data?.description ||
     "Sinds 2006 sla ik de brug tussen design en techniek.\nVoor werkgevers, start-ups en mijn eigen freelance klanten realiseer ik doordachte digitale producten.";
 
-  const defaultMicroLinks = [
+  const defaultMicroLinks: HeroMicroLink[] = [
     {
       title: "20+",
       label: "Jaren ervaring",
@@ -31,7 +31,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
   ];
 
   const rawLinks = data?.micro_links || data?.stats;
-  const microLinks =
+  const microLinks: HeroMicroLink[] =
     Array.isArray(rawLinks) && rawLinks.length > 0
       ? rawLinks
       : defaultMicroLinks;
