@@ -64,8 +64,7 @@ export function initLivePreview() {
       host: process.env.NEXT_PUBLIC_CONTENTSTACK_CONTENT_APPLICATION || endpoints.application as string
     },
     editButton: {
-      enable: true, // Enabling the edit button for live preview
-      exclude: ["outsideLivePreviewPortal"] // Excluding the edit button from the live preview portal
+      enable: false, // Disabling the floating edit button
     },
   });
 }
