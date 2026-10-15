@@ -33,6 +33,23 @@
 
 **CI:** This repository runs security and policy workflows on pull requests; there is no GitHub Actions job that runs `npm run build` or `npm run lint`. See [.github/workflows/sca-scan.yml](.github/workflows/sca-scan.yml), [.github/workflows/policy-scan.yml](.github/workflows/policy-scan.yml), and [.github/workflows/issues-jira.yml](.github/workflows/issues-jira.yml).
 
+## AI Agent Operational Guidelines (Speed & Scope)
+
+To maintain maximum development velocity and avoid latency:
+
+1. **Direct execution over repetitive research:**
+   - On follow-up, iterative, or incremental requests (such as adding a field, tweaking a layout, adjusting typography, or updating spacing), **do not** repeat broad codebase discovery, grep entire directories, or re-read files that are already understood in the conversation context.
+   - Jump directly to the known target files (primarily `lib/types.ts` and the relevant component in `components/blocks/` or `components/ui/`).
+2. **Stay strictly in scope:**
+   - Make precise, surgical modifications using single-pass replacements.
+   - Do not touch unrelated components, styles, or configuration.
+3. **No unrequested browser runs or roundtrip diagnostics:**
+   - Do **not** spin up browser subagents or execute HTTP/curl diagnostics unless the user explicitly asks for visual verification or browser testing.
+4. **Validation:**
+   - Validate changes quickly with `npm run lint`.
+5. **Concise reporting:**
+   - Respond directly and concisely in Dutch with what was changed, avoiding conversational boilerplate or repeating full file summaries.
+
 ## Where the documentation lives: skills
 
 | Skill | Path | What it covers |

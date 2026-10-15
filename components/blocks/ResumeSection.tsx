@@ -7,22 +7,78 @@ import {
   CSLPAttribute,
 } from "@/lib/types";
 import { Label, Button } from "@/components/ui";
-import { getContainerClass, getColorModeClass } from "@/lib/layout";
+import { getContainerClass, getColorModeClass, colSpans } from "@/lib/layout";
 
-export const colSpans: Record<string, string> = {
-  "1": "col-span-12 lg:col-span-1",
-  "2": "col-span-12 lg:col-span-2",
-  "3": "col-span-12 lg:col-span-3",
-  "4": "col-span-12 lg:col-span-4",
-  "5": "col-span-12 lg:col-span-5",
-  "6": "col-span-12 lg:col-span-6",
-  "7": "col-span-12 lg:col-span-7",
-  "8": "col-span-12 lg:col-span-8",
-  "9": "col-span-12 lg:col-span-9",
-  "10": "col-span-12 lg:col-span-10",
-  "11": "col-span-12 lg:col-span-11",
-  "12": "col-span-12",
-};
+// ============================================================================
+// CONSTANTS & UTILITIES
+// ============================================================================
+
+/**
+ * Returns the first letter of a company name to render as an avatar monogram.
+ */
+function getInitial(name?: string): string {
+  if (!name) return "•";
+  return name.trim().charAt(0).toUpperCase();
+}
+
+/**
+ * Robust extractor for tech stack tags from Contentstack payloads.
+ * Handles nested objects, repeatable tags, and ignores label/title keys.
+ */
+export function extractStackTags(stackData: any): string[] {
+  if (!stackData) return [];
+  const results: string[] = [];
+
+  const addTag = (val: any) => {
+    if (val === null || val === undefined) return;
+    if (typeof val === "string") {
+      const trimmed = val.trim();
+      if (trimmed) results.push(trimmed);
+    } else if (Array.isArray(val)) {
+      val.forEach(addTag);
+    } else if (typeof val === "object") {
+      const tagVal = val.tag ?? val.Tag ?? val.name ?? val.value ?? val.title;
+      if (tagVal !== undefined) {
+        addTag(tagVal);
+      }
+    }
+  };
+
+  if (Array.isArray(stackData)) {
+    stackData.forEach(addTag);
+  } else if (typeof stackData === "object") {
+    const rawTags =
+      stackData.tag ??
+      stackData.Tag ??
+      stackData.tags ??
+      stackData.Tags ??
+      stackData.items;
+
+    if (rawTags !== undefined) {
+      addTag(rawTags);
+    } else {
+      Object.entries(stackData).forEach(([key, val]) => {
+        const lowerKey = key.toLowerCase();
+        if (
+          !lowerKey.includes("label") &&
+          !lowerKey.includes("title") &&
+          !key.startsWith("_") &&
+          key !== "$"
+        ) {
+          addTag(val);
+        }
+      });
+    }
+  } else if (typeof stackData === "string") {
+    addTag(stackData);
+  }
+
+  return results;
+}
+
+// ============================================================================
+// PROPS INTERFACES
+// ============================================================================
 
 export interface ResumeSectionProps {
   data?: ResumeSectionBlock;
@@ -36,12 +92,88 @@ export interface ResumeSectionProps {
   children?: React.ReactNode;
 }
 
+export interface ResumeStackBlockProps {
+  tags?: string[];
+  label?: string;
+  title?: string;
+  labelCslp?: Record<string, any>;
+  titleCslp?: Record<string, any>;
+  meta?: Record<string, any>;
+  className?: string;
+}
+
+// ============================================================================
+// SUB-COMPONENTS
+// ============================================================================
+
 /**
- * Returns the first letter of a company name to render as an avatar monogram.
+ * Renders individual pill badge tags with Cascadia Mono styling and micro-interactions.
  */
-function getInitial(name?: string): string {
-  if (!name) return "•";
-  return name.trim().charAt(0).toUpperCase();
+export function ResumeStackTags({
+  tags = [],
+  meta,
+  className = "",
+}: {
+  tags: string[];
+  meta?: Record<string, any>;
+  className?: string;
+}) {
+  if (!tags || tags.length === 0) return null;
+
+  return (
+    <div
+      {...(meta && (meta.stack || meta.Stack))}
+      className={`flex flex-wrap gap-2.5 sm:gap-3.5 ${className}`}
+    >
+      {tags.map((tag, idx) => (
+        <span
+          key={`${tag}-${idx}`}
+          className="badge-item inline-flex items-center justify-center whitespace-nowrap w-fit border rounded-lg font-playfull text-xs sm:text-[13px] border-border-100 dark:border-border-200 text-title-100 dark:text-title-200 bg-background-200 dark:bg-background-900 px-4 py-2.5 hover:border-accent7-900/40 dark:hover:border-accent8-900/40 hover:-translate-y-0.5 transition-all duration-150 shadow-2xs select-none"
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Consolidated Stack Block pairing a section divider, optional overline label,
+ * optional title, and the tag pill cloud.
+ */
+export function ResumeStackBlock({
+  tags = [],
+  label,
+  title,
+  labelCslp,
+  titleCslp,
+  meta,
+  className = "",
+}: ResumeStackBlockProps) {
+  if (!tags || tags.length === 0) return null;
+
+  return (
+    <div
+      className={`pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-border-100/50 dark:border-border-200/40 space-y-4 ${className}`}
+    >
+      {label && (
+        <div>
+          <Label variant="brand" cslp={labelCslp}>
+            {label}
+          </Label>
+        </div>
+      )}
+      {title && (
+        <h3
+          className="text-title_3M sm:text-title_3 font-bold text-title-100 dark:text-title-200 tracking-tight font-content"
+          {...titleCslp}
+        >
+          {title}
+        </h3>
+      )}
+      <ResumeStackTags tags={tags} meta={meta} />
+    </div>
+  );
 }
 
 /**
@@ -288,81 +420,9 @@ export function ExperienceTimelineList({
   );
 }
 
-export function extractStackTags(stackData: any): string[] {
-  if (!stackData) return [];
-  const results: string[] = [];
-
-  const addTag = (val: any) => {
-    if (val === null || val === undefined) return;
-    if (typeof val === "string") {
-      const trimmed = val.trim();
-      if (trimmed) results.push(trimmed);
-    } else if (Array.isArray(val)) {
-      val.forEach(addTag);
-    } else if (typeof val === "object") {
-      const tagVal = val.tag ?? val.Tag ?? val.name ?? val.value ?? val.title;
-      if (tagVal !== undefined) {
-        addTag(tagVal);
-      }
-    }
-  };
-
-  if (Array.isArray(stackData)) {
-    stackData.forEach(addTag);
-  } else if (typeof stackData === "object") {
-    const rawTags =
-      stackData.tag ??
-      stackData.Tag ??
-      stackData.tags ??
-      stackData.Tags ??
-      stackData.items;
-
-    if (rawTags !== undefined) {
-      addTag(rawTags);
-    } else {
-      Object.entries(stackData).forEach(([key, val]) => {
-        if (!key.toLowerCase().includes("label") && !key.startsWith("_") && key !== "$") {
-          addTag(val);
-        }
-      });
-    }
-  } else if (typeof stackData === "string") {
-    addTag(stackData);
-  }
-
-  return results;
-}
-
-/**
- * Renders the skill / tooling pill badges (from Contentstack Stack group).
- */
-export function ResumeStackTags({
-  tags = [],
-  meta,
-  className = "",
-}: {
-  tags: string[];
-  meta?: Record<string, any>;
-  className?: string;
-}) {
-  if (!tags || tags.length === 0) return null;
-
-  return (
-    <div
-      {...(meta && (meta.stack || meta.Stack))}
-      className={`flex flex-wrap gap-2.5 sm:gap-3.5 ${className}`}
-    >
-      {tags.map((tag, idx) => (
-        <span
-          key={`${tag}-${idx}`}
-          className="badge-item inline-flex items-center justify-center whitespace-nowrap w-fit border rounded-lg font-playfull text-xs sm:text-[13px] border-border-100 dark:border-border-200 text-title-100 dark:text-title-200 bg-background-200 dark:bg-background-900 px-4 py-2.5 hover:border-accent7-900/40 dark:hover:border-accent8-900/40 hover:-translate-y-0.5 transition-all duration-150 shadow-2xs select-none"
-        >
-          {tag}
-        </span>
-      ))}
-    </div>
-  );
-}
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 
 /**
  * ResumeSection: 2-column modular grid section pairing an intro sidebar with an interactive timeline or stack tags.
@@ -379,7 +439,7 @@ export default function ResumeSection({
   className = "",
   children,
 }: ResumeSectionProps) {
-  // Support nested data structures gracefully
+  // Normalize nested block data
   const sectionData: ResumeSectionBlock = (data?.resume_section ||
     data?.Resume_Section ||
     data?.ResumeSection ||
@@ -387,12 +447,14 @@ export default function ResumeSection({
     data?.experience_timeline ||
     data) as ResumeSectionBlock;
 
+  // Layout Tokens
   const rawWidth = width || sectionData?.container_width || sectionData?.width;
   const containerClass = getContainerClass(rawWidth, "large");
 
   const colorModeKey = colorMode || sectionData?.color_mode;
   const colorModeClass = getColorModeClass(colorModeKey);
 
+  // Raw Content Extraction
   const rawPosition = (
     timelinePosition ||
     sectionData?.timeline_position ||
@@ -434,8 +496,23 @@ export default function ResumeSection({
     (typeof rawStack === "object" &&
       rawStack?.$ &&
       (rawStack.$.stack_label || rawStack.$.Stack_label || rawStack.$.stackLabel || rawStack.$.label)) ||
-    meta?.stack_label ||
-    meta?.["stack.stack_label"];
+    sectionData?.$?.stack_label ||
+    sectionData?.$?.["stack.stack_label"];
+
+  const stackTitle =
+    (typeof rawStack === "object" && !Array.isArray(rawStack)
+      ? rawStack?.stack_title || rawStack?.Stack_title || rawStack?.stackTitle || rawStack?.title
+      : undefined) ||
+    sectionData?.stack_title ||
+    (sectionData as any)?.Stack_title ||
+    (sectionData as any)?.stackTitle;
+
+  const stackTitleCslp =
+    (typeof rawStack === "object" &&
+      rawStack?.$ &&
+      (rawStack.$.stack_title || rawStack.$.Stack_title || rawStack.$.stackTitle || rawStack.$.title)) ||
+    sectionData?.$?.stack_title ||
+    sectionData?.$?.["stack.stack_title"];
 
   const label = sectionData?.label || sectionData?.section_label;
   const title = sectionData?.title || sectionData?.section_title_main;
@@ -452,10 +529,7 @@ export default function ResumeSection({
     label || title || description || (buttonHref && buttonTitle)
   );
 
-  // Full-width applies if:
-  // - User explicitly set timeline_position to 'full' or 'center'
-  // - There are NO companies and no column spans specified (default for stack-only block)
-  // - There is no intro content (label/title/description/button)
+  // Full-width applies if explicitly configured or if single-column without column split
   const isFullWidth =
     isPositionFull ||
     (!rawPosition &&
@@ -467,6 +541,7 @@ export default function ResumeSection({
   const isHtml =
     typeof description === "string" && /<[a-z][\s\S]*>/i.test(description);
 
+  // Custom children wrapper override
   if (children) {
     return (
       <section
@@ -481,7 +556,7 @@ export default function ResumeSection({
     );
   }
 
-  // If no intro content is configured or user explicitly requested full width, render clean single column layout
+  // 1. Full-width / Centered Layout
   if (isFullWidth) {
     return (
       <section
@@ -534,20 +609,15 @@ export default function ResumeSection({
               </div>
             )}
             {hasStack && (
-              <div className="pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-border-100/50 dark:border-border-200/40 space-y-4">
-                {stackLabel && (
-                  <div>
-                    <Label variant="brand" cslp={stackLabelCslp}>
-                      {stackLabel}
-                    </Label>
-                  </div>
-                )}
-                <ResumeStackTags
-                  tags={tags}
-                  meta={meta}
-                  className={companies.length > 0 ? "mb-12" : ""}
-                />
-              </div>
+              <ResumeStackBlock
+                tags={tags}
+                label={stackLabel}
+                title={stackTitle}
+                labelCslp={stackLabelCslp}
+                titleCslp={stackTitleCslp}
+                meta={meta}
+                className={companies.length > 0 ? "mb-12" : ""}
+              />
             )}
             {companies.length > 0 && (
               <ExperienceTimelineList
@@ -562,6 +632,7 @@ export default function ResumeSection({
     );
   }
 
+  // 2. Column Grid Layout (Intro Sidebar + Timeline)
   const rawLeftCol =
     leftColSpan ||
     sectionData?.left_col_span ||
@@ -651,19 +722,14 @@ export default function ResumeSection({
               )}
 
               {hasStack && (
-                <div className="pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-border-100/50 dark:border-border-200/40 space-y-4">
-                  {stackLabel && (
-                    <div>
-                      <Label
-                        variant="brand"
-                        cslp={stackLabelCslp}
-                      >
-                        {stackLabel}
-                      </Label>
-                    </div>
-                  )}
-                  <ResumeStackTags tags={tags} meta={meta} />
-                </div>
+                <ResumeStackBlock
+                  tags={tags}
+                  label={stackLabel}
+                  title={stackTitle}
+                  labelCslp={stackLabelCslp}
+                  titleCslp={stackTitleCslp}
+                  meta={meta}
+                />
               )}
             </div>
           </div>
@@ -685,3 +751,5 @@ export default function ResumeSection({
 }
 
 ResumeSection.Timeline = ExperienceTimelineList;
+ResumeSection.StackBlock = ResumeStackBlock;
+ResumeSection.StackTags = ResumeStackTags;

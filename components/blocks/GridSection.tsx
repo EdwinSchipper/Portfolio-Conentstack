@@ -12,23 +12,7 @@ import {
   CSLPAttribute,
 } from "@/lib/types";
 import { Button, Label, Icon } from "@/components/ui";
-import { getContainerClass, getColorModeClass } from "@/lib/layout";
-import { ResumeStackTags, extractStackTags } from "./ResumeSection";
-
-export const colSpans: Record<string, string> = {
-  "1": "col-span-12 lg:col-span-1",
-  "2": "col-span-12 lg:col-span-2",
-  "3": "col-span-12 lg:col-span-3",
-  "4": "col-span-12 lg:col-span-4",
-  "5": "col-span-12 lg:col-span-5",
-  "6": "col-span-12 lg:col-span-6",
-  "7": "col-span-12 lg:col-span-7",
-  "8": "col-span-12 lg:col-span-8",
-  "9": "col-span-12 lg:col-span-9",
-  "10": "col-span-12 lg:col-span-10",
-  "11": "col-span-12 lg:col-span-11",
-  "12": "col-span-12",
-};
+import { getContainerClass, getColorModeClass, colSpans } from "@/lib/layout";
 
 export interface GridQuoteProps {
   quote?: string;
@@ -415,21 +399,6 @@ export function GridColumn({
       (data as any).socials ||
       (data as any).social_links ||
       (data as any).connect;
-    const stack = (data as any).stack || (data as any).Stack;
-    const stackLabel =
-      (typeof stack === "object" && !Array.isArray(stack)
-        ? stack?.stack_label || stack?.Stack_label || stack?.stackLabel || stack?.label
-        : undefined) ||
-      (data as any).stack_label ||
-      (data as any).Stack_label ||
-      (data as any).stackLabel;
-    const stackLabelCslp =
-      (typeof stack === "object" &&
-        stack?.$ &&
-        (stack.$.stack_label || stack.$.Stack_label || stack.$.stackLabel || stack.$.label)) ||
-      cslp?.stack_label ||
-      cslp?.["stack.stack_label"];
-
     const cslp = data.$;
 
     return (
@@ -458,22 +427,6 @@ export function GridColumn({
               }}
               className="text-baseM sm:text-base w-full text-content-100 dark:text-content-200 text-pretty font-normal font-content"
             />
-          )}
-
-          {stack && (
-            <div className="pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-border-100/50 dark:border-border-200/40 space-y-4">
-              {stackLabel && (
-                <div>
-                  <Label variant="brand" cslp={stackLabelCslp}>
-                    {stackLabel}
-                  </Label>
-                </div>
-              )}
-              <ResumeStackTags
-                tags={extractStackTags(stack)}
-                meta={cslp}
-              />
-            </div>
           )}
 
           {image?.url && (

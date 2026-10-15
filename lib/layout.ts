@@ -22,6 +22,29 @@ export const colorModes: Record<string, string> = {
   alt: "bg-background-200 dark:bg-background-900 border-y border-border-100 dark:border-border-200 py-20 sm:py-36",
 };
 
+export const colSpans: Record<string, string> = {
+  "1": "col-span-12 lg:col-span-1",
+  "2": "col-span-12 lg:col-span-2",
+  "3": "col-span-12 lg:col-span-3",
+  "4": "col-span-12 lg:col-span-4",
+  "5": "col-span-12 lg:col-span-5",
+  "6": "col-span-12 lg:col-span-6",
+  "7": "col-span-12 lg:col-span-7",
+  "8": "col-span-12 lg:col-span-8",
+  "9": "col-span-12 lg:col-span-9",
+  "10": "col-span-12 lg:col-span-10",
+  "11": "col-span-12 lg:col-span-11",
+  "12": "col-span-12",
+};
+
+/**
+ * Resolves a column span number/string to Tailwind grid classes.
+ */
+export function getColSpanClass(span?: number | string, fallback = "col-span-12"): string {
+  if (!span) return fallback;
+  return colSpans[String(span).trim()] ?? fallback;
+}
+
 /**
  * Resolves a Contentstack width string to standard Tailwind max-w classes.
  */

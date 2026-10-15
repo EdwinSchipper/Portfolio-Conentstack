@@ -201,7 +201,10 @@ export interface ExperienceTimelineBlock {
 export interface ResumeStack {
   stack_label?: string;
   stackLabel?: string;
+  stack_title?: string;
+  stackTitle?: string;
   label?: string;
+  title?: string;
   tag?: string[];
   tags?: string[];
   Tag?: string[];
@@ -210,7 +213,10 @@ export interface ResumeStack {
   $?: {
     stack_label?: CSLPFieldMapping;
     stackLabel?: CSLPFieldMapping;
+    stack_title?: CSLPFieldMapping;
+    stackTitle?: CSLPFieldMapping;
     label?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
     tag?: CSLPFieldMapping;
     tags?: CSLPFieldMapping;
     Tag?: CSLPFieldMapping;
@@ -241,8 +247,10 @@ export interface ResumeSectionBlock {
   companies?: ExperienceCompany[];
   stack_label?: string;
   stackLabel?: string;
-  stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string } | string[] | any;
-  Stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string } | string[] | any;
+  stack_title?: string;
+  stackTitle?: string;
+  stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
+  Stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
   _metadata?: { uid: string };
   $?: {
     container_width?: CSLPFieldMapping;
@@ -259,6 +267,7 @@ export interface ResumeSectionBlock {
     section_title?: CSLPFieldMapping;
     companies?: CSLPFieldMapping;
     stack_label?: CSLPFieldMapping;
+    stack_title?: CSLPFieldMapping;
     stack?: CSLPFieldMapping;
     Stack?: CSLPFieldMapping;
     [key: string]: any;
