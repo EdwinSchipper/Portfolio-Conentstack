@@ -13,12 +13,14 @@ const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
   display: "swap",
+  fallback: ["serif"],
 });
 
 const cascadiaMono = Cascadia_Mono({
   subsets: ["latin"],
   variable: "--font-cascadia",
   display: "swap",
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {

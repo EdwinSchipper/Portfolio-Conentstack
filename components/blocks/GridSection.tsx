@@ -6,6 +6,7 @@ import {
   GridContentLeft,
   GridContentRight,
   GridCard as GridCardType,
+  TimelineCompany,
   CSLPAttribute,
 } from "@/lib/types";
 import { Button, Label } from "@/components/ui";
@@ -51,13 +52,13 @@ export function GridQuote({
     >
       {isHtml ? (
         <div
-          className="quote-text text-pretty text-content-100 dark:text-content-200 italic text-title_3M md:text-title_3 [&>p]:m-0"
+          className="font-playfull font-normal quote-text text-pretty text-content-100 dark:text-content-200 italic text-title_4M md:text-title_4 [&>p]:m-0"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(content as string),
           }}
         />
       ) : (
-        <p className="quote-text text-pretty text-content-100 dark:text-content-200 italic text-title_3M md:text-title_3">
+        <p className="font-playfull font-normal quote-text text-pretty text-content-100 dark:text-content-200 italic text-title_4M md:text-title_4">
           {content}
         </p>
       )}
@@ -159,6 +160,124 @@ export function GridCards({
   );
 }
 
+export interface GridTimelineProps {
+  timeline?: TimelineCompany[] | { companies?: TimelineCompany[] } | null;
+  className?: string;
+  cslp?: Record<string, any>;
+}
+
+export function GridTimeline({
+  timeline,
+  className = "",
+  cslp,
+}: GridTimelineProps) {
+  if (!timeline) return null;
+
+  // Support both multiple group array and single group wrapper { companies: [...] }
+  const companies: TimelineCompany[] = Array.isArray(timeline)
+    ? timeline
+    : Array.isArray((timeline as any).companies)
+      ? (timeline as any).companies
+      : [];
+
+  if (companies.length === 0) return null;
+
+  return (
+    <div
+      {...cslp}
+      id="page-calendar-gsap"
+      className={`font-content w-full ${className}`}
+    >
+      <div
+        id="page-calendar-table"
+        className="relative border-l-2 border-accent7-200 dark:border-accent8-200 ml-2 lg:ml-0 mt-4 lg:mt-8"
+      >
+        {companies.map((company, index) => {
+          const rawWebsite = company.website;
+          const websiteUrl =
+            typeof rawWebsite === "object" && rawWebsite !== null
+              ? (rawWebsite as any).href || (rawWebsite as any).url
+              : rawWebsite;
+
+          const companyName = company.company || company.company_name;
+          const roles = Array.isArray(company.roles) ? company.roles : [];
+
+          return (
+            <React.Fragment
+              key={company._metadata?.uid || companyName || `company-${index}`}
+            >
+              {index !== 0 && (
+                <div
+                  aria-hidden="true"
+                  className="bg-background-200 dark:bg-background-900 -ml-1 h-10"
+                />
+              )}
+
+              <div
+                className="pl-8 lg:pl-10 relative last:pb-0 group calender-company-row transition-all duration-300"
+                {...(company.$ && (company.$.company || company.$.company_name))}
+              >
+                {/* Node indicator */}
+                <div
+                  aria-hidden="true"
+                  className="absolute -left-1 w-5 h-5 bg-accent7-900 dark:bg-accent8-900 border-4 border-accent7-200 dark:border-accent8-200 rounded-full -translate-x-[6.5px] ring-4 ring-background-100 dark:ring-background-800 transition-all duration-500 group-hover:scale-110 group-hover:bg-accent7-500 dark:group-hover:bg-accent8-500"
+                />
+
+                <div className="flex flex-col gap-1 lg:gap-0.5">
+                  <div className="flex items-center justify-between -top-1.5 relative">
+                    {websiteUrl ? (
+                      <a
+                        href={websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-mediumM lg:text-small font-bold text-title-100 dark:text-title-200 flex items-center gap-2 group/link hover:underline cursor-pointer transition-colors duration-300"
+                        {...(company.$ && company.$.website)}
+                      >
+                        {companyName}
+                      </a>
+                    ) : (
+                      <span
+                        className="text-mediumM lg:text-small font-bold text-title-100 dark:text-title-200 flex items-center gap-2"
+                        {...(company.$ && (company.$.company || company.$.company_name))}
+                      >
+                        {companyName}
+                      </span>
+                    )}
+                  </div>
+
+                  {roles.length > 0 && (
+                    <div className="flex flex-col">
+                      {roles.map((role, rIdx) => (
+                        <div
+                          key={role._metadata?.uid || role.title || `role-${rIdx}`}
+                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4 text-mediumM lg:text-small text-content-100 dark:text-content-200 calender-role-row group-hover:text-content-100 dark:group-hover:text-content-200 transition-colors duration-300 border-b border-border-100 dark:border-accent8-200 py-2"
+                        >
+                          <span
+                            className="font-medium"
+                            {...(role.$ && role.$.title)}
+                          >
+                            {role.title}
+                          </span>
+                          <span
+                            className="text-smallM lg:text-small text-content-300 dark:text-content-300"
+                            {...(role.$ && role.$.period)}
+                          >
+                            {role.period}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export interface GridColumnProps {
   span?: number | string;
   data?: GridContentLeft | GridContentRight;
@@ -195,6 +314,10 @@ export function GridColumn({
       (data as GridContentLeft).button_left ||
       (data as GridContentRight).button_right;
     const cards = data.cards;
+    const resumeTimeline =
+      data.resume_timeline ||
+      (data as any).timeline ||
+      (data as any).career_timeline;
 
     const cslp = data.$;
 
@@ -270,6 +393,13 @@ export function GridColumn({
 
           {cards && cards.length > 0 && (
             <GridCards cards={cards} cslp={cslp && cslp.cards} />
+          )}
+
+          {resumeTimeline && (
+            <GridTimeline
+              timeline={resumeTimeline}
+              cslp={cslp && (cslp.resume_timeline || cslp.timeline)}
+            />
           )}
         </div>
       </div>

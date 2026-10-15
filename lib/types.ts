@@ -257,6 +257,34 @@ export interface GridCard {
   [key: string]: any;
 }
 
+export interface TimelineRole {
+  title?: string;
+  period?: string;
+  _metadata?: { uid: string };
+  $?: {
+    title?: CSLPFieldMapping;
+    period?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+export interface TimelineCompany {
+  company?: string;
+  company_name?: string;
+  website?: string | Link;
+  roles?: TimelineRole[];
+  _metadata?: { uid: string };
+  $?: {
+    company?: CSLPFieldMapping;
+    company_name?: CSLPFieldMapping;
+    website?: CSLPFieldMapping;
+    roles?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface GridContentLeft {
   label_left?: string;
   title_h1?: string;
@@ -265,6 +293,7 @@ export interface GridContentLeft {
   image_left?: File;
   button_left?: Link;
   cards?: GridCard[];
+  resume_timeline?: TimelineCompany[] | { companies?: TimelineCompany[] } | any;
   _metadata?: { uid: string };
   $?: {
     label_left?: CSLPFieldMapping;
@@ -274,6 +303,7 @@ export interface GridContentLeft {
     image_left?: CSLPFieldMapping;
     button_left?: CSLPFieldMapping;
     cards?: CSLPFieldMapping;
+    resume_timeline?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;
@@ -288,6 +318,7 @@ export interface GridContentRight {
   text_right_extended?: string;
   button_right?: Link;
   cards?: GridCard[];
+  resume_timeline?: TimelineCompany[] | { companies?: TimelineCompany[] } | any;
   _metadata?: { uid: string };
   $?: {
     label_right?: CSLPFieldMapping;
@@ -298,6 +329,7 @@ export interface GridContentRight {
     text_right_extended?: CSLPFieldMapping;
     button_right?: CSLPFieldMapping;
     cards?: CSLPFieldMapping;
+    resume_timeline?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;

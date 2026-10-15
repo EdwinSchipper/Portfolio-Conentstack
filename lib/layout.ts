@@ -19,7 +19,7 @@ export const containerWidths: Record<string, string> = {
 
 export const colorModes: Record<string, string> = {
   default: "bg-transparent",
-  alt: "bg-background-200 dark:bg-background-900 border-y border-border-100 dark:border-border-200",
+  alt: "bg-background-200 dark:bg-background-900 border-y border-border-100 dark:border-border-200 py-20 sm:py-36",
 };
 
 /**
