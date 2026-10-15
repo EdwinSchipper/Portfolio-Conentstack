@@ -123,15 +123,12 @@ export function ResumeStackTags({
   return (
     <div
       {...(meta && (meta.stack || meta.Stack))}
-      className={`flex flex-wrap gap-2.5 sm:gap-3.5 ${className}`}
+      className={`flex flex-wrap gap-2 sm:gap-2 ${className}`}
     >
       {tags.map((tag, idx) => (
-        <span
-          key={`${tag}-${idx}`}
-          className="badge-item inline-flex items-center justify-center whitespace-nowrap w-fit border rounded-lg font-playfull text-xs sm:text-[13px] border-border-100 dark:border-border-200 text-title-100 dark:text-title-200 bg-background-200 dark:bg-background-900 px-4 py-2.5 hover:border-accent7-900/40 dark:hover:border-accent8-900/40 hover:-translate-y-0.5 transition-all duration-150 shadow-2xs select-none"
-        >
+        <Label key={`${tag}-${idx}`} variant="pill">
           {tag}
-        </span>
+        </Label>
       ))}
     </div>
   );
@@ -154,7 +151,7 @@ export function ResumeStackBlock({
 
   return (
     <div
-      className={`pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-border-100/50 dark:border-border-200/40 space-y-4 ${className}`}
+      className={`flex flex-col gap-6 lg:gap-5 bg-teal-3000 font-content ${className}`}
     >
       {label && (
         <div>
@@ -165,7 +162,7 @@ export function ResumeStackBlock({
       )}
       {title && (
         <h3
-          className="text-title_3M sm:text-title_3 font-bold text-title-100 dark:text-title-200 tracking-tight font-content"
+          className="text-title_3M sm:text-title_3 text-title-100 dark:text-title-200 font-bold"
           {...titleCslp}
         >
           {title}
@@ -203,7 +200,7 @@ export function ExperienceTimelineList({
       )}
 
       {/* Companies Timeline */}
-      <div className="space-y-12">
+      <div className="space-y-12 font-content">
         {companies.map((company, cIdx) => {
           const rawRoles = company.roles || (company as any).Roles;
           const roles: ExperienceRole[] = Array.isArray(rawRoles)
@@ -231,20 +228,20 @@ export function ExperienceTimelineList({
           return (
             <div
               key={company._metadata?.uid || `company-${cIdx}`}
-              className="relative pl-12 md:pl-20 pb-12 last:pb-0"
+              className="relative pl-12 md:pl-20 pb-8 last:pb-0"
             >
               {/* Vertical timeline line connecting nodes down this company */}
               {roles.length > 0 && (
                 <div
                   aria-hidden="true"
-                  className="absolute left-6 md:left-8 top-14 md:top-18 bottom-4 w-[2px] bg-accent7-300 dark:bg-accent8-300 -translate-x-1/2 pointer-events-none"
+                  className="absolute left-6 md:left-8 top-14 md:top-18 bottom-4 w-[2px] bg-accent7-200 dark:bg-accent8-300 -translate-x-1/2 pointer-events-none"
                 />
               )}
 
               {/* Company Logo Monogram Box */}
               <div
                 aria-hidden="true"
-                className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-md bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200 shadow-sm flex items-center justify-center font-playfull font-black text-2xl md:text-3xl text-title-100 dark:text-title-200 select-none z-10"
+                className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200 flex items-center justify-center font-playfull font-black text-2xl md:text-3xl text-title-100 dark:text-title-200 select-none z-10"
               >
                 {getInitial(company.company_name)}
               </div>
@@ -261,7 +258,7 @@ export function ExperienceTimelineList({
                 )}
                 {company.company_period && (
                   <p
-                    className="text-smallM md:text-small font-semibold text-accent7-900 dark:text-accent8-900 font-playfull mt-1"
+                    className="text-smallM md:text-small font-medium text-accent7-900 dark:text-accent8-900 font-playfull"
                     {...(company?.$ && company?.$.company_period)}
                   >
                     {company.company_period}
@@ -270,7 +267,7 @@ export function ExperienceTimelineList({
               </div>
 
               {/* Roles Content */}
-              <div className="space-y-6">
+              <div className="space-y-14">
                 {/* Core / Primary Roles */}
                 {displayCoreRoles.map((role, rIdx) => {
                   const hasSecondary = displaySecondaryRoles.length > 0;
@@ -289,11 +286,11 @@ export function ExperienceTimelineList({
 
                       {isCard ? (
                         /* Prominent Primary Role Card */
-                        <div className="bg-background-200 dark:bg-background-900 rounded-md border border-border-100 dark:border-border-200 p-6 md:p-8 shadow-sm hover:shadow-md transition duration-200">
-                          <div className="flex flex-wrap items-center justify-between gap-3 mb-1">
+                        <div className="bg-background-200 dark:bg-background-900 rounded-md border border-border-100 dark:border-border-200 p-6 md:p-8">
+                          <div className="flex flex-wrap items-center justify-between gap-3">
                             {role.title && (
                               <h5
-                                className="text-title_4M sm:text-title_4 font-bold text-title-100 dark:text-title-200"
+                                className="text-title_5M sm:text-title_5 font-bold text-title-100 dark:text-title-200"
                                 {...(role?.$ && role?.$.title)}
                               >
                                 {role.title}
@@ -311,7 +308,7 @@ export function ExperienceTimelineList({
 
                           {role.period && (
                             <p
-                              className="text-smallM md:text-small font-semibold text-accent7-900 dark:text-accent8-900 font-playfull mb-3"
+                              className="text-smallM md:text-small font-medium text-accent7-900 dark:text-accent8-900 font-playfull mb-6"
                               {...(role?.$ && role?.$.period)}
                             >
                               {role.period}
@@ -320,7 +317,7 @@ export function ExperienceTimelineList({
 
                           {role.description && (
                             <p
-                              className="text-mediumM sm:text-small text-content-100 dark:text-content-200 leading-relaxed whitespace-pre-line"
+                              className="text-mediumM sm:text-small text-content-100 dark:text-content-200"
                               {...(role?.$ && role?.$.description)}
                             >
                               {role.description}
@@ -329,10 +326,10 @@ export function ExperienceTimelineList({
                         </div>
                       ) : (
                         /* Minimalist Single Role (e.g. Freelance style) */
-                        <div className="max-w-3xl">
+                        <div className="max-w-3xl flex flex-col spa1ce-y-2">
                           {role.title && (
                             <h5
-                              className="text-title_4M sm:text-title_4 font-bold text-title-100 dark:text-title-200"
+                              className="text-title_6M sm:text-title_6 font-bold text-title-100 dark:text-title-200"
                               {...(role?.$ && role?.$.title)}
                             >
                               {role.title}
@@ -340,7 +337,7 @@ export function ExperienceTimelineList({
                           )}
                           {role.period && (
                             <p
-                              className="text-smallM md:text-small font-semibold text-accent7-900 dark:text-accent8-900 font-playfull mt-0.5 mb-2"
+                              className="text-smallM md:text-small font-semibold text-accent7-900 dark:text-accent8-900 font-playfull mb-4"
                               {...(role?.$ && role?.$.period)}
                             >
                               {role.period}
@@ -671,68 +668,83 @@ export default function ResumeSection({
       className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
     >
       <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-start">
+        <div className="sm:grid grid-cols-1 lg:grid-cols-12 gap-12 lg:ga1p-16 xl:ga1p-20 items-start space-x-24">
+
           {/* Intro / Sidebar Column */}
           <div className={introColClass}>
-            <div className="lg:sticky lg:top-28 space-y-6">
-              {label && (
-                <div>
-                  <Label variant="brand" cslp={meta && meta.label}>
-                    {label}
-                  </Label>
-                </div>
-              )}
+            <div className="lg:sticky lg:top-28 space-y-14">
 
-              {title && (
-                <h2
-                  className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 tracking-tight font-content text-balance"
-                  {...(meta && meta.title)}
-                >
-                  {title}
-                </h2>
-              )}
 
-              {description && (
-                <div
-                  {...(meta && (meta.description || meta.text))}
-                  className="text-baseM sm:text-base text-content-100 dark:text-content-200 font-normal leading-relaxed text-pretty font-content"
-                >
-                  {isHtml ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(description),
-                      }}
-                    />
-                  ) : (
-                    <p className="whitespace-pre-line">{description}</p>
-                  )}
-                </div>
-              )}
+              <div className="flex flex-col gap-3 lg:gap-3 bg-red-3000 font-content">
+                {label && (
+                  <div>
+                    <Label variant="brand" cslp={meta && meta.label}>
+                      {label}
+                    </Label>
+                  </div>
+                )}
 
-              {buttonHref && buttonTitle && (
-                <div className="pt-2">
-                  <Button
-                    href={buttonHref}
-                    variant="primary"
-                    cslp={meta && meta.button}
+                {title && (
+                  <h1
+                    className="text-title_3M sm:text-title_3 text-title-100 dark:text-title-200 font-bold"
+                    {...(meta && meta.title)}
                   >
-                    {buttonTitle}
-                  </Button>
-                </div>
-              )}
+                    {title}
+                  </h1>
+                )}
 
-              {hasStack && (
-                <ResumeStackBlock
-                  tags={tags}
-                  label={stackLabel}
-                  title={stackTitle}
-                  labelCslp={stackLabelCslp}
-                  titleCslp={stackTitleCslp}
-                  meta={meta}
-                />
-              )}
+                {description && (
+                  <div
+                    {...(meta && (meta.description || meta.text))}
+                    className="text-content-100 dark:text-content-200 text-mediumM sm:text-medium"
+                  >
+                    {isHtml ? (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(description),
+                        }}
+                      />
+                    ) : (
+                      <p className="whitespace-pre-line">{description}</p>
+                    )}
+                  </div>
+                )}
+
+
+                {buttonHref && buttonTitle && (
+                  <div className="pt-2">
+                    <Button
+                      href={buttonHref}
+                      variant="primary"
+                      cslp={meta && meta.button}
+                    >
+                      {buttonTitle}
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+
+
+              <div className="flex flex-col gap-3 lg:gap-3 bg-yellow-3000 font-content">
+
+                {hasStack && (
+                  <ResumeStackBlock
+                    tags={tags}
+                    label={stackLabel}
+                    title={stackTitle}
+                    labelCslp={stackLabelCslp}
+                    titleCslp={stackTitleCslp}
+                    meta={meta}
+                  />
+                )}
+              </div>
+
+
+
             </div>
           </div>
+
 
           {/* Timeline / Content Column */}
           <div className={timelineColClass}>
