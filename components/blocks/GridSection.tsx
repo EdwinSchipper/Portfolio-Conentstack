@@ -12,7 +12,7 @@ import {
   CSLPAttribute,
 } from "@/lib/types";
 import { Button, Label, Icon } from "@/components/ui";
-import { getContainerClass, getColorModeClass, colSpans } from "@/lib/layout";
+import { getContainerClass, getColorModeClass, colSpans, getHeadingTag } from "@/lib/layout";
 
 export interface GridQuoteProps {
   quote?: string;
@@ -377,6 +377,7 @@ export function GridColumn({
     const title =
       (data as GridContentLeft).title_h1 ||
       (data as GridContentRight).title_h1r;
+    const headingTag = getHeadingTag(data.heading_type, "h2");
     const text =
       (data as GridContentLeft).text_left ||
       (data as GridContentRight).text_right;
@@ -410,14 +411,16 @@ export function GridColumn({
             </Label>
           )}
 
-          {title && (
-            <h1
-              {...(cslp && (cslp.title_h1 || cslp.title_h1r))}
-              className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance w-11/12 md:w-full font-content"
-            >
-              {title}
-            </h1>
-          )}
+          {title &&
+            React.createElement(
+              headingTag,
+              {
+                ...(cslp && (cslp.title_h1 || cslp.title_h1r)),
+                className:
+                  "text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance w-11/12 md:w-full font-content",
+              },
+              title
+            )}
 
           {text && (
             <div

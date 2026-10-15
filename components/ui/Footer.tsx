@@ -50,13 +50,13 @@ export default function Footer() {
             <div className="flex flex-col lg:flex-row lg:items-end justify-between pb-14 md:pb-20">
               <div>
                 <Label variant="brand">Laten we kennismaken</Label>
-                <h2 className="text-title_1M md:text-title_1 font-content text-title-100 dark:text-title-200 font-bold max-w-3xl mt-8 md:mt-10">
+                <h6 className="text-title_1M md:text-title_1 font-content text-title-100 dark:text-title-200 font-bold max-w-3xl mt-8 md:mt-10">
                   Benieuwd wat ik{" "}
                   <span className="font-serif italic text-accent7-900 dark:text-accent8-900 font-medium">
                     voor jouw project
                   </span>{" "}
                   kan betekenen?
-                </h2>
+                </h6>
               </div>
               <div className="shrink-0 mt-8 md:mt-14 lg:mt-0">
                 <Button

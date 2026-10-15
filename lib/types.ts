@@ -353,6 +353,7 @@ export interface GridSocials {
 export interface GridContentLeft {
   label_left?: string;
   title_h1?: string;
+  heading_type?: string;
   quote_left?: string;
   text_left?: string;
   image_left?: File;
@@ -364,6 +365,7 @@ export interface GridContentLeft {
   $?: {
     label_left?: CSLPFieldMapping;
     title_h1?: CSLPFieldMapping;
+    heading_type?: CSLPFieldMapping;
     quote_left?: CSLPFieldMapping;
     text_left?: CSLPFieldMapping;
     image_left?: CSLPFieldMapping;
@@ -379,6 +381,7 @@ export interface GridContentLeft {
 export interface GridContentRight {
   label_right?: string;
   title_h1r?: string;
+  heading_type?: string;
   text_right?: string;
   image_right?: File;
   quote_right?: string;
@@ -391,6 +394,7 @@ export interface GridContentRight {
   $?: {
     label_right?: CSLPFieldMapping;
     title_h1r?: CSLPFieldMapping;
+    heading_type?: CSLPFieldMapping;
     text_right?: CSLPFieldMapping;
     image_right?: CSLPFieldMapping;
     quote_right?: CSLPFieldMapping;

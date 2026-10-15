@@ -5,6 +5,7 @@
  * 1. Container Widths (small, default, large, wide)
  * 2. Section Color Modes (default, alt)
  * 3. Grid Column Utilities
+ * 4. Semantic Headings (h1, h2, h3, h4, h5)
  */
 
 export const containerWidths: Record<string, string> = {
@@ -63,4 +64,25 @@ export function getContainerClass(width?: string, defaultWidth = "large"): strin
 export function getColorModeClass(mode?: string): string {
   const key = String(mode || "default").trim().toLowerCase();
   return colorModes[key] ?? colorModes.default;
+}
+
+export const HEADING_VALUES = ["h1", "h2", "h3", "h4", "h5"] as const;
+export type HeadingType = (typeof HEADING_VALUES)[number] | "h6";
+export const defaultHeading: HeadingType = "h2";
+
+/**
+ * Resolves a Contentstack heading string ("h1", "h2", etc.) to a valid HTML heading tag.
+ * Defaults to "h2" to maintain healthy SEO and prevent duplicate H1 tags.
+ */
+export function getHeadingTag(
+  heading?: string | string[],
+  fallback: HeadingType = defaultHeading
+): HeadingType {
+  if (!heading) return fallback;
+  const value = Array.isArray(heading) ? heading[0] : heading;
+  if (!value || typeof value !== "string") return fallback;
+  const normalized = value.trim().toLowerCase() as HeadingType;
+  return (HEADING_VALUES as readonly string[]).includes(normalized) || normalized === "h6"
+    ? normalized
+    : fallback;
 }
