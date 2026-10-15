@@ -282,7 +282,7 @@ export function CardSectionHeader({
     >
       {/* Split background decoratie op desktop (xl) */}
       <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-1/2 bg-border-100/70 dark:bg-border-200/70 pointer-events-none" />
-      <div className="hidden xl:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:border-border-200 -translate-x-1/2 pointer-events-none" />
+      <div className="hidden xl:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
 
       {/* Content grid - breedte gekoppeld aan Contentstack containerClass */}
       <div
@@ -357,8 +357,8 @@ export function CardGrid({
       {/* Desktop kruisdraad / divider-lijnen op lg schermen (alleen bij 2 kolommen) */}
       {colVal === "2" && (
         <>
-          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:border-border-200 -translate-x-1/2 pointer-events-none" />
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-border-100 dark:border-border-200 -translate-y-1/2 pointer-events-none" />
+          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
+          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-border-100 dark:bg-border-200 -translate-y-1/2 pointer-events-none" />
         </>
       )}
 
