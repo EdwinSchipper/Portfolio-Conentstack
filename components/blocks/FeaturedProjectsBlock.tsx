@@ -6,6 +6,7 @@ import {
   CSLPAttribute,
 } from "@/lib/types";
 import { Button, Label } from "@/components/ui";
+import { CardSectionHeader } from "./CardSection";
 
 export interface FeaturedProjectsBlockProps {
   data?: FeaturedProjectsBlockType;
@@ -26,29 +27,36 @@ export default function FeaturedProjectsBlock({
 
   const projects = data.projects || [];
   const sectionTitle = data.section_title || (data as any).title;
+  const label = data.label || (data as any).label_projects;
+  const sectionIntro = data.section_intro || (data as any).intro;
+
+  const hasHeader = Boolean(label || sectionTitle || sectionIntro);
 
   return (
     <section
       {...previewAttr}
-      id="home-case-list"
-      className={`col-span-full w-full flex flex-col gap-14 md:gap-8 mb-28 sm:mb-40 lg:mb-60 px-10 sm:px-14 md:px-20 xl:px-14 border-y border-border-100 dark:border-border-200 py-14 md:py-24 relative font-content ${className}`}
+      className={`col-span-full w-full flex flex-col font-content ${className}`}
     >
-      {/* Desktop middenlijn divider */}
-      <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
+      {hasHeader && (
+        <CardSectionHeader
+          label={label}
+          title={sectionTitle}
+          intro={sectionIntro}
+          cslp={data?.$}
+          cslpLabel={data?.$ && (data.$.label || (data.$ as any).label_projects)}
+          cslpTitle={data?.$ && (data.$.section_title || (data.$ as any).title)}
+          cslpIntro={data?.$ && (data.$.section_intro || (data.$ as any).intro)}
+        />
+      )}
 
-      <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-7xl gap-14 sm:gap-20 flex flex-col relative z-10">
-        {/* Optionele sectietitel */}
-        {sectionTitle && (
-          <div className="flex flex-col">
-            <h2
-              className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 font-content text-balance"
-              {...(data?.$ && (data?.$.section_title || (data?.$ as any)?.title))}
-            >
-              {sectionTitle}
-            </h2>
-          </div>
-        )}
+      <div
+        id="home-case-list"
+        className="w-full flex flex-col gap-14 md:gap-8 mb-28 sm:mb-40 lg:mb-60 px-10 sm:px-14 md:px-20 xl:px-14 border-y border-border-100 dark:border-border-200 py-14 md:py-24 relative font-content"
+      >
+        {/* Desktop middenlijn divider */}
+        <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:border-border-200 -translate-x-1/2 pointer-events-none" />
 
+        <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-7xl gap-14 sm:gap-20 flex flex-col relative z-10">
         {projects.length > 0 ? (
           projects.map((post, index) => {
             const postUrl = post.url || `/portfolio/${post.uid || (post as any).id || index}`;
@@ -181,6 +189,7 @@ export default function FeaturedProjectsBlock({
             </span>
           </div>
         )}
+        </div>
       </div>
     </section>
   );

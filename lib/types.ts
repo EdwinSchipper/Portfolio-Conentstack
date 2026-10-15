@@ -144,13 +144,21 @@ export interface ServiceCardBlock {
 
 export interface FeaturedProjectsBlock {
   _version?: number;
+  label?: string;
+  label_projects?: string;
   section_title?: string;
   title?: string;
+  section_intro?: string;
+  intro?: string;
   projects?: PortfolioItem[];
   _metadata?: { uid: string };
   $?: {
+    label?: CSLPFieldMapping;
+    label_projects?: CSLPFieldMapping;
     section_title?: CSLPFieldMapping;
     title?: CSLPFieldMapping;
+    section_intro?: CSLPFieldMapping;
+    intro?: CSLPFieldMapping;
     projects?: CSLPFieldMapping;
     [key: string]: any;
   };
