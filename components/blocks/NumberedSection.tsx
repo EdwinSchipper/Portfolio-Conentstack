@@ -96,12 +96,12 @@ export default function NumberedSection({
               )}
 
               {sectionTitle && (
-                <h2
+                <h3
                   className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance"
                   {...(data?.$ && (data?.$.section_title || data?.$.title))}
                 >
                   {sectionTitle}
-                </h2>
+                </h3>
               )}
 
               {sectionIntro && (

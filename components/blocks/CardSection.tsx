@@ -296,12 +296,12 @@ export function CardSectionHeader({
             </Label>
           )}
           {title && (
-            <h3
+            <h2
               {...cslpTitle}
               className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 text-balance lg:pr-10"
             >
               {title}
-            </h3>
+            </h2>
           )}
         </div>
 

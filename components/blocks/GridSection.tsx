@@ -282,10 +282,10 @@ export function GridSocials({
   const rawLinks = Array.isArray(socials)
     ? socials
     : Array.isArray((socials as any).links)
-    ? (socials as any).links
-    : Array.isArray((socials as any).items)
-    ? (socials as any).items
-    : [];
+      ? (socials as any).links
+      : Array.isArray((socials as any).items)
+        ? (socials as any).items
+        : [];
 
   const label = !Array.isArray(socials) ? (socials as any).label : undefined;
 
@@ -322,10 +322,10 @@ export function GridSocials({
             lower === "email" || lower === "mail"
               ? "envelope"
               : lower === "phone" || lower === "tel" || lower === "mobiel" || lower === "telefoon"
-              ? "device-phone-mobile"
-              : lower === "linkedin"
-              ? "link"
-              : rawIcon;
+                ? "device-phone-mobile"
+                : lower === "linkedin"
+                  ? "link"
+                  : rawIcon;
 
           const title = item.title || (item as any).label;
           const isExternal =
@@ -411,12 +411,12 @@ export function GridColumn({
           )}
 
           {title && (
-            <h2
+            <h1
               {...(cslp && (cslp.title_h1 || cslp.title_h1r))}
               className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance w-11/12 md:w-full font-content"
             >
               {title}
-            </h2>
+            </h1>
           )}
 
           {text && (
