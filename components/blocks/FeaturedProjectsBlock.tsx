@@ -54,7 +54,7 @@ export default function FeaturedProjectsBlock({
         className="w-full flex flex-col gap-14 md:gap-8 mb-28 sm:mb-40 lg:mb-60 px-10 sm:px-14 md:px-20 xl:px-14 border-y border-border-100 dark:border-border-200 py-14 md:py-24 relative font-content"
       >
         {/* Desktop middenlijn divider */}
-        <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:border-border-200 -translate-x-1/2 pointer-events-none" />
+        <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
 
         <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-7xl gap-14 sm:gap-20 flex flex-col relative z-10">
         {projects.length > 0 ? (
@@ -97,7 +97,7 @@ export default function FeaturedProjectsBlock({
               >
                 {/* Afbeelding kolom */}
                 <div
-                  className={`case-img col-span-1 md:col-span-7 lg:col-span-7 rounded-md overflow-hidden -mx-5 sm:mx-0 relative z-10 ${
+                  className={`case-img col-span-1 md:col-span-7 lg:col-span-7 rounded-md overflow-hidden bg-background-200 dark:bg-background-900 -mx-5 sm:mx-0 relative z-10 ${
                     isOdd ? "md:order-2 lg:order-2" : "md:order-1 lg:order-1"
                   }`}
                 >
