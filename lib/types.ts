@@ -198,6 +198,27 @@ export interface ExperienceTimelineBlock {
   };
 }
 
+export interface ResumeStack {
+  stack_label?: string;
+  stackLabel?: string;
+  label?: string;
+  tag?: string[];
+  tags?: string[];
+  Tag?: string[];
+  Tags?: string[];
+  _metadata?: { uid: string };
+  $?: {
+    stack_label?: CSLPFieldMapping;
+    stackLabel?: CSLPFieldMapping;
+    label?: CSLPFieldMapping;
+    tag?: CSLPFieldMapping;
+    tags?: CSLPFieldMapping;
+    Tag?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface ResumeSectionBlock {
   _version?: number;
   container_width?: string; /** "small" | "default" | "large" | "wide" */
@@ -218,6 +239,10 @@ export interface ResumeSectionBlock {
   button?: Link;
   button_cta?: Link;
   companies?: ExperienceCompany[];
+  stack_label?: string;
+  stackLabel?: string;
+  stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string } | string[] | any;
+  Stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string } | string[] | any;
   _metadata?: { uid: string };
   $?: {
     container_width?: CSLPFieldMapping;
@@ -233,6 +258,9 @@ export interface ResumeSectionBlock {
     button?: CSLPFieldMapping;
     section_title?: CSLPFieldMapping;
     companies?: CSLPFieldMapping;
+    stack_label?: CSLPFieldMapping;
+    stack?: CSLPFieldMapping;
+    Stack?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;
@@ -285,6 +313,34 @@ export interface TimelineCompany {
   [key: string]: any;
 }
 
+export interface SocialLink {
+  icon?: string;
+  link?: string | Link;
+  title?: string;
+  _metadata?: { uid: string };
+  $?: {
+    icon?: CSLPFieldMapping;
+    link?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+export interface GridSocials {
+  label?: string;
+  links?: SocialLink[];
+  items?: SocialLink[];
+  _metadata?: { uid: string };
+  $?: {
+    label?: CSLPFieldMapping;
+    links?: CSLPFieldMapping;
+    items?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface GridContentLeft {
   label_left?: string;
   title_h1?: string;
@@ -294,6 +350,7 @@ export interface GridContentLeft {
   button_left?: Link;
   cards?: GridCard[];
   resume_timeline?: TimelineCompany[] | { companies?: TimelineCompany[] } | any;
+  socials?: GridSocials | SocialLink[] | any;
   _metadata?: { uid: string };
   $?: {
     label_left?: CSLPFieldMapping;
@@ -304,6 +361,7 @@ export interface GridContentLeft {
     button_left?: CSLPFieldMapping;
     cards?: CSLPFieldMapping;
     resume_timeline?: CSLPFieldMapping;
+    socials?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;
@@ -319,6 +377,7 @@ export interface GridContentRight {
   button_right?: Link;
   cards?: GridCard[];
   resume_timeline?: TimelineCompany[] | { companies?: TimelineCompany[] } | any;
+  socials?: GridSocials | SocialLink[] | any;
   _metadata?: { uid: string };
   $?: {
     label_right?: CSLPFieldMapping;
@@ -330,6 +389,7 @@ export interface GridContentRight {
     button_right?: CSLPFieldMapping;
     cards?: CSLPFieldMapping;
     resume_timeline?: CSLPFieldMapping;
+    socials?: CSLPFieldMapping;
     [key: string]: any;
   };
   [key: string]: any;
@@ -461,6 +521,8 @@ export interface Blocks extends SystemFields {
   featured_projects?: FeaturedProjectsBlock;
   experience_timeline?: ExperienceTimelineBlock;
   resume_section?: ResumeSectionBlock;
+  Resume_Section?: ResumeSectionBlock;
+  ResumeSection?: ResumeSectionBlock;
   grid_section_resume?: ResumeSectionBlock;
   resume_grid_section?: ResumeSectionBlock;
   grid_section?: GridSectionBlock;

@@ -288,9 +288,85 @@ export function ExperienceTimelineList({
   );
 }
 
+export function extractStackTags(stackData: any): string[] {
+  if (!stackData) return [];
+  const results: string[] = [];
+
+  const addTag = (val: any) => {
+    if (val === null || val === undefined) return;
+    if (typeof val === "string") {
+      const trimmed = val.trim();
+      if (trimmed) results.push(trimmed);
+    } else if (Array.isArray(val)) {
+      val.forEach(addTag);
+    } else if (typeof val === "object") {
+      const tagVal = val.tag ?? val.Tag ?? val.name ?? val.value ?? val.title;
+      if (tagVal !== undefined) {
+        addTag(tagVal);
+      }
+    }
+  };
+
+  if (Array.isArray(stackData)) {
+    stackData.forEach(addTag);
+  } else if (typeof stackData === "object") {
+    const rawTags =
+      stackData.tag ??
+      stackData.Tag ??
+      stackData.tags ??
+      stackData.Tags ??
+      stackData.items;
+
+    if (rawTags !== undefined) {
+      addTag(rawTags);
+    } else {
+      Object.entries(stackData).forEach(([key, val]) => {
+        if (!key.toLowerCase().includes("label") && !key.startsWith("_") && key !== "$") {
+          addTag(val);
+        }
+      });
+    }
+  } else if (typeof stackData === "string") {
+    addTag(stackData);
+  }
+
+  return results;
+}
+
 /**
- * ResumeSection: 2-column modular grid section pairing an intro sidebar with an interactive timeline.
- * Supports flexible timeline placement ("right" or "left"), container widths, color modes, and sticky scrolling.
+ * Renders the skill / tooling pill badges (from Contentstack Stack group).
+ */
+export function ResumeStackTags({
+  tags = [],
+  meta,
+  className = "",
+}: {
+  tags: string[];
+  meta?: Record<string, any>;
+  className?: string;
+}) {
+  if (!tags || tags.length === 0) return null;
+
+  return (
+    <div
+      {...(meta && (meta.stack || meta.Stack))}
+      className={`flex flex-wrap gap-2.5 sm:gap-3.5 ${className}`}
+    >
+      {tags.map((tag, idx) => (
+        <span
+          key={`${tag}-${idx}`}
+          className="badge-item inline-flex items-center justify-center whitespace-nowrap w-fit border rounded-lg font-playfull text-xs sm:text-[13px] border-border-100 dark:border-border-200 text-title-100 dark:text-title-200 bg-background-200 dark:bg-background-900 px-4 py-2.5 hover:border-accent7-900/40 dark:hover:border-accent8-900/40 hover:-translate-y-0.5 transition-all duration-150 shadow-2xs select-none"
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * ResumeSection: 2-column modular grid section pairing an intro sidebar with an interactive timeline or stack tags.
+ * Supports flexible timeline placement ("right", "left", or "full"), container widths, color modes, and sticky scrolling.
  */
 export default function ResumeSection({
   data,
@@ -305,6 +381,8 @@ export default function ResumeSection({
 }: ResumeSectionProps) {
   // Support nested data structures gracefully
   const sectionData: ResumeSectionBlock = (data?.resume_section ||
+    data?.Resume_Section ||
+    data?.ResumeSection ||
     data?.grid_section_resume ||
     data?.experience_timeline ||
     data) as ResumeSectionBlock;
@@ -319,12 +397,170 @@ export default function ResumeSection({
     timelinePosition ||
     sectionData?.timeline_position ||
     sectionData?.timeline_placement ||
-    "right"
+    ""
   )
     .trim()
     .toLowerCase();
+
+  const isPositionFull =
+    rawPosition === "full" ||
+    rawPosition === "center" ||
+    rawPosition === "full width" ||
+    rawPosition === "volledig";
+
   const isTimelineLeft = rawPosition === "left" || rawPosition === "links";
-  const isFullWidth = rawPosition === "full" || rawPosition === "center";
+
+  const rawCompanies =
+    sectionData?.companies || (sectionData as any)?.Companies;
+  const companies: ExperienceCompany[] = Array.isArray(rawCompanies)
+    ? rawCompanies
+    : rawCompanies
+      ? [rawCompanies]
+      : [];
+
+  const rawStack = sectionData?.stack || (sectionData as any)?.Stack;
+  const tags = extractStackTags(rawStack);
+  const hasStack = tags.length > 0;
+
+  const stackLabel =
+    (typeof rawStack === "object" && !Array.isArray(rawStack)
+      ? rawStack?.stack_label || rawStack?.Stack_label || rawStack?.stackLabel || rawStack?.label
+      : undefined) ||
+    sectionData?.stack_label ||
+    (sectionData as any)?.Stack_label ||
+    (sectionData as any)?.stackLabel;
+
+  const stackLabelCslp =
+    (typeof rawStack === "object" &&
+      rawStack?.$ &&
+      (rawStack.$.stack_label || rawStack.$.Stack_label || rawStack.$.stackLabel || rawStack.$.label)) ||
+    meta?.stack_label ||
+    meta?.["stack.stack_label"];
+
+  const label = sectionData?.label || sectionData?.section_label;
+  const title = sectionData?.title || sectionData?.section_title_main;
+  const description =
+    sectionData?.description || sectionData?.text || sectionData?.intro;
+  const button = sectionData?.button || sectionData?.button_cta;
+  const buttonHref = button?.href || (button as any)?.url;
+  const buttonTitle = button?.title || (button as any)?.text;
+
+  const timelineSubtitle = sectionData?.section_title;
+  const meta = sectionData?.$;
+
+  const hasIntroContent = Boolean(
+    label || title || description || (buttonHref && buttonTitle)
+  );
+
+  // Full-width applies if:
+  // - User explicitly set timeline_position to 'full' or 'center'
+  // - There are NO companies and no column spans specified (default for stack-only block)
+  // - There is no intro content (label/title/description/button)
+  const isFullWidth =
+    isPositionFull ||
+    (!rawPosition &&
+      companies.length === 0 &&
+      !sectionData?.left_col_span &&
+      !sectionData?.right_col_span) ||
+    !hasIntroContent;
+
+  const isHtml =
+    typeof description === "string" && /<[a-z][\s\S]*>/i.test(description);
+
+  if (children) {
+    return (
+      <section
+        {...previewAttr}
+        data-color-mode={colorModeKey}
+        className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
+      >
+        <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
+          {children}
+        </div>
+      </section>
+    );
+  }
+
+  // If no intro content is configured or user explicitly requested full width, render clean single column layout
+  if (isFullWidth) {
+    return (
+      <section
+        {...previewAttr}
+        data-color-mode={colorModeKey}
+        className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
+      >
+        <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
+          <div className="w-full">
+            {label && (
+              <div className="mb-3">
+                <Label variant="brand" cslp={meta && meta.label}>
+                  {label}
+                </Label>
+              </div>
+            )}
+            {title && (
+              <h2
+                className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 tracking-tight font-content mb-8 sm:mb-10"
+                {...(meta && meta.title)}
+              >
+                {title}
+              </h2>
+            )}
+            {description && (
+              <div
+                {...(meta && (meta.description || meta.text))}
+                className="text-baseM sm:text-base text-content-100 dark:text-content-200 mb-8 font-content max-w-3xl"
+              >
+                {isHtml ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(description),
+                    }}
+                  />
+                ) : (
+                  <p className="whitespace-pre-line">{description}</p>
+                )}
+              </div>
+            )}
+            {buttonHref && buttonTitle && (
+              <div className="mb-8">
+                <Button
+                  href={buttonHref}
+                  variant="primary"
+                  cslp={meta && meta.button}
+                >
+                  {buttonTitle}
+                </Button>
+              </div>
+            )}
+            {hasStack && (
+              <div className="pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-border-100/50 dark:border-border-200/40 space-y-4">
+                {stackLabel && (
+                  <div>
+                    <Label variant="brand" cslp={stackLabelCslp}>
+                      {stackLabel}
+                    </Label>
+                  </div>
+                )}
+                <ResumeStackTags
+                  tags={tags}
+                  meta={meta}
+                  className={companies.length > 0 ? "mb-12" : ""}
+                />
+              </div>
+            )}
+            {companies.length > 0 && (
+              <ExperienceTimelineList
+                companies={companies}
+                sectionTitle={timelineSubtitle}
+                meta={meta}
+              />
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const rawLeftCol =
     leftColSpan ||
@@ -357,81 +593,13 @@ export default function ResumeSection({
     ? `${leftSpanClass} order-2 lg:order-1`
     : `${rightSpanClass} order-2`;
 
-  const label = sectionData?.label || sectionData?.section_label;
-  const title = sectionData?.title || sectionData?.section_title_main;
-  const description =
-    sectionData?.description || sectionData?.text || sectionData?.intro;
-  const button = sectionData?.button || sectionData?.button_cta;
-  const buttonHref = button?.href || (button as any)?.url;
-  const buttonTitle = button?.title || (button as any)?.text;
-
-  const rawCompanies =
-    sectionData?.companies || (sectionData as any)?.Companies;
-  const companies: ExperienceCompany[] = Array.isArray(rawCompanies)
-    ? rawCompanies
-    : rawCompanies
-      ? [rawCompanies]
-      : [];
-  const timelineSubtitle = sectionData?.section_title;
-  const meta = sectionData?.$;
-
-  const hasIntroContent = Boolean(
-    label || title || description || (buttonHref && buttonTitle)
-  );
-
-  if (children) {
-    return (
-      <section
-        {...previewAttr}
-        data-color-mode={colorModeKey}
-        className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
-      >
-        <div className={`mx-auto px-6 sm:px-10 lg:px-12 ${containerClass}`}>
-          {children}
-        </div>
-      </section>
-    );
-  }
-
-  // If no intro content is configured or user explicitly requested full width, render timeline centered
-  if (!hasIntroContent || isFullWidth) {
-    return (
-      <section
-        {...previewAttr}
-        data-color-mode={colorModeKey}
-        className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
-      >
-        <div className={`mx-auto px-6 sm:px-10 lg:px-12 ${containerClass}`}>
-          <div className="max-w-4xl mx-auto">
-            {title && (
-              <h2
-                className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 tracking-tight font-content mb-10"
-                {...(meta && meta.title)}
-              >
-                {title}
-              </h2>
-            )}
-            <ExperienceTimelineList
-              companies={companies}
-              sectionTitle={timelineSubtitle}
-              meta={meta}
-            />
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  const isHtml =
-    typeof description === "string" && /<[a-z][\s\S]*>/i.test(description);
-
   return (
     <section
       {...previewAttr}
       data-color-mode={colorModeKey}
       className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
     >
-      <div className={`mx-auto px-6 sm:px-10 lg:px-12 ${containerClass}`}>
+      <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-start">
           {/* Intro / Sidebar Column */}
           <div className={introColClass}>
@@ -481,16 +649,34 @@ export default function ResumeSection({
                   </Button>
                 </div>
               )}
+
+              {hasStack && (
+                <div className="pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-border-100/50 dark:border-border-200/40 space-y-4">
+                  {stackLabel && (
+                    <div>
+                      <Label
+                        variant="brand"
+                        cslp={stackLabelCslp}
+                      >
+                        {stackLabel}
+                      </Label>
+                    </div>
+                  )}
+                  <ResumeStackTags tags={tags} meta={meta} />
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Timeline Column */}
+          {/* Timeline / Content Column */}
           <div className={timelineColClass}>
-            <ExperienceTimelineList
-              companies={companies}
-              sectionTitle={timelineSubtitle}
-              meta={meta}
-            />
+            {companies.length > 0 && (
+              <ExperienceTimelineList
+                companies={companies}
+                sectionTitle={timelineSubtitle}
+                meta={meta}
+              />
+            )}
           </div>
         </div>
       </div>

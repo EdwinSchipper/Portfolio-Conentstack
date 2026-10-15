@@ -7,10 +7,13 @@ import {
   GridContentRight,
   GridCard as GridCardType,
   TimelineCompany,
+  SocialLink,
+  GridSocials as GridSocialsType,
   CSLPAttribute,
 } from "@/lib/types";
-import { Button, Label } from "@/components/ui";
+import { Button, Label, Icon } from "@/components/ui";
 import { getContainerClass, getColorModeClass } from "@/lib/layout";
+import { ResumeStackTags, extractStackTags } from "./ResumeSection";
 
 export const colSpans: Record<string, string> = {
   "1": "col-span-12 lg:col-span-1",
@@ -278,6 +281,96 @@ export function GridTimeline({
   );
 }
 
+export interface GridSocialsProps {
+  socials?: GridSocialsType | SocialLink[] | null;
+  className?: string;
+  cslp?: Record<string, any>;
+}
+
+export function GridSocials({
+  socials,
+  className = "",
+  cslp,
+}: GridSocialsProps) {
+  if (!socials) return null;
+
+  // Handle both a wrapper object { label, links/items } and a direct array of links
+  const rawLinks = Array.isArray(socials)
+    ? socials
+    : Array.isArray((socials as any).links)
+    ? (socials as any).links
+    : Array.isArray((socials as any).items)
+    ? (socials as any).items
+    : [];
+
+  const label = !Array.isArray(socials) ? (socials as any).label : undefined;
+
+  if (rawLinks.length === 0) return null;
+
+  return (
+    <div
+      {...cslp}
+      className={`flex items-center gap-4 sm:gap-6 pt-2 font-content ${className}`}
+    >
+      {label && (
+        <span
+          {...((socials as any).$ && (socials as any).$.label)}
+          className="text-mediumM sm:text-small font-medium text-content-100/80 dark:text-content-200/80 shrink-0"
+        >
+          {label}
+        </span>
+      )}
+
+      <div className="flex items-center gap-3 md:gap-4 flex-wrap">
+        {rawLinks.map((item: SocialLink, idx: number) => {
+          const rawLink = item.link;
+          const href =
+            typeof rawLink === "object" && rawLink !== null
+              ? (rawLink as any).href || (rawLink as any).url
+              : rawLink;
+
+          if (!href) return null;
+
+          const rawIcon = item.icon || "link";
+          // Normalize common icon aliases
+          const lower = String(rawIcon).toLowerCase().trim();
+          const iconName =
+            lower === "email" || lower === "mail"
+              ? "envelope"
+              : lower === "phone" || lower === "tel" || lower === "mobiel" || lower === "telefoon"
+              ? "device-phone-mobile"
+              : lower === "linkedin"
+              ? "link"
+              : rawIcon;
+
+          const title = item.title || (item as any).label;
+          const isExternal =
+            typeof href === "string" &&
+            (href.startsWith("http://") || href.startsWith("https://"));
+
+          return (
+            <a
+              key={item._metadata?.uid || `social-${idx}`}
+              href={href}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer" : undefined}
+              aria-label={title || `Social link ${iconName}`}
+              title={title}
+              className="group w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-accent7-900 dark:bg-accent8-900 border-2 border-accent7-200/50 dark:border-accent8-300/40 ring-4 ring-accent7-900/15 dark:ring-accent8-900/25 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md cursor-pointer"
+              {...(item.$ && (item.$.icon || item.$.link))}
+            >
+              <Icon
+                name={iconName}
+                className="w-5 h-5 md:w-6 md:h-6 text-title-200 dark:text-title-100 stroke-[1.75]"
+              />
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export interface GridColumnProps {
   span?: number | string;
   data?: GridContentLeft | GridContentRight;
@@ -318,6 +411,24 @@ export function GridColumn({
       data.resume_timeline ||
       (data as any).timeline ||
       (data as any).career_timeline;
+    const socials =
+      (data as any).socials ||
+      (data as any).social_links ||
+      (data as any).connect;
+    const stack = (data as any).stack || (data as any).Stack;
+    const stackLabel =
+      (typeof stack === "object" && !Array.isArray(stack)
+        ? stack?.stack_label || stack?.Stack_label || stack?.stackLabel || stack?.label
+        : undefined) ||
+      (data as any).stack_label ||
+      (data as any).Stack_label ||
+      (data as any).stackLabel;
+    const stackLabelCslp =
+      (typeof stack === "object" &&
+        stack?.$ &&
+        (stack.$.stack_label || stack.$.Stack_label || stack.$.stackLabel || stack.$.label)) ||
+      cslp?.stack_label ||
+      cslp?.["stack.stack_label"];
 
     const cslp = data.$;
 
@@ -349,6 +460,22 @@ export function GridColumn({
             />
           )}
 
+          {stack && (
+            <div className="pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-border-100/50 dark:border-border-200/40 space-y-4">
+              {stackLabel && (
+                <div>
+                  <Label variant="brand" cslp={stackLabelCslp}>
+                    {stackLabel}
+                  </Label>
+                </div>
+              )}
+              <ResumeStackTags
+                tags={extractStackTags(stack)}
+                meta={cslp}
+              />
+            </div>
+          )}
+
           {image?.url && (
             <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border-dashed border-border-100 dark:border-border-200">
               <Image
@@ -360,6 +487,13 @@ export function GridColumn({
                 {...(image?.$ && image?.$.url)}
               />
             </div>
+          )}
+
+          {socials && (
+            <GridSocials
+              socials={socials}
+              cslp={cslp && (cslp.socials || cslp.social_links || cslp.connect)}
+            />
           )}
 
           {quote && (
