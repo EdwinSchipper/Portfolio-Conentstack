@@ -8,6 +8,7 @@ import ResumeSection from "./ResumeSection";
 import GridSection from "./GridSection";
 import CardSection from "./CardSection";
 import NumberedSection from "./NumberedSection";
+import HeroBlock from "./HeroBlock";
 
 interface BlockRendererProps {
   block: Blocks;
@@ -25,6 +26,21 @@ export default function BlockRenderer({
   pagePreviewAttr,
 }: BlockRendererProps) {
   const blockPreviewAttr = pagePreviewAttr?.[`blocks__${index}`];
+
+  const heroData =
+    block.hero ||
+    block.hero_block ||
+    block.hero_section ||
+    (block as any).Hero ||
+    (block as any).heroBlock;
+  if (heroData) {
+    return (
+      <HeroBlock
+        data={heroData}
+        previewAttr={blockPreviewAttr}
+      />
+    );
+  }
 
   if (block.featured_projects) {
     return (
@@ -97,10 +113,15 @@ export default function BlockRenderer({
     );
   }
 
-  if (block.card_section) {
+  const cardData =
+    block.card_section ||
+    (block as any).Card_Section ||
+    (block as any).cardSection ||
+    (block as any).CardSection;
+  if (cardData) {
     return (
       <CardSection
-        data={block.card_section}
+        data={cardData}
         previewAttr={blockPreviewAttr}
       />
     );

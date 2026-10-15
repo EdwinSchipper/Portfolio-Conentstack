@@ -8,4 +8,5 @@ export { default as GridSection } from "./GridSection";
 export { default as NumberedSection } from "./NumberedSection";
 export { default as ResumeSection } from "./ResumeSection";
 export { default as ServiceCardBlock } from "./ServiceCardBlock";
+export { default as HeroBlock } from "./HeroBlock";
 

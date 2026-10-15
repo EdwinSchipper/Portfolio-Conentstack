@@ -528,7 +528,69 @@ export interface NumberedSectionBlock {
   [key: string]: any;
 }
 
+export interface HeroMicroLink {
+  title?: string;
+  label?: string;
+  to?: string;
+  href?: string;
+  link?: string | Link;
+  external?: boolean;
+  title_attr?: string;
+  _metadata?: { uid: string };
+  $?: {
+    title?: CSLPFieldMapping;
+    label?: CSLPFieldMapping;
+    to?: CSLPFieldMapping;
+    href?: CSLPFieldMapping;
+    link?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
+export interface HeroBlock {
+  label?: string;
+  title?: string;
+  text?: string;
+  description?: string;
+  micro_links?: HeroMicroLink[];
+  stats?: HeroMicroLink[];
+  cta_button?: Link;
+  button?: Link;
+  cta_note?: string;
+  image_1?: File;
+  image_ux?: File;
+  image_2?: File;
+  image_vormgeving?: File;
+  image_3?: File;
+  image_development?: File;
+  _metadata?: { uid: string };
+  $?: {
+    label?: CSLPFieldMapping;
+    title?: CSLPFieldMapping;
+    text?: CSLPFieldMapping;
+    description?: CSLPFieldMapping;
+    micro_links?: CSLPFieldMapping;
+    stats?: CSLPFieldMapping;
+    cta_button?: CSLPFieldMapping;
+    button?: CSLPFieldMapping;
+    cta_note?: CSLPFieldMapping;
+    image_1?: CSLPFieldMapping;
+    image_ux?: CSLPFieldMapping;
+    image_2?: CSLPFieldMapping;
+    image_vormgeving?: CSLPFieldMapping;
+    image_3?: CSLPFieldMapping;
+    image_development?: CSLPFieldMapping;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface Blocks extends SystemFields {
+  hero?: HeroBlock;
+  hero_block?: HeroBlock;
+  Hero?: HeroBlock;
+  hero_section?: HeroBlock;
   block?: Block;
   service_card?: ServiceCardBlock;
   featured_projects?: FeaturedProjectsBlock;
@@ -540,6 +602,9 @@ export interface Blocks extends SystemFields {
   resume_grid_section?: ResumeSectionBlock;
   grid_section?: GridSectionBlock;
   card_section?: CardSectionBlock;
+  Card_Section?: CardSectionBlock;
+  cardSection?: CardSectionBlock;
+  CardSection?: CardSectionBlock;
   numbered_section?: NumberedSectionBlock;
   numbered_list?: NumberedSectionBlock;
   cta_resume?: CtaBlock;

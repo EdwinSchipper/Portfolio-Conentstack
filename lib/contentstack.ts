@@ -69,24 +69,39 @@ export function initLivePreview() {
     },
   });
 }
+// Function to fetch the homepage entry
+export async function getHomePage() {
+  const result = await stack
+    .contentType("homepage")
+    .entry()
+    .includeReference(["blocks.featured_projects.projects"])
+    .find<Page>();
+
+  const entry = result.entries?.[0];
+  if (entry) {
+    if (isPreview) {
+      contentstack.Utils.addEditableTags(entry, "homepage", true);
+    }
+    return entry;
+  }
+}
+
 // Function to fetch page data based on the URL
 export async function getPage(url: string) {
   const result = await stack
-    .contentType("page") // Specifying the content type as "page"
-    .entry() // Accessing the entry
-    .includeReference(["blocks.featured_projects.projects"]) // Populating referenced portfolio items
-    .query() // Creating a query
-    .where("url", QueryOperation.EQUALS, url) // Filtering entries by URL
-    .find<Page>(); // Executing the query and expecting a result of type Page
+    .contentType("page")
+    .entry()
+    .includeReference(["blocks.featured_projects.projects"])
+    .query()
+    .where("url", QueryOperation.EQUALS, url)
+    .find<Page>();
 
-  if (result.entries) {
-    const entry = result.entries[0]; // Getting the first entry from the result
-
+  const entry = result.entries?.[0];
+  if (entry) {
     if (isPreview) {
-      contentstack.Utils.addEditableTags(entry, 'page', true); // Adding editable tags for live preview if enabled
+      contentstack.Utils.addEditableTags(entry, "page", true);
     }
-
-    return entry; // Returning the fetched entry
+    return entry;
   }
 }
 

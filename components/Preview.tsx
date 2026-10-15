@@ -6,11 +6,12 @@ import { useState, useEffect, useCallback } from "react";
 // Importing Contentstack Live Preview utilities for real-time content updates
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 // Importing functions to fetch page data and initialize live preview
-import { getPage, initLivePreview } from "@/lib/contentstack";
+import { getPage, getHomePage, initLivePreview } from "@/lib/contentstack";
 // Importing Page type definition with alias to avoid naming conflicts
 import type { Page as PageProps } from "@/lib/types";
 // Importing the Page component to render the content
 import Page from "./Page";
+import HomePage from "./HomePage";
 
 // Loading state component displayed while content is being fetched
 const LoadingState = () => (
@@ -23,10 +24,14 @@ const LoadingState = () => (
 export default function Preview({
   path,
   initialPage,
+  isHome,
 }: {
   path: string;
   initialPage?: PageProps;
+  isHome?: boolean;
 }) {
+  const isHomePage = isHome ?? (path === "/" || path === "");
+
   // Seed state with the server-fetched entry so the SSR'd HTML contains the
   // real content and back/forward navigation restores a populated page.
   const [page, setPage] = useState<PageProps | undefined>(initialPage);
@@ -34,9 +39,9 @@ export default function Preview({
   // Memoized function to fetch content data based on the current path
   // useCallback prevents unnecessary re-renders when path doesn't change
   const getContent = useCallback(async () => {
-    const data = await getPage(path); // Fetch page data from Contentstack
+    const data = isHomePage ? await getHomePage() : await getPage(path); // Fetch page data from Contentstack
     setPage(data); // Update state with fetched data
-  }, [path]); // Dependency array - function recreated only when path changes
+  }, [path, isHomePage]); // Dependency array - function recreated only when path changes
 
   // Effect hook to initialize live preview and set up content change listener
   useEffect(() => {
@@ -56,5 +61,5 @@ export default function Preview({
     return <LoadingState />;
   }
 
-  return <Page page={page} />;
+  return isHomePage ? <HomePage page={page} /> : <Page page={page} />;
 }
