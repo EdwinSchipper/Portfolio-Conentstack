@@ -433,7 +433,7 @@ export function GridColumn({
           )}
 
           {image?.url && (
-            <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border-dashed border-border-100 dark:border-border-200">
+            <div className="relative w-full aspect-[4/3] rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border-dashed border-border-100 dark:border-border-200">
               <Image
                 src={image.url}
                 alt={image.title || title || "Image"}

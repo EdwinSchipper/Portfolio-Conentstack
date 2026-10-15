@@ -134,7 +134,7 @@ export function CardImageTag({
     >
       {/* Foto met afgeronde hoeken */}
       {image?.url && (
-        <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4 shadow-sm bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200">
+        <div className="relative w-full aspect-[16/10] rounded-md overflow-hidden mb-4 shadow-sm bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200">
           <Image
             src={image.url}
             alt={image.title || (typeof tag === "string" ? tag : "Card image")}

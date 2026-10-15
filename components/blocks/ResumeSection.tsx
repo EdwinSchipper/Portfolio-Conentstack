@@ -244,7 +244,7 @@ export function ExperienceTimelineList({
               {/* Company Logo Monogram Box */}
               <div
                 aria-hidden="true"
-                className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200 shadow-sm flex items-center justify-center font-playfull font-black text-2xl md:text-3xl text-title-100 dark:text-title-200 select-none z-10"
+                className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-md bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200 shadow-sm flex items-center justify-center font-playfull font-black text-2xl md:text-3xl text-title-100 dark:text-title-200 select-none z-10"
               >
                 {getInitial(company.company_name)}
               </div>
@@ -289,7 +289,7 @@ export function ExperienceTimelineList({
 
                       {isCard ? (
                         /* Prominent Primary Role Card */
-                        <div className="bg-background-200 dark:bg-background-900 rounded-2xl border border-border-100 dark:border-border-200 p-6 md:p-8 shadow-sm hover:shadow-md transition duration-200">
+                        <div className="bg-background-200 dark:bg-background-900 rounded-md border border-border-100 dark:border-border-200 p-6 md:p-8 shadow-sm hover:shadow-md transition duration-200">
                           <div className="flex flex-wrap items-center justify-between gap-3 mb-1">
                             {role.title && (
                               <h5
@@ -378,7 +378,7 @@ export function ExperienceTimelineList({
                       {displaySecondaryRoles.map((secRole, sIdx) => (
                         <div
                           key={secRole._metadata?.uid || `sec-role-${sIdx}`}
-                          className="bg-background-200 dark:bg-background-900 rounded-2xl border border-border-100 dark:border-border-200 p-5 md:p-6 shadow-sm hover:shadow-md transition duration-200 flex flex-col"
+                          className="bg-background-200 dark:bg-background-900 rounded-md border border-border-100 dark:border-border-200 p-5 md:p-6 shadow-sm hover:shadow-md transition duration-200 flex flex-col"
                         >
                           {secRole.title && (
                             <h6

@@ -30,14 +30,13 @@ export default function ContentBlock({
       className={`col-span-full w-full py-12 md:py-20 font-content ${className}`}
     >
       <div
-        className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col items-center gap-8 md:gap-12 lg:gap-16 ${
-          isImageLeft ? "md:flex-row" : "md:flex-row-reverse"
-        }`}
+        className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col items-center gap-8 md:gap-12 lg:gap-16 ${isImageLeft ? "md:flex-row" : "md:flex-row-reverse"
+          }`}
       >
         {/* Media / Image */}
         {data.image?.url && (
           <div className="w-full md:w-1/2">
-            <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200">
+            <div className="relative w-full aspect-[4/3] rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200">
               <Image
                 src={data.image.url}
                 alt={data.image.title || data.title || "Content image"}
