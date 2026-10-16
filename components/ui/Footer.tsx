@@ -1,41 +1,68 @@
-import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { Button, Label } from "@/components/ui";
 import ColorModeSelector from "./ColorModeSelector";
 
-export const contactLinks = [
+export interface FooterLink {
+  label: string;
+  href: string;
+  ariaLabel?: string;
+  external?: boolean;
+}
+
+export interface FooterSection {
+  title: string;
+  links: FooterLink[];
+}
+
+export const footerSections: FooterSection[] = [
   {
-    label: "edwin.schipper@gmail.com",
-    href: "mailto:edwin.schipper@gmail.com",
-    ariaLabel: "Stuur een e-mail naar edwin.schipper@gmail.com",
-    external: false,
+    title: "Expertise",
+    links: [
+      { label: "Web Development", href: "/expertise/development" },
+      { label: "Grafische vormgeving", href: "/expertise/vormgeving" },
+      { label: "UX & Webdesign", href: "/expertise/ux" },
+    ],
   },
   {
-    label: "+31 (0)6 - 17165391",
-    href: "tel:+31617165391",
-    ariaLabel: "Bel +31 6 17165391",
-    external: false,
+    title: "Pagina's",
+    links: [
+      { label: "Over mij", href: "/overmij" },
+      { label: "Curriculum Vitae", href: "/resume" },
+      { label: "Portfolio", href: "/portfolio" },
+    ],
   },
   {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/edwin-schipper/",
-    ariaLabel: "Bekijk LinkedIn profiel",
-    external: true,
+    title: "Contact",
+    links: [
+      {
+        label: "edwin.schipper@gmail.com",
+        href: "mailto:edwin.schipper@gmail.com",
+        ariaLabel: "Stuur een e-mail naar edwin.schipper@gmail.com",
+      },
+      {
+        label: "+31 (0)6 - 17165391",
+        href: "tel:+31617165391",
+        ariaLabel: "Bel +31 6 17165391",
+      },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/edwin-schipper/",
+        ariaLabel: "Bekijk LinkedIn profiel",
+        external: true,
+      },
+    ],
   },
 ];
 
-export const pageLinks = [
-  { href: "/overmij", label: "Over mij" },
-  { href: "/resume", label: "Curriculum Vitae" },
-  { href: "/portfolio", label: "Portfolio" },
-];
+// Backwards-compatible exports
+export const expertiseLinks = footerSections[0].links;
+export const pageLinks = footerSections[1].links;
+export const contactLinks = footerSections[2].links;
 
-export const expertiseLinks = [
-  { href: "/expertise/development", label: "Web Development" },
-  { href: "/expertise/vormgeving", label: "Grafisch Vormgeving" },
-  { href: "/expertise/ux", label: "UX & Webdesign" },
+const legalLinks: FooterLink[] = [
+  { label: "Privacy", href: "/privacy" },
+  { label: "Algemene Voorwaarden", href: "/algemene-voorwaarden" },
 ];
 
 export default function Footer() {
@@ -50,13 +77,13 @@ export default function Footer() {
             <div className="flex flex-col lg:flex-row lg:items-end justify-between pb-14 md:pb-20">
               <div>
                 <Label variant="brand">Laten we kennismaken</Label>
-                <h6 className="text-title_1M md:text-title_1 font-content text-title-100 dark:text-title-200 font-bold max-w-3xl mt-8 md:mt-10">
+                <h2 className="text-title_1M md:text-title_1 font-content text-title-100 dark:text-title-200 font-bold max-w-3xl mt-8 md:mt-10">
                   Benieuwd wat ik{" "}
                   <span className="font-serif italic text-accent7-900 dark:text-accent8-900 font-medium">
                     voor jouw project
                   </span>{" "}
                   kan betekenen?
-                </h6>
+                </h2>
               </div>
               <div className="shrink-0 mt-8 md:mt-14 lg:mt-0">
                 <Button
@@ -73,84 +100,17 @@ export default function Footer() {
             {/* Separator */}
             <div className="w-full h-[1px] bg-border-100 dark:bg-border-200 mb-14 md:mb-20" />
 
-            {/* Nav Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-              {/* Optional Brand Column (kept hidden as in original Nuxt template) */}
-              <div className="lg:col-span-5 xl:col-span-5 flex-col gap-6 lg:gap-6 hidden">
-                <Link href="/" className="inline-block" aria-label="Home">
-                  <Image
-                    className="hidden h-10 lg:h-10 w-auto dark:block"
-                    src="/img/logo-white.svg"
-                    alt="Edwin Schipper logo"
-                    width={140}
-                    height={40}
-                  />
-                  <Image
-                    className="block h-10 lg:h-10 w-auto dark:hidden"
-                    src="/img/logo-black.svg"
-                    alt="Edwin Schipper logo"
-                    width={140}
-                    height={40}
-                  />
-                </Link>
-                <p className="text-mediumM sm:text-medium text-content-100 dark:text-content-200 text-pretty font-normal max-w-sm leading-relaxed">
-                  Geen gescheiden werelden, maar één vloeiend proces waarin design en code elkaar versterken. Ik zet twintig jaar ervaring in om jouw visie technisch en visueel te realiseren.
-                </p>
-              </div>
-
-              {/* Navigation Columns */}
-              <div className="lg:col-span-9 xl:col-span-8">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-8 lg:gap-4">
-                  {/* Expertise */}
-                  <div>
-                    <span className="block font-content text-accent7-900 dark:text-accent8-900 text-label_smallM md:text-label_small font-semibold tracking-wider uppercase mb-4 lg:mb-5">
-                      Expertise
-                    </span>
-                    <nav aria-label="Footer expertise navigatie">
-                      <ul className="space-y-2 text-mediumM lg:text-medium font-normal text-content-100 dark:text-content-200">
-                        {expertiseLinks.map((item) => (
-                          <li key={item.label}>
-                            <Link
-                              href={item.href}
-                              className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-title-100 dark:hover:text-title-200 hover:underline"
-                            >
-                              {item.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </nav>
-                  </div>
-
-                  {/* Pagina's */}
-                  <div>
-                    <span className="block font-content text-accent7-900 dark:text-accent8-900 text-label_smallM md:text-label_small font-semibold tracking-wider uppercase mb-4 lg:mb-5">
-                      Pagina&apos;s
-                    </span>
-                    <nav aria-label="Footer navigatie">
-                      <ul className="space-y-2 text-mediumM lg:text-medium font-normal text-content-100 dark:text-content-200">
-                        {pageLinks.map((item) => (
-                          <li key={item.label}>
-                            <Link
-                              href={item.href}
-                              className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-title-100 dark:hover:text-title-200 hover:underline"
-                            >
-                              {item.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </nav>
-                  </div>
-
-                  {/* Contact */}
-                  <div>
-                    <span className="block font-content text-accent7-900 dark:text-accent8-900 text-label_smallM md:text-label_small font-semibold tracking-wider uppercase mb-4 lg:mb-5">
-                      Contact
-                    </span>
-                    <ul className="space-y-2 text-mediumM lg:text-medium font-normal text-content-100 dark:text-content-200">
-                      {contactLinks.map((item) => (
-                        <li key={item.label}>
+            {/* Navigation Columns */}
+            <nav aria-label="Footer navigatie" className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-12 max-w-4xl">
+              {footerSections.map((section) => (
+                <div key={section.title}>
+                  <span className="block font-content text-accent7-900 dark:text-accent8-900 text-label_smallM md:text-label_small font-semibold tracking-wider uppercase mb-4 lg:mb-5">
+                    {section.title}
+                  </span>
+                  <ul className="space-y-2 text-mediumM lg:text-medium font-normal text-content-100 dark:text-content-200">
+                    {section.links.map((item) => (
+                      <li key={item.label}>
+                        {item.external || item.href.startsWith("mailto:") || item.href.startsWith("tel:") ? (
                           <a
                             href={item.href}
                             target={item.external ? "_blank" : undefined}
@@ -163,48 +123,35 @@ export default function Footer() {
                               <ArrowUpRightIcon className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-70 group-hover:translate-x-0 transition-all duration-200" />
                             )}
                           </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                        ) : (
+                          <Link
+                            href={item.href}
+                            className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-title-100 dark:hover:text-title-200 hover:underline"
+                          >
+                            {item.label}
+                          </Link>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-            </div>
+              ))}
+            </nav>
 
             {/* Bottom Bar */}
-            <div className="border-t border-border-100 dark:border-border-200 pt-6 lg:pt-10 flex flex-col lg:flex-row items-start lg:items-center justify-start gap-3 lg:gap-3 mt-14 md:mt-20">
-              <div>
-                <p className="text-noteM md:text-note text-content-100/70 dark:text-content-200/50 font-normal">
-                  <span>© {currentYear} Edwin Schipper</span>
-                  <span className="hidden sm:inline mx-1.5 text-border-100 dark:text-border-200" />
-                </p>
-              </div>
-
-              <div>
-                <p className="text-noteM md:text-note text-content-100/70 dark:text-content-200/50 font-normal">
+            <div className="border-t border-border-100 dark:border-border-200 pt-6 lg:pt-10 flex flex-col lg:flex-row items-start lg:items-center justify-start gap-3 lg:gap-6 mt-14 md:mt-20 text-noteM md:text-note text-content-100/70 dark:text-content-200/50 font-normal">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <span>© {currentYear} Edwin Schipper</span>
+                {legalLinks.map((link) => (
                   <Link
-                    href="/privacy"
+                    key={link.label}
+                    href={link.href}
                     className="font-semibold hover:text-title-100 dark:hover:text-title-200 transition-colors duration-200 hover:underline"
                   >
-                    Privacy
+                    {link.label}
                   </Link>
-                </p>
-              </div>
-
-              <div>
-                <p className="text-noteM md:text-note text-content-100/70 dark:text-content-200/50 font-normal">
-                  <Link
-                    href="/algemene-voorwaarden"
-                    className="font-semibold hover:text-title-100 dark:hover:text-title-200 transition-colors duration-200 hover:underline"
-                  >
-                    Algemene Voorwaarden
-                  </Link>
-                </p>
-              </div>
-
-              <div>
-                <p className="text-noteM md:text-note text-content-100/70 dark:text-content-200/50 font-normal text-balance">
-                  <span className="hidden sm:inline mx-1.5 text-border-100 dark:text-border-200" />
+                ))}
+                <span className="text-balance">
                   Ontworpen in{" "}
                   <a
                     href="https://www.figma.com/nl-nl/"
@@ -232,10 +179,10 @@ export default function Footer() {
                   >
                     Tailwind
                   </a>
-                </p>
+                </span>
               </div>
 
-              <div className="flex items-center gap-4 shrink-0 lg:ml-auto">
+              <div className="flex items-center gap-4 shrink-0 lg:ml-auto mt-4 lg:mt-0">
                 <a
                   href="https://github.com/EdwinSchipper"
                   target="_blank"
