@@ -223,7 +223,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Portfolio", href: "/#portfolio" },
+            { label: "Portfolio", href: "/portfolio" },
             { label: companyOrTitle, active: true },
           ]}
           currentTitleAttr={item?.$ && (item?.$.company || item?.$.title)}
@@ -356,7 +356,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
             className="flex gap-4 lg:gap-x-4 text-content-100/70 dark:text-content-200/70 text-smallM md:text-small font-content font-normal w-fit"
           >
             <Link
-              href="/#portfolio"
+              href="/portfolio"
               className="inline-flex items-center gap-2 hover:text-title-100 dark:hover:text-title-200 hover:gap-x-3 transition-all duration-200 font-bold underline"
             >
               <Icon name="arrow-long-left" size="sm" />
