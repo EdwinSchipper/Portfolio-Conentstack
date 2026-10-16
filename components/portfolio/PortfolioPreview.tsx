@@ -34,8 +34,8 @@ export default function PortfolioPreview({
 
   if (!item) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh]">
-        <p className="text-gray-500 animate-pulse">Portfolio item laden...</p>
+      <div className="flex flex-col items-center justify-center min-h-[50vh] font-content text-content-100/60 dark:text-content-200/60">
+        <p className="animate-pulse">Portfolio item laden...</p>
       </div>
     );
   }

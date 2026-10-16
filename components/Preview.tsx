@@ -8,16 +8,16 @@ import ContentstackLivePreview from "@contentstack/live-preview-utils";
 // Importing functions to fetch page data and initialize live preview
 import { getPage, getHomePage, initLivePreview } from "@/lib/contentstack";
 // Importing Page and Homepage type definitions
-import type { Page, Homepage } from "@/lib/types";
-type PageProps = Page | Homepage;
+import type { Page as PageData, Homepage } from "@/lib/types";
+type PageProps = PageData | Homepage;
 // Importing the Page component to render the content
 import Page from "./Page";
 import HomePage from "./HomePage";
 
 // Loading state component displayed while content is being fetched
 const LoadingState = () => (
-  <div className="flex flex-col items-center justify-center h-screen">
-    <p>Loading...</p>
+  <div className="flex flex-col items-center justify-center min-h-[50vh] font-content text-content-100/60 dark:text-content-200/60">
+    <p className="animate-pulse">Pagina laden...</p>
   </div>
 );
 
@@ -65,6 +65,6 @@ export default function Preview({
   return isHomePage ? (
     <HomePage page={page as Homepage} />
   ) : (
-    <Page page={page as Page} />
+    <Page page={page as PageData} />
   );
 }
