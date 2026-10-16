@@ -103,6 +103,7 @@ export interface CtaBlock {
   image?: File | null;
   image_light?: File | null;
   image_dark?: File | null;
+  image_dark_mode?: File | null;
   image_alt?: string;
   button_cta?: Link;
   button_to?: string;
@@ -117,6 +118,7 @@ export interface CtaBlock {
     image?: CSLPFieldMapping;
     image_light?: CSLPFieldMapping;
     image_dark?: CSLPFieldMapping;
+    image_dark_mode?: CSLPFieldMapping;
     button_cta?: CSLPFieldMapping;
     [key: string]: any;
   };
@@ -437,6 +439,7 @@ export interface GridSectionBlock {
 }
 
 export interface CardSectionItem {
+  icon?: string;
   image?: File;
   card_title?: string;
   title?: string;
@@ -447,6 +450,7 @@ export interface CardSectionItem {
   card_variant?: "Default" | "Image Tag" | string;
   _metadata?: { uid: string };
   $?: {
+    icon?: CSLPFieldMapping;
     image?: CSLPFieldMapping;
     card_title?: CSLPFieldMapping;
     title?: CSLPFieldMapping;

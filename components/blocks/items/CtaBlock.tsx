@@ -30,8 +30,8 @@ export default function CtaBlock({
   const buttonHref = data.button_cta?.href || data.button_to || (data as any).to;
   const buttonText = data.button_cta?.title || data.button_text || "Bekijk CV";
 
-  const imageLight = data.image_light || data.image;
-  const imageDark = data.image_dark;
+  const imageLight = data.image || data.image_light;
+  const imageDark = data.image_dark_mode || data.image_dark;
   const imageAlt = data.image_alt || imageLight?.title || imageDark?.title || title || "CTA image";
 
   const meta = data.$;
@@ -110,9 +110,10 @@ export default function CtaBlock({
                 width={224}
                 height={224}
                 loading="lazy"
-                className={`w-36 sm:w-48 lg:w-56 h-auto transition-transform duration-500 group-hover:scale-105 origin-bottom object-contain ${imageDark?.url ? "block dark:hidden" : "block"
-                  }`}
-                {...(imageLight?.$?.url || (meta && (meta.image_light || meta.image)))}
+                className={`w-36 sm:w-48 lg:w-56 h-auto transition-transform duration-500 group-hover:scale-105 origin-bottom object-contain ${
+                  imageDark?.url ? "block dark:hidden" : "block"
+                }`}
+                {...(imageLight?.$?.url || (meta && (meta.image || meta.image_light)))}
               />
             )}
             {imageDark?.url && (
@@ -122,9 +123,10 @@ export default function CtaBlock({
                 width={224}
                 height={224}
                 loading="lazy"
-                className={`w-36 sm:w-48 lg:w-56 h-auto transition-transform duration-500 group-hover:scale-105 origin-bottom object-contain ${imageLight?.url ? "hidden dark:block" : "block"
-                  }`}
-                {...(imageDark?.$?.url || (meta && meta.image_dark))}
+                className={`w-36 sm:w-48 lg:w-56 h-auto transition-transform duration-500 group-hover:scale-105 origin-bottom object-contain ${
+                  imageLight?.url ? "hidden dark:block" : "block"
+                }`}
+                {...(imageDark?.$?.url || (meta && (meta.image_dark_mode || meta.image_dark)))}
               />
             )}
           </div>

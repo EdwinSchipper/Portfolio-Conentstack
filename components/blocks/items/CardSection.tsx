@@ -1,10 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import { CardSectionBlock, CardSectionItem, CSLPAttribute } from "@/lib/types";
-import { Button, Label } from "@/components/ui";
+import { Button, Label, Icon } from "@/components/ui";
 import { getContainerClass, getColorModeClass } from "@/lib/layout";
 
 export interface CardBoxProps {
+  icon?: string;
   title?: React.ReactNode;
   tag?: React.ReactNode;
   text?: React.ReactNode;
@@ -15,6 +16,7 @@ export interface CardBoxProps {
 }
 
 export function CardBox({
+  icon,
   title,
   tag,
   text,
@@ -37,11 +39,20 @@ export function CardBox({
     >
       <div className="relative z-10 flex flex-col h-auto md:h-full">
         <div className="flex gap-5 sm:gap-8 flex-col w-full">
-          {/* Circle Icon */}
-          <div className="service-icon sm:w-[70px] sm:h-[70px] w-[60px] h-[60px] shrink-0 rounded-full border-[6px] border-accent7-300 dark:border-accent8-300 bg-accent7-900 dark:bg-accent8-900 flex items-center justify-center">
-            <span className="text-accent7-100 dark:text-accent8-100 font-bold text-sm select-none">
-              ✦
-            </span>
+          {/* Circular Coral Badge with Icon */}
+          <div
+            {...(cslp && cslp.icon)}
+            className="service-icon w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-accent7-900 dark:bg-accent8-900 border-2 border-accent7-200/50 dark:border-accent8-300/40 ring-4 ring-accent7-900/15 dark:ring-accent8-900/25 flex items-center justify-center transition-transform duration-200 group-hover:scale-105"
+          >
+            <Icon
+              name={icon || "sparkles"}
+              className="w-5 h-5 md:w-6 md:h-6 text-title-200 dark:text-title-100 stroke-[1.75]"
+              fallback={
+                <span className="text-accent7-100 dark:text-accent8-100 font-bold text-sm select-none">
+                  ✦
+                </span>
+              }
+            />
           </div>
 
           {/* Titel & Tags */}
@@ -186,6 +197,7 @@ export function CardImageTag({
 
 export interface CardItemProps {
   card?: CardSectionItem;
+  icon?: string;
   variant?: "default" | "image_tag" | string;
   image?: { url: string; title?: string; $?: any };
   tag?: React.ReactNode;
@@ -200,6 +212,7 @@ export interface CardItemProps {
 
 export function CardItem({
   card,
+  icon,
   variant,
   image,
   tag,
@@ -211,6 +224,7 @@ export function CardItem({
   className = "",
   cslp,
 }: CardItemProps) {
+  const cardIcon = icon || card?.icon;
   const cardImage = image || card?.image;
   const cardTitle = title || card?.card_title || card?.title;
   const cardTag = tag || card?.tag;
@@ -224,6 +238,7 @@ export function CardItem({
   if (isDefaultBox) {
     return (
       <CardBox
+        icon={cardIcon}
         title={cardTitle}
         tag={cardTag}
         text={cardText}

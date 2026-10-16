@@ -19,9 +19,9 @@ export interface NavItem {
 }
 
 export const expertiseItems: NavItem[] = [
-  { name: "Front-end development", href: "/expertise/development" },
   { name: "Grafische vormgeving", href: "/expertise/vormgeving" },
   { name: "UX & Webdesign", href: "/expertise/ux" },
+  { name: "Web development", href: "/expertise/development" },
 ];
 
 export const mainNavItems: NavItem[] = [
@@ -37,19 +37,17 @@ const baseNavClass =
   "flex items-center justify-center px-4 h-11 lg:h-10 rounded-md border border-transparent transition-all duration-300 text-smallM lg:text-medium font-medium hover:bg-accent7-400/20 dark:hover:bg-accent7-400/5 hover:text-title-100 dark:hover:text-title-200";
 
 function getDesktopNavLinkClass(isActive: boolean) {
-  return `${baseNavClass} ${
-    isActive
-      ? "text-accent7-900 dark:text-title-200"
-      : "text-content-100 dark:text-content-200"
-  }`;
+  return `${baseNavClass} ${isActive
+    ? "text-accent7-900 dark:text-title-200"
+    : "text-content-100 dark:text-content-200"
+    }`;
 }
 
 function getMobileNavLinkClass(isActive: boolean) {
-  return `py-2 px-3 rounded-md text-small font-medium transition-colors ${
-    isActive
-      ? "text-accent7-900 dark:text-title-200 bg-background-100 dark:bg-background-800 font-semibold"
-      : "text-content-100 dark:text-content-200 hover:text-title-100 dark:hover:text-title-200 hover:bg-background-100 dark:hover:bg-background-800"
-  }`;
+  return `py-2 px-3 rounded-md text-small font-medium transition-colors ${isActive
+    ? "text-accent7-900 dark:text-title-200 bg-background-100 dark:bg-background-800 font-semibold"
+    : "text-content-100 dark:text-content-200 hover:text-title-100 dark:hover:text-title-200 hover:bg-background-100 dark:hover:bg-background-800"
+    }`;
 }
 
 /**
@@ -179,9 +177,8 @@ export default function Header() {
                 >
                   <span>Expertise</span>
                   <ChevronDownIcon
-                    className={`size-5 flex-none text-accent7-800 dark:text-accent8-800 group-hover:translate-y-px transition-transform duration-300 -mr-1 ml-0.5 ${
-                      isExpertiseOpen ? "rotate-180" : ""
-                    }`}
+                    className={`size-5 flex-none text-accent7-800 dark:text-accent8-800 group-hover:translate-y-px transition-transform duration-300 -mr-1 ml-0.5 ${isExpertiseOpen ? "rotate-180" : ""
+                      }`}
                     aria-hidden="true"
                   />
                 </button>
