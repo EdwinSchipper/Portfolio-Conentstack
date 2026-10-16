@@ -236,7 +236,7 @@ export default function Header() {
         <div className="fixed inset-0 z-50 flex flex-col justify-end">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-background-900/40 dark:bg-background-200/60 backdrop-blur-sm transition-opacity"
+            className="fixed inset-0 bg-background-900/40 dark:bg-background-200/20 backdrop-blur-sm transition-opacity"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />

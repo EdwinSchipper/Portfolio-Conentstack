@@ -404,7 +404,7 @@ export function GridColumn({
 
     return (
       <div className={`${colClass} ${className}`}>
-        <div className="sm:space-y-8">
+        <div className="space-y-8 sm:space-y-8">
           {label && (
             <Label cslp={cslp && (cslp.label_left || cslp.label_right)}>
               {label}
@@ -433,7 +433,7 @@ export function GridColumn({
           )}
 
           {image?.url && (
-            <div className="relative w-full aspect-[4/3] rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border-dashed border-border-100 dark:border-border-200">
+            <div className="relative w-full aspect-[4/3] rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border-dashed border-border-100 dark:border-border-200 mt-14 sm:mt-0">
               <Image
                 src={image.url}
                 alt={image.title || title || "Image"}
@@ -470,7 +470,7 @@ export function GridColumn({
           )}
 
           {button?.href && button?.title && (
-            <div className="pt-2">
+            <div className="mb-14 sm:mb-0">
               <Button
                 href={button.href}
                 variant="primary"
