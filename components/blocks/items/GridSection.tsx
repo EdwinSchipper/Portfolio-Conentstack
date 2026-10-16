@@ -404,7 +404,7 @@ export function GridColumn({
 
     return (
       <div className={`${colClass} ${className}`}>
-        <div className="space-y-8 sm:space-y-8">
+        <div className="space-y-8 sm:space-y-8 mb-14 sm:mb-0">
           {label && (
             <Label cslp={cslp && (cslp.label_left || cslp.label_right)}>
               {label}
