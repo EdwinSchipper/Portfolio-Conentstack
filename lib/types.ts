@@ -620,6 +620,24 @@ export interface Blocks extends SystemFields {
   CtaBlock?: CtaBlock;
 }
 
+export interface Homepage extends SystemFields {
+  /** UID - required for live preview */
+  uid: string;
+  /** Version */
+  _version?: number;
+  /** Title */
+  title: string;
+  /** Modular blocks */
+  blocks?: Blocks[];
+  /** CSLP mapping for editable fields */
+  $?: {
+    title?: CSLPFieldMapping;
+    blocks?: CSLPFieldMapping;
+    [key: string]: CSLPFieldMapping | undefined;
+  };
+  [key: string]: any;
+}
+
 export interface Page extends SystemFields {
   /** UID - required for live preview */
   uid: string;
@@ -631,10 +649,6 @@ export interface Page extends SystemFields {
   url?: string;
   /** Description */
   description?: string;
-  /** Image */
-  image?: File | null;
-  /** Rich Text */
-  rich_text?: string;
   /** Breadcrumbs toggle & optional custom label */
   show_breadcrumbs?: boolean;
   breadcrumb_title?: string;
@@ -645,8 +659,6 @@ export interface Page extends SystemFields {
     title?: CSLPFieldMapping;
     url?: CSLPFieldMapping;
     description?: CSLPFieldMapping;
-    image?: CSLPFieldMapping;
-    rich_text?: CSLPFieldMapping;
     show_breadcrumbs?: CSLPFieldMapping;
     breadcrumb_title?: CSLPFieldMapping;
     blocks?: CSLPFieldMapping;

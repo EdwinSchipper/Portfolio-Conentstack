@@ -4,8 +4,8 @@ import contentstack, { QueryOperation } from "@contentstack/delivery-sdk";
 // Importing Contentstack Live Preview utilities and stack SDK
 import ContentstackLivePreview, { IStackSdk } from "@contentstack/live-preview-utils";
 
-// Importing Page and PortfolioItem type definitions
-import { Page, PortfolioItem } from "./types";
+// Importing Page, Homepage and PortfolioItem type definitions
+import { Page, Homepage, PortfolioItem } from "./types";
 
 // helper functions to retrieve Contentstack endpoints for a given region
 import { getContentstackEndpoint, type ContentstackEndpoints } from "@contentstack/utils";
@@ -74,7 +74,7 @@ export async function getHomePage() {
     .contentType("homepage")
     .entry()
     .includeReference(["blocks.featured_projects.projects"])
-    .find<Page>();
+    .find<Homepage>();
 
   const entry = result.entries?.[0];
   if (entry) {

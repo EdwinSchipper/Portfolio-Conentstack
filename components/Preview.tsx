@@ -7,8 +7,9 @@ import { useState, useEffect, useCallback } from "react";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 // Importing functions to fetch page data and initialize live preview
 import { getPage, getHomePage, initLivePreview } from "@/lib/contentstack";
-// Importing Page type definition with alias to avoid naming conflicts
-import type { Page as PageProps } from "@/lib/types";
+// Importing Page and Homepage type definitions
+import type { Page, Homepage } from "@/lib/types";
+type PageProps = Page | Homepage;
 // Importing the Page component to render the content
 import Page from "./Page";
 import HomePage from "./HomePage";
@@ -61,5 +62,9 @@ export default function Preview({
     return <LoadingState />;
   }
 
-  return isHomePage ? <HomePage page={page} /> : <Page page={page} />;
+  return isHomePage ? (
+    <HomePage page={page as Homepage} />
+  ) : (
+    <Page page={page as Page} />
+  );
 }
