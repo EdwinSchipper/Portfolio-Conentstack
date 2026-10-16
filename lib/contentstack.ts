@@ -1,75 +1,53 @@
-// Importing Contentstack SDK and specific types for region and query operations
 import contentstack, { QueryOperation } from "@contentstack/delivery-sdk";
-
-// Importing Contentstack Live Preview utilities and stack SDK
 import ContentstackLivePreview, { IStackSdk } from "@contentstack/live-preview-utils";
-
-// Importing Page, Homepage and PortfolioItem type definitions
-import { Page, Homepage, PortfolioItem } from "./types";
-
-// helper functions to retrieve Contentstack endpoints for a given region
 import { getContentstackEndpoint, type ContentstackEndpoints } from "@contentstack/utils";
+import type { Page, Homepage, PortfolioItem } from "./types";
 
 export const isPreview = process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === "true";
 
-// object with all endpoints for region.
-const endpoints = getContentstackEndpoint(process.env.NEXT_PUBLIC_CONTENTSTACK_REGION || 'NA', '', true) as ContentstackEndpoints
+const region = process.env.NEXT_PUBLIC_CONTENTSTACK_REGION || "NA";
+const endpoints = getContentstackEndpoint(region, "", true) as ContentstackEndpoints;
 
 export const stack = contentstack.stack({
-  // Setting the API key from environment variables
   apiKey: process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY as string,
-
-  // Setting the delivery token from environment variables
   deliveryToken: process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN as string,
-
-  // Setting the environment based on environment variables
   environment: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT as string,
-
-  // Setting the region
-  // for custom or dedicated Contentstack environments, override each endpoint individually using environment variables.
-  // You can omit this if you have set a region above. Use @contentstack/utils getContentstackEndpoint to get the right urls for your region.
-  region: process.env.NEXT_PUBLIC_CONTENTSTACK_REGION as any,
-
-  // Setting the host for content delivery based on the region or environment variables
-  // for custom or dedicated Contentstack environments, override each endpoint individually using environment variables.
-  host: process.env.NEXT_PUBLIC_CONTENTSTACK_CONTENT_DELIVERY || endpoints.contentDelivery as string,
-
+  region: region as any,
+  host: process.env.NEXT_PUBLIC_CONTENTSTACK_CONTENT_DELIVERY || (endpoints.contentDelivery as string),
   live_preview: {
-    // Enabling live preview if specified in environment variables
-    enable: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true',
-
-    // Setting the preview token from environment variables
+    enable: isPreview,
     preview_token: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN,
-
-    // Setting the host for live preview based on the region
-    // for custom or dedicated Contentstack environments, override each endpoint individually using environment variables.
-    host: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_HOST || endpoints.preview as string
-  }
+    host: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_HOST || (endpoints.preview as string),
+  },
 });
 
-// Initialize live preview functionality
-export function initLivePreview() {
+/**
+ * Initializes Contentstack Live Preview / Visual Builder listeners.
+ * Configured for client-side mode with visual builder endpoints.
+ */
+export function initLivePreview(): void {
   ContentstackLivePreview.init({
-    ssr: false, // Disabling server-side rendering for live preview
-    enable: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true', // Enabling live preview if specified in environment variables
-    mode: "builder", // Setting the mode to "builder" for visual builder
-    stackSdk: stack.config as IStackSdk, // Passing the stack configuration
+    ssr: false,
+    enable: isPreview,
+    mode: "builder",
+    stackSdk: stack.config as IStackSdk,
     stackDetails: {
-      apiKey: process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY as string, // Setting the API key from environment variables
-      environment: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT as string, // Setting the environment from environment variables
+      apiKey: process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY as string,
+      environment: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT as string,
     },
     clientUrlParams: {
-      // Setting the client URL parameters for live preview
-      // for custom or dedicated Contentstack environments, override each endpoint individually using environment variables.
-      host: process.env.NEXT_PUBLIC_CONTENTSTACK_CONTENT_APPLICATION || endpoints.application as string
+      host: process.env.NEXT_PUBLIC_CONTENTSTACK_CONTENT_APPLICATION || (endpoints.application as string),
     },
     editButton: {
-      enable: false, // Disabling the floating edit button
+      enable: false,
     },
   });
 }
-// Function to fetch the homepage entry
-export async function getHomePage() {
+
+/**
+ * Fetches the singleton homepage entry and resolves referenced modular blocks.
+ */
+export async function getHomePage(): Promise<Homepage | undefined> {
   const result = await stack
     .contentType("homepage")
     .entry()
@@ -85,8 +63,10 @@ export async function getHomePage() {
   }
 }
 
-// Function to fetch page data based on the URL
-export async function getPage(url: string) {
+/**
+ * Fetches a single page entry matching the provided URL path.
+ */
+export async function getPage(url: string): Promise<Page | undefined> {
   const result = await stack
     .contentType("page")
     .entry()
@@ -104,8 +84,10 @@ export async function getPage(url: string) {
   }
 }
 
-// Function to fetch a single portfolio item by URL
-export async function getPortfolioItemByUrl(url: string) {
+/**
+ * Fetches a single portfolio item entry matching the provided URL slug.
+ */
+export async function getPortfolioItemByUrl(url: string): Promise<PortfolioItem | undefined> {
   const result = await stack
     .contentType("portfolio_item")
     .entry()
@@ -113,27 +95,34 @@ export async function getPortfolioItemByUrl(url: string) {
     .where("url", QueryOperation.EQUALS, url)
     .find<PortfolioItem>();
 
-  if (result.entries && result.entries.length > 0) {
-    const entry = result.entries[0];
-
+  const entry = result.entries?.[0];
+  if (entry) {
     if (isPreview) {
       contentstack.Utils.addEditableTags(entry, "portfolio_item", true);
     }
-
     return entry;
   }
 }
 
-// Function to fetch multiple portfolio items with optional pagination and category filtering
+export interface GetPortfolioItemsOptions {
+  limit?: number;
+  skip?: number;
+  category?: string;
+}
+
+export interface GetPortfolioItemsResult {
+  items: PortfolioItem[];
+  total: number;
+}
+
+/**
+ * Fetches multiple portfolio item entries with optional pagination and category filtering.
+ */
 export async function getPortfolioItems({
   limit = 9,
   skip = 0,
   category,
-}: {
-  limit?: number;
-  skip?: number;
-  category?: string;
-} = {}) {
+}: GetPortfolioItemsOptions = {}): Promise<GetPortfolioItemsResult> {
   let query = stack
     .contentType("portfolio_item")
     .entry()
