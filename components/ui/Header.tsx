@@ -102,7 +102,7 @@ export default function Header() {
                   className="hidden h-10 lg:h-9 w-auto dark:block"
                   src="/img/logo-white.svg"
                   alt="Edwin Schipper"
-                  width={140}
+                  width={39}
                   height={36}
                   priority
                 />
@@ -110,7 +110,7 @@ export default function Header() {
                   className="block h-10 lg:h-9 w-auto dark:hidden"
                   src="/img/logo-black.svg"
                   alt="Edwin Schipper"
-                  width={140}
+                  width={39}
                   height={36}
                   priority
                 />
@@ -148,19 +148,17 @@ export default function Header() {
                 <button
                   type="button"
                   onClick={() => setIsExpertiseOpen((prev) => !prev)}
-                  className={`group cursor-pointer ${baseNavClass} ${
-                    isExpertiseOpen || isExpertiseActive
+                  className={`group cursor-pointer ${baseNavClass} ${isExpertiseOpen || isExpertiseActive
                       ? "border-transparent text-accent7-900 dark:text-title-200"
                       : "border-transparent text-content-100 dark:text-content-200"
-                  }`}
+                    }`}
                   aria-expanded={isExpertiseOpen}
                   aria-haspopup="true"
                 >
                   <span>Expertise</span>
                   <ChevronDownIcon
-                    className={`size-5 flex-none text-accent7-800 dark:text-accent8-800 group-hover:translate-y-px transition-transform duration-300 -mr-1 ml-0.5 ${
-                      isExpertiseOpen ? "rotate-180" : ""
-                    }`}
+                    className={`size-5 flex-none text-accent7-800 dark:text-accent8-800 group-hover:translate-y-px transition-transform duration-300 -mr-1 ml-0.5 ${isExpertiseOpen ? "rotate-180" : ""
+                      }`}
                     aria-hidden="true"
                   />
                 </button>
@@ -192,11 +190,10 @@ export default function Header() {
                     <Link
                       href={item.href}
                       aria-current={isActive ? "page" : undefined}
-                      className={`${baseNavClass} ${
-                        isActive
+                      className={`${baseNavClass} ${isActive
                           ? "border-transparent text-accent7-900 dark:text-title-200"
                           : "border-transparent text-content-100 dark:text-content-200"
-                      }`}
+                        }`}
                     >
                       {item.name}
                     </Link>
@@ -245,14 +242,14 @@ export default function Header() {
                       className="hidden h-9 w-auto dark:block"
                       src="/img/logo-white.svg"
                       alt="Edwin Schipper"
-                      width={140}
+                      width={39}
                       height={36}
                     />
                     <Image
                       className="block h-9 w-auto dark:hidden"
                       src="/img/logo-black.svg"
                       alt="Edwin Schipper"
-                      width={140}
+                      width={39}
                       height={36}
                     />
                   </div>
@@ -279,11 +276,10 @@ export default function Header() {
                         key={item.name}
                         href={item.href}
                         onClick={() => setIsOpen(false)}
-                        className={`py-2 px-3 rounded-md text-small font-medium transition-colors ${
-                          pathname === item.href
+                        className={`py-2 px-3 rounded-md text-small font-medium transition-colors ${pathname === item.href
                             ? "text-accent7-900 dark:text-title-200 bg-background-100 dark:bg-background-800 font-semibold"
                             : "text-content-100 dark:text-content-200 hover:text-title-100 dark:hover:text-title-200 hover:bg-background-100 dark:hover:bg-background-800"
-                        }`}
+                          }`}
                       >
                         {item.name}
                       </Link>
@@ -300,11 +296,10 @@ export default function Header() {
                       key={item.name}
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      className={`py-2 px-3 rounded-md text-small font-medium transition-colors ${
-                        pathname.startsWith(item.href)
+                      className={`py-2 px-3 rounded-md text-small font-medium transition-colors ${pathname.startsWith(item.href)
                           ? "text-accent7-900 dark:text-title-200 bg-background-100 dark:bg-background-800 font-semibold"
                           : "text-content-100 dark:text-content-200 hover:text-title-100 dark:hover:text-title-200 hover:bg-background-100 dark:hover:bg-background-800"
-                      }`}
+                        }`}
                     >
                       {item.name}
                     </Link>

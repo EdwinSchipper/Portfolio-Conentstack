@@ -1,4 +1,4 @@
-import React from "react";
+import type { ComponentType } from "react";
 import CardSection from "./CardSection";
 import ContentBlock from "./ContentBlock";
 import CtaBlock from "./CtaBlock";
@@ -27,7 +27,7 @@ export {
  * Component Registry: Koppelt Contentstack modular block UIDs aan hun React component.
  * Nieuw blok toevoegen? Alleen hier registreren, BlockRenderer pakt hem automatisch op!
  */
-export const BLOCK_COMPONENTS: Record<string, React.ComponentType<{ data: any; previewAttr?: any }>> = {
+export const BLOCK_COMPONENTS: Record<string, ComponentType<{ data: any; previewAttr?: any }>> = {
   // Hero
   hero: HeroBlock,
   hero_block: HeroBlock,

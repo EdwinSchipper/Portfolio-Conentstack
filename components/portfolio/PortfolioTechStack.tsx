@@ -1,16 +1,8 @@
-import React from "react";
 import { TechStackItem, CSLPAttribute } from "@/lib/types";
 import { Icon } from "@/components/ui";
 
 export interface PortfolioTechStackProps {
-  /**
-   * List of tech stack items from Contentstack.
-   * If empty or undefined, nothing is rendered.
-   */
   items?: TechStackItem[] | null;
-  /**
-   * Contentstack Live Preview / Visual Builder attributes for the tech_stack group.
-   */
   cslp?: CSLPAttribute | Record<string, any>;
   className?: string;
 }
@@ -49,7 +41,7 @@ export default function PortfolioTechStack({
 
             return (
               <div
-                key={idx}
+                key={stackItem.label || idx}
                 className="flex flex-col items-center text-center group cursor-default"
               >
                 {/* Circular Coral Badge */}
