@@ -1,7 +1,8 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { CardSectionBlock, CardSectionItem, CSLPAttribute } from "@/lib/types";
-import { Button, Label, Icon } from "@/components/ui";
+import { Label, Icon } from "@/components/ui";
 import { getContainerClass, getColorModeClass } from "@/lib/layout";
 
 export interface CardBoxProps {
@@ -25,6 +26,12 @@ export function CardBox({
   className = "",
   cslp,
 }: CardBoxProps) {
+  const isExternal =
+    typeof button?.href === "string" &&
+    (button.href.startsWith("http://") ||
+      button.href.startsWith("https://") ||
+      button.href.startsWith("//"));
+
   // Support tags passed as string with "/" separators (e.g. "Componenten / Vue.js / Nuxt")
   const rawTag = tag;
   const tagList =
@@ -101,14 +108,18 @@ export function CardBox({
 
           {button?.href && (
             <div className="pt-2 mt-auto">
-              <Button
+              <Link
                 href={button.href}
-                variant="link-dark"
-                arrow
-                cslp={cslp && cslp.button}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-title-100 dark:text-title-200 hover:text-accent7-900 dark:hover:text-accent8-900 transition-colors cursor-pointer"
+                {...(cslp && cslp.button)}
               >
-                {button.title || "Lees meer"}
-              </Button>
+                <span>{button.title || "Lees meer"}</span>
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
             </div>
           )}
 
@@ -138,6 +149,12 @@ export function CardImageTag({
   className = "",
   cslp,
 }: CardImageTagProps) {
+  const isExternal =
+    typeof button?.href === "string" &&
+    (button.href.startsWith("http://") ||
+      button.href.startsWith("https://") ||
+      button.href.startsWith("//"));
+
   return (
     <div
       {...cslp}
@@ -176,17 +193,21 @@ export function CardImageTag({
         </p>
       )}
 
-      {/* Button */}
+      {/* Link */}
       {button?.href && (
         <div className="pt-3 mt-auto">
-          <Button
+          <Link
             href={button.href}
-            variant="link"
-            arrow
-            cslp={cslp && cslp.button}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-accent7-900 dark:text-accent8-900 hover:underline transition-colors cursor-pointer"
+            {...(cslp && cslp.button)}
           >
-            {button.title || "Lees meer"}
-          </Button>
+            <span>{button.title || "Lees meer"}</span>
+            <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+              →
+            </span>
+          </Link>
         </div>
       )}
 
