@@ -1,3 +1,14 @@
+/**
+ * Central TypeScript Definitions for Contentstack & App Components
+ * 
+ * Refactored with reusable base interfaces, generic CSLP mapped types,
+ * and unified item models for optimal maintainability and IDE performance.
+ */
+
+// ============================================================================
+// Core Contentstack & Live Preview Types
+// ============================================================================
+
 export interface PublishDetails {
   environment: string;
   locale: string;
@@ -5,37 +16,19 @@ export interface PublishDetails {
   user: string;
 }
 
-export interface File {
-  uid: string;
-  created_at: string;
-  updated_at: string;
-  created_by: string;
-  updated_by: string;
-  content_type: string;
-  file_size: string;
-  tags: string[];
-  filename: string;
-  url: string;
-  ACL: any[] | object;
-  is_dir: boolean;
-  parent_uid: string;
-  _version: number;
-  title: string;
-  _metadata?: object;
-  description?: string;
-  dimension?: {
-    height: number;
-    width: number;
-  };
-  publish_details: PublishDetails;
-  /** CSLP mapping for editable fields */
-  $?: {
-    url?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    filename?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-  };
+export interface CSLPAttribute {
+  "data-cslp"?: string;
+  "data-cslp-parent-field"?: string;
 }
+export type CSLPFieldMapping = CSLPAttribute;
+
+/**
+ * Universal container for Contentstack Live Preview ($) mappings.
+ * Allows type-safe access to any field mapping without repetitive manual declarations.
+ */
+export type CSLPContainer<T = Record<string, any>> = {
+  [K in keyof T]?: CSLPFieldMapping;
+} & Record<string, CSLPFieldMapping | any>;
 
 export interface Link {
   title: string;
@@ -49,11 +42,35 @@ export interface Taxonomy {
   non_localizable: boolean;
 }
 
-export interface CSLPAttribute {
-  "data-cslp"?: string;
-  "data-cslp-parent-field"?: string;
+export interface File {
+  uid: string;
+  created_at?: string;
+  updated_at?: string;
+  created_by?: string;
+  updated_by?: string;
+  content_type?: string;
+  file_size?: string;
+  tags?: string[];
+  filename?: string;
+  url: string;
+  ACL?: any[] | object;
+  is_dir?: boolean;
+  parent_uid?: string;
+  _version?: number;
+  title?: string;
+  _metadata?: object;
+  description?: string;
+  dimension?: {
+    height: number;
+    width: number;
+  };
+  publish_details?: PublishDetails;
+  $?: CSLPContainer;
 }
-export type CSLPFieldMapping = CSLPAttribute;
+
+// ============================================================================
+// Base Entities & System Fields
+// ============================================================================
 
 export interface SeoFields {
   meta_title?: string;
@@ -79,30 +96,104 @@ export interface SystemFields {
   seo?: SeoFields;
 }
 
-/** A block! */
-export interface Block {
-  /** Version */
+/**
+ * Base shape for any Contentstack block, modular item, or sub-component.
+ */
+export interface BaseEntity {
   _version?: number;
-  /** Title */
-  title?: string;
-  /** Copy */
-  copy?: string;
-  /** Image */
-  image?: File | null;
-  /** Layout */
-  layout?: ("image_left" | "image_right") | null;
-  /** Metadata */
   _metadata?: { uid: string };
-  /** CSLP mapping for editable fields */
-  $?: {
-    title?: CSLPFieldMapping;
-    copy?: CSLPFieldMapping;
-    image?: CSLPFieldMapping;
-    layout?: CSLPFieldMapping;
-  };
+  $?: CSLPContainer;
+  [key: string]: any;
 }
 
-export interface CtaBlock {
+/**
+ * Common layout and header fields shared across major section blocks.
+ */
+export interface BaseSectionBlock extends BaseEntity {
+  width?: string;
+  container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
+  color_mode?: "Default" | "Alt" | "default" | "alt" | string;
+  label?: string;
+  section_label?: string;
+  section_title?: string;
+  title?: string;
+  section_intro?: string;
+  intro?: string;
+  columns?: "1" | "2" | "3" | "4" | string;
+}
+
+// ============================================================================
+// Experience & Timeline Models (Unified)
+// ============================================================================
+
+export interface ExperienceRole extends BaseEntity {
+  title?: string;
+  period?: string;
+  role_type?: "core" | "secondary" | string;
+  badge?: string;
+  description?: string;
+}
+export type TimelineRole = ExperienceRole;
+
+export interface ExperienceCompany extends BaseEntity {
+  company?: string;
+  company_name?: string;
+  company_period?: string;
+  website?: string | Link;
+  roles?: ExperienceRole[];
+}
+export type TimelineCompany = ExperienceCompany;
+
+export interface ExperienceTimelineBlock extends BaseEntity {
+  section_title?: string;
+  companies?: ExperienceCompany[];
+  experience_timeline?: any;
+}
+
+export interface ResumeStack extends BaseEntity {
+  stack_label?: string;
+  stackLabel?: string;
+  stack_title?: string;
+  stackTitle?: string;
+  label?: string;
+  title?: string;
+  tag?: string[];
+  tags?: string[];
+  Tag?: string[];
+  Tags?: string[];
+}
+
+export interface ResumeSectionBlock extends BaseSectionBlock {
+  left_col_span?: number | string;
+  right_col_span?: number | string;
+  timeline_position?: "right" | "left" | "full" | "Right" | "Left" | "Full" | "rechts" | "links" | string;
+  timeline_placement?: string;
+  section_title_main?: string;
+  description?: string;
+  text?: string;
+  button?: Link;
+  button_cta?: Link;
+  companies?: ExperienceCompany[];
+  stack_label?: string;
+  stackLabel?: string;
+  stack_title?: string;
+  stackTitle?: string;
+  stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
+  Stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
+}
+
+// ============================================================================
+// Modular Blocks & Content Components
+// ============================================================================
+
+export interface Block extends BaseEntity {
+  title?: string;
+  copy?: string;
+  image?: File | null;
+  layout?: ("image_left" | "image_right") | null;
+}
+
+export interface CtaBlock extends BaseEntity {
   title?: string;
   label?: string;
   text_cta?: string;
@@ -116,337 +207,28 @@ export interface CtaBlock {
   button_cta?: Link;
   button_to?: string;
   button_text?: string;
-  _metadata?: { uid: string };
-  $?: {
-    title?: CSLPFieldMapping;
-    label?: CSLPFieldMapping;
-    text_cta?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-    text?: CSLPFieldMapping;
-    image?: CSLPFieldMapping;
-    image_light?: CSLPFieldMapping;
-    image_dark?: CSLPFieldMapping;
-    image_dark_mode?: CSLPFieldMapping;
-    button_cta?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
 }
 
-export interface ServiceCardBlock {
-  _version?: number;
+export interface ServiceCardBlock extends BaseEntity {
   card_title?: string;
   card_text?: string;
   grid_size?: "1" | "2" | "3" | string;
   card_variant?: "Default" | "Image Tag" | string;
   variant?: string;
   image?: File;
-  _metadata?: { uid: string };
-  $?: {
-    card_title?: CSLPFieldMapping;
-    card_text?: CSLPFieldMapping;
-    grid_size?: CSLPFieldMapping;
-    card_variant?: CSLPFieldMapping;
-    variant?: CSLPFieldMapping;
-    image?: CSLPFieldMapping;
-  };
 }
 
-export interface FeaturedProjectsBlock {
-  _version?: number;
-  label?: string;
+export interface FeaturedProjectsBlock extends BaseSectionBlock {
   label_projects?: string;
-  section_title?: string;
-  title?: string;
-  section_intro?: string;
-  intro?: string;
   projects?: PortfolioItem[];
-  _metadata?: { uid: string };
-  $?: {
-    label?: CSLPFieldMapping;
-    label_projects?: CSLPFieldMapping;
-    section_title?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    section_intro?: CSLPFieldMapping;
-    intro?: CSLPFieldMapping;
-    projects?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
 }
 
-export interface ExperienceRole {
-  title?: string;
-  period?: string;
-  role_type?: "core" | "secondary" | string;
-  badge?: string;
-  description?: string;
-  _metadata?: { uid: string };
-  $?: {
-    title?: CSLPFieldMapping;
-    period?: CSLPFieldMapping;
-    role_type?: CSLPFieldMapping;
-    badge?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-  };
-}
+// ============================================================================
+// Shared Item Models (Cards, Numbered Items, Links, Socials)
+// ============================================================================
 
-export interface ExperienceCompany {
-  company_name?: string;
-  company_period?: string;
-  roles?: ExperienceRole[];
-  _metadata?: { uid: string };
-  $?: {
-    company_name?: CSLPFieldMapping;
-    company_period?: CSLPFieldMapping;
-    roles?: CSLPFieldMapping;
-  };
-}
-
-export interface ExperienceTimelineBlock {
-  _version?: number;
-  section_title?: string;
-  companies?: ExperienceCompany[];
-  experience_timeline?: any;
-  _metadata?: { uid: string };
-  $?: {
-    section_title?: CSLPFieldMapping;
-    companies?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-}
-
-export interface ResumeStack {
-  stack_label?: string;
-  stackLabel?: string;
-  stack_title?: string;
-  stackTitle?: string;
-  label?: string;
-  title?: string;
-  tag?: string[];
-  tags?: string[];
-  Tag?: string[];
-  Tags?: string[];
-  _metadata?: { uid: string };
-  $?: {
-    stack_label?: CSLPFieldMapping;
-    stackLabel?: CSLPFieldMapping;
-    stack_title?: CSLPFieldMapping;
-    stackTitle?: CSLPFieldMapping;
-    label?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    tag?: CSLPFieldMapping;
-    tags?: CSLPFieldMapping;
-    Tag?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface ResumeSectionBlock {
-  _version?: number;
-  container_width?: string; /** "small" | "default" | "large" | "wide" */
-  width?: string;
-  color_mode?: "Default" | "Alt" | "default" | "alt" | string;
-  left_col_span?: number | string; /** Col span 1-12 for left column */
-  right_col_span?: number | string; /** Col span 1-12 for right column */
-  timeline_position?: "right" | "left" | "full" | "Right" | "Left" | "Full" | "rechts" | "links" | string;
-  timeline_placement?: string;
-  label?: string;
-  section_label?: string;
-  title?: string;
-  section_title_main?: string;
-  section_title?: string;
-  description?: string;
-  text?: string;
-  intro?: string;
-  button?: Link;
-  button_cta?: Link;
-  companies?: ExperienceCompany[];
-  stack_label?: string;
-  stackLabel?: string;
-  stack_title?: string;
-  stackTitle?: string;
-  stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
-  Stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
-  _metadata?: { uid: string };
-  $?: {
-    container_width?: CSLPFieldMapping;
-    width?: CSLPFieldMapping;
-    color_mode?: CSLPFieldMapping;
-    left_col_span?: CSLPFieldMapping;
-    right_col_span?: CSLPFieldMapping;
-    timeline_position?: CSLPFieldMapping;
-    label?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-    text?: CSLPFieldMapping;
-    button?: CSLPFieldMapping;
-    section_title?: CSLPFieldMapping;
-    companies?: CSLPFieldMapping;
-    stack_label?: CSLPFieldMapping;
-    stack_title?: CSLPFieldMapping;
-    stack?: CSLPFieldMapping;
-    Stack?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-
-export interface GridCard {
-  image?: File;
-  tag?: string;
-  title?: string;
-  text?: string;
-  description?: string;
-  _metadata?: { uid: string };
-  $?: {
-    image?: CSLPFieldMapping;
-    tag?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    text?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface TimelineRole {
-  title?: string;
-  period?: string;
-  _metadata?: { uid: string };
-  $?: {
-    title?: CSLPFieldMapping;
-    period?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface TimelineCompany {
-  company?: string;
-  company_name?: string;
-  website?: string | Link;
-  roles?: TimelineRole[];
-  _metadata?: { uid: string };
-  $?: {
-    company?: CSLPFieldMapping;
-    company_name?: CSLPFieldMapping;
-    website?: CSLPFieldMapping;
-    roles?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface SocialLink {
-  icon?: string;
-  link?: string | Link;
-  title?: string;
-  _metadata?: { uid: string };
-  $?: {
-    icon?: CSLPFieldMapping;
-    link?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface GridSocials {
-  label?: string;
-  links?: SocialLink[];
-  items?: SocialLink[];
-  _metadata?: { uid: string };
-  $?: {
-    label?: CSLPFieldMapping;
-    links?: CSLPFieldMapping;
-    items?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface GridContentLeft {
-  label_left?: string;
-  title_h1?: string;
-  heading_type?: string;
-  quote_left?: string;
-  text_left?: string;
-  image_left?: File;
-  button_left?: Link;
-  cards?: GridCard[];
-  resume_timeline?: TimelineCompany[] | { companies?: TimelineCompany[] } | any;
-  socials?: GridSocials | SocialLink[] | any;
-  _metadata?: { uid: string };
-  $?: {
-    label_left?: CSLPFieldMapping;
-    title_h1?: CSLPFieldMapping;
-    heading_type?: CSLPFieldMapping;
-    quote_left?: CSLPFieldMapping;
-    text_left?: CSLPFieldMapping;
-    image_left?: CSLPFieldMapping;
-    button_left?: CSLPFieldMapping;
-    cards?: CSLPFieldMapping;
-    resume_timeline?: CSLPFieldMapping;
-    socials?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface GridContentRight {
-  label_right?: string;
-  title_h1r?: string;
-  heading_type?: string;
-  text_right?: string;
-  image_right?: File;
-  quote_right?: string;
-  text_right_extended?: string;
-  button_right?: Link;
-  cards?: GridCard[];
-  resume_timeline?: TimelineCompany[] | { companies?: TimelineCompany[] } | any;
-  socials?: GridSocials | SocialLink[] | any;
-  _metadata?: { uid: string };
-  $?: {
-    label_right?: CSLPFieldMapping;
-    title_h1r?: CSLPFieldMapping;
-    heading_type?: CSLPFieldMapping;
-    text_right?: CSLPFieldMapping;
-    image_right?: CSLPFieldMapping;
-    quote_right?: CSLPFieldMapping;
-    text_right_extended?: CSLPFieldMapping;
-    button_right?: CSLPFieldMapping;
-    cards?: CSLPFieldMapping;
-    resume_timeline?: CSLPFieldMapping;
-    socials?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface GridSectionBlock {
-  container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
-  color_mode?: "Default" | "Alt" | string; /** "Default" | "Alt" */
-  left_col_span?: number | string; /** Col span 1-12 for left column */
-  right_col_span?: number | string; /** Col span 1-12 for right column */
-  content_left?: GridContentLeft;
-  content_right?: GridContentRight;
-  _metadata?: { uid: string };
-  $?: {
-    container_width?: CSLPFieldMapping;
-    color_mode?: CSLPFieldMapping;
-    left_col_span?: CSLPFieldMapping;
-    right_col_span?: CSLPFieldMapping;
-    content_left?: CSLPFieldMapping;
-    content_right?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface CardSectionItem {
+export interface SectionItem extends BaseEntity {
+  number?: string;
   icon?: string;
   image?: File;
   card_title?: string;
@@ -456,99 +238,72 @@ export interface CardSectionItem {
   description?: string;
   button?: Link;
   card_variant?: "Default" | "Image Tag" | string;
-  _metadata?: { uid: string };
-  $?: {
-    icon?: CSLPFieldMapping;
-    image?: CSLPFieldMapping;
-    card_title?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    tag?: CSLPFieldMapping;
-    text?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-    button?: CSLPFieldMapping;
-    card_variant?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
+}
+export type CardSectionItem = SectionItem;
+export type NumberedItem = SectionItem;
+export type GridCard = SectionItem;
+
+export interface SocialLink extends BaseEntity {
+  icon?: string;
+  link?: string | Link;
+  title?: string;
 }
 
-export interface CardSectionBlock {
-  width?: string; /** "small" | "Default" | "Large" | "Wide" */
-  container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
-  color_mode?: "Default" | "Alt" | string; /** "Default" | "Alt" */
+export interface GridSocials extends BaseEntity {
   label?: string;
+  links?: SocialLink[];
+  items?: SocialLink[];
+}
+
+export interface CardSectionBlock extends BaseSectionBlock {
   label_cards?: string;
-  section_title?: string;
-  section_intro?: string;
-  columns?: "2" | "3" | "4" | string;
   cards?: CardSectionItem[];
-  _metadata?: { uid: string };
-  $?: {
-    width?: CSLPFieldMapping;
-    container_width?: CSLPFieldMapping;
-    color_mode?: CSLPFieldMapping;
-    label?: CSLPFieldMapping;
-    label_cards?: CSLPFieldMapping;
-    section_title?: CSLPFieldMapping;
-    section_intro?: CSLPFieldMapping;
-    columns?: CSLPFieldMapping;
-    cards?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
 }
 
-export interface NumberedItem {
-  number?: string;
-  title?: string;
-  text?: string;
-  description?: string;
-  button?: Link;
-  _metadata?: { uid: string };
-  $?: {
-    number?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    text?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-    button?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export interface NumberedSectionBlock {
-  width?: string; /** "small" | "Default" | "Large" | "Wide" */
-  container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
-  color_mode?: "Default" | "Alt" | string; /** "Default" | "Alt" */
-  label?: string;
-  section_label?: string;
+export interface NumberedSectionBlock extends BaseSectionBlock {
   label_numbered?: string;
-  section_title?: string;
-  title?: string;
-  section_intro?: string;
-  columns?: "1" | "2" | "3" | string;
   items?: NumberedItem[];
   numbered_items?: NumberedItem[];
-  _metadata?: { uid: string };
-  $?: {
-    width?: CSLPFieldMapping;
-    container_width?: CSLPFieldMapping;
-    color_mode?: CSLPFieldMapping;
-    label?: CSLPFieldMapping;
-    section_label?: CSLPFieldMapping;
-    label_numbered?: CSLPFieldMapping;
-    section_title?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    section_intro?: CSLPFieldMapping;
-    columns?: CSLPFieldMapping;
-    items?: CSLPFieldMapping;
-    numbered_items?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
 }
 
-export interface HeroMicroLink {
+// ============================================================================
+// Grid Section Models
+// ============================================================================
+
+export interface GridColumnContent extends BaseEntity {
+  label_left?: string;
+  label_right?: string;
+  title_h1?: string;
+  title_h1r?: string;
+  heading_type?: string;
+  quote_left?: string;
+  quote_right?: string;
+  text_left?: string;
+  text_right?: string;
+  text_right_extended?: string;
+  image_left?: File;
+  image_right?: File;
+  button_left?: Link;
+  button_right?: Link;
+  cards?: GridCard[];
+  resume_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[] } | any;
+  socials?: GridSocials | SocialLink[] | any;
+}
+export type GridContentLeft = GridColumnContent;
+export type GridContentRight = GridColumnContent;
+
+export interface GridSectionBlock extends BaseSectionBlock {
+  left_col_span?: number | string;
+  right_col_span?: number | string;
+  content_left?: GridContentLeft;
+  content_right?: GridContentRight;
+}
+
+// ============================================================================
+// Hero Block Models
+// ============================================================================
+
+export interface HeroMicroLink extends BaseEntity {
   title?: string;
   label?: string;
   to?: string;
@@ -556,19 +311,9 @@ export interface HeroMicroLink {
   link?: string | Link;
   external?: boolean;
   title_attr?: string;
-  _metadata?: { uid: string };
-  $?: {
-    title?: CSLPFieldMapping;
-    label?: CSLPFieldMapping;
-    to?: CSLPFieldMapping;
-    href?: CSLPFieldMapping;
-    link?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
 }
 
-export interface HeroBlock {
+export interface HeroBlock extends BaseEntity {
   label?: string;
   title?: string;
   text?: string;
@@ -584,27 +329,11 @@ export interface HeroBlock {
   image_vormgeving?: File;
   image_3?: File;
   image_development?: File;
-  _metadata?: { uid: string };
-  $?: {
-    label?: CSLPFieldMapping;
-    title?: CSLPFieldMapping;
-    text?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-    micro_links?: CSLPFieldMapping;
-    stats?: CSLPFieldMapping;
-    cta_button?: CSLPFieldMapping;
-    button?: CSLPFieldMapping;
-    cta_note?: CSLPFieldMapping;
-    image_1?: CSLPFieldMapping;
-    image_ux?: CSLPFieldMapping;
-    image_2?: CSLPFieldMapping;
-    image_vormgeving?: CSLPFieldMapping;
-    image_3?: CSLPFieldMapping;
-    image_development?: CSLPFieldMapping;
-    [key: string]: any;
-  };
-  [key: string]: any;
 }
+
+// ============================================================================
+// Modular Blocks Container
+// ============================================================================
 
 export interface Blocks extends SystemFields {
   hero?: HeroBlock;
@@ -632,67 +361,37 @@ export interface Blocks extends SystemFields {
   CtaBlock?: CtaBlock;
 }
 
-export interface Homepage extends SystemFields {
-  /** UID - required for live preview */
+// ============================================================================
+// Top-Level Pages & Portfolio Entries
+// ============================================================================
+
+export interface BasePageEntry extends SystemFields {
   uid: string;
-  /** Version */
-  _version?: number;
-  /** Title */
   title: string;
-  /** Modular blocks */
   blocks?: Blocks[];
-  /** CSLP mapping for editable fields */
-  $?: {
-    title?: CSLPFieldMapping;
-    blocks?: CSLPFieldMapping;
-    [key: string]: CSLPFieldMapping | undefined;
-  };
+  $?: CSLPContainer;
   [key: string]: any;
 }
 
-export interface Page extends SystemFields {
-  /** UID - required for live preview */
-  uid: string;
-  /** Version */
-  _version?: number;
-  /** Title */
-  title: string;
-  /** URL */
+export type Homepage = BasePageEntry;
+
+export interface Page extends BasePageEntry {
   url?: string;
-  /** Description */
   description?: string;
-  /** Breadcrumbs toggle & optional custom label */
   show_breadcrumbs?: boolean;
   breadcrumb_title?: string;
-  /** blocks */
-  blocks?: Blocks[];
-  /** CSLP mapping for editable fields */
-  $?: {
-    title?: CSLPFieldMapping;
-    url?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-    show_breadcrumbs?: CSLPFieldMapping;
-    breadcrumb_title?: CSLPFieldMapping;
-    blocks?: CSLPFieldMapping;
-    [key: string]: CSLPFieldMapping | undefined; // Allow dynamic block indexing
-  };
 }
 
 export interface TechStackItem {
   icon?: string;
   label: string;
   value: string;
-  $?: {
-    icon?: CSLPFieldMapping;
-    label?: CSLPFieldMapping;
-    value?: CSLPFieldMapping;
-    [key: string]: any;
-  };
+  $?: CSLPContainer;
+  [key: string]: any;
 }
 
 export interface PortfolioItem extends SystemFields {
   uid: string;
-  _version?: number;
   title: string;
   url?: string;
   date?: string;
@@ -718,34 +417,6 @@ export interface PortfolioItem extends SystemFields {
   content?: string;
   show_breadcrumbs?: boolean;
   breadcrumb_title?: string;
-  $?: {
-    title?: CSLPFieldMapping;
-    url?: CSLPFieldMapping;
-    date?: CSLPFieldMapping;
-    company?: CSLPFieldMapping;
-    category?: CSLPFieldMapping;
-    select?: CSLPFieldMapping;
-    project_tag?: CSLPFieldMapping;
-    project_title?: CSLPFieldMapping;
-    project_desc?: CSLPFieldMapping;
-    tech_stack?: CSLPFieldMapping;
-    portfolioimagedetail?: CSLPFieldMapping;
-    banner_visual_1?: CSLPFieldMapping;
-    banner_visual_2?: CSLPFieldMapping;
-    portfolioimagedetail1?: CSLPFieldMapping;
-    portfolioimagedetail1_txt?: CSLPFieldMapping;
-    portfolioimagedetail2?: CSLPFieldMapping;
-    portfolioimagedetail2_txt?: CSLPFieldMapping;
-    portfolioimagedetail3?: CSLPFieldMapping;
-    portfolioimagedetail3_txt?: CSLPFieldMapping;
-    alt_text?: CSLPFieldMapping;
-    featured_image?: CSLPFieldMapping;
-    description?: CSLPFieldMapping;
-    content?: CSLPFieldMapping;
-    show_breadcrumbs?: CSLPFieldMapping;
-    breadcrumb_title?: CSLPFieldMapping;
-    [key: string]: any;
-  };
+  $?: CSLPContainer;
   [key: string]: any;
 }
-
