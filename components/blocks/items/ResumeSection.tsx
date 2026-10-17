@@ -4,6 +4,7 @@ import {
   ResumeSectionBlock,
   ExperienceCompany,
   ExperienceRole,
+  CertificationItem,
   CSLPAttribute,
 } from "@/lib/types";
 import { Label, Button } from "@/components/ui";
@@ -417,6 +418,97 @@ export function ExperienceTimelineList({
   );
 }
 
+export interface ResumeCertificationsProps {
+  label?: string;
+  title?: string;
+  certifications?: CertificationItem[];
+  meta?: Record<string, any>;
+  className?: string;
+}
+
+/**
+ * Renders education and certifications list in a structured 2x2 grid format per entry.
+ */
+export function ResumeCertifications({
+  label = "02 — Opleiding",
+  title = "Opleiding & Certificeringen",
+  certifications = [],
+  meta,
+  className = "",
+}: ResumeCertificationsProps) {
+  if (!certifications || certifications.length === 0) return null;
+
+  return (
+    <div className={`flex flex-col font-content ${className}`}>
+      {/* Header */}
+      <div className="flex flex-col mb-7 md:mb-12">
+        {label && (
+          <div>
+            <Label
+              id="synergy-label"
+              variant="brand"
+              cslp={meta && (meta.education_label || meta.certifications_label)}
+            >
+              {label}
+            </Label>
+          </div>
+        )}
+        {title && (
+          <h2
+            id="synergy-title"
+            className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-sm md:max-w-xl lg:max-w-xl text-balance mt-2"
+            {...(meta && (meta.education_title || meta.certifications_title))}
+          >
+            {title}
+          </h2>
+        )}
+      </div>
+
+      {/* Certifications List */}
+      <div className="mb-32 md:mb-24">
+        <div className="flex flex-col w-full">
+          {certifications.map((cert, idx) => {
+            const certMeta = cert.$;
+            return (
+              <div
+                key={cert._metadata?.uid || cert.title || `cert-${idx}`}
+                className="flex justify-between items-start py-2 lg:py-4 gap-4 border-b border-border-100 dark:border-border-200"
+              >
+                <div className="grid grid-cols-[1fr_auto] gap-x-10 w-full">
+                  <div
+                    className="font-semibold text-mediumM sm:text-medium text-title-100 dark:text-title-200"
+                    {...(certMeta && certMeta.title)}
+                  >
+                    {cert.title}
+                  </div>
+                  <div
+                    className="font-normal text-smallM sm:text-small text-content-300 dark:text-content-300 text-right font-playfull"
+                    {...(certMeta && (certMeta.year || certMeta.date))}
+                  >
+                    {cert.year || cert.date}
+                  </div>
+                  <div
+                    className="font-normal text-smallM sm:text-small text-content-100 dark:text-content-200"
+                    {...(certMeta && (certMeta.platform || certMeta.institution))}
+                  >
+                    {cert.platform || cert.institution}
+                  </div>
+                  <div
+                    className="font-normal text-smallM sm:text-small text-content-300 dark:text-content-300 text-right"
+                    {...(certMeta && certMeta.location)}
+                  >
+                    {cert.location}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ============================================================================
 // MAIN COMPONENT
 // ============================================================================
@@ -522,6 +614,35 @@ export default function ResumeSection({
   const timelineSubtitle = sectionData?.section_title;
   const meta = sectionData?.$;
 
+  // Certifications & Education Data
+  const rawCertifications =
+    sectionData?.certifications ||
+    (sectionData as any)?.Certifications ||
+    sectionData?.education ||
+    (sectionData as any)?.Education;
+
+  const certifications: CertificationItem[] = Array.isArray(rawCertifications)
+    ? rawCertifications
+    : rawCertifications
+      ? [rawCertifications]
+      : [];
+
+  const hasCertifications = certifications.length > 0;
+
+  const educationLabel =
+    sectionData?.education_label ||
+    (sectionData as any)?.Education_label ||
+    sectionData?.certifications_label ||
+    (sectionData as any)?.Certifications_label ||
+    "02 — Opleiding";
+
+  const educationTitle =
+    sectionData?.education_title ||
+    (sectionData as any)?.Education_title ||
+    sectionData?.certifications_title ||
+    (sectionData as any)?.Certifications_title ||
+    "Opleiding & Certificeringen";
+
   const hasIntroContent = Boolean(
     label || title || description || (buttonHref && buttonTitle)
   );
@@ -621,6 +742,15 @@ export default function ResumeSection({
                 companies={companies}
                 sectionTitle={timelineSubtitle}
                 meta={meta}
+              />
+            )}
+            {hasCertifications && (
+              <ResumeCertifications
+                label={educationLabel}
+                title={educationTitle}
+                certifications={certifications}
+                meta={meta}
+                className={companies.length > 0 ? "mt-16 md:mt-24" : ""}
               />
             )}
           </div>
@@ -755,6 +885,15 @@ export default function ResumeSection({
                 meta={meta}
               />
             )}
+            {hasCertifications && (
+              <ResumeCertifications
+                label={educationLabel}
+                title={educationTitle}
+                certifications={certifications}
+                meta={meta}
+                className={companies.length > 0 ? "mt-16 md:mt-24" : ""}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -763,5 +902,6 @@ export default function ResumeSection({
 }
 
 ResumeSection.Timeline = ExperienceTimelineList;
+ResumeSection.Certifications = ResumeCertifications;
 ResumeSection.StackBlock = ResumeStackBlock;
 ResumeSection.StackTags = ResumeStackTags;

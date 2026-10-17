@@ -162,6 +162,15 @@ export interface ResumeStack extends BaseEntity {
   Tags?: string[];
 }
 
+export interface CertificationItem extends BaseEntity {
+  title?: string;
+  year?: string;
+  date?: string;
+  platform?: string;
+  institution?: string;
+  location?: string;
+}
+
 export interface ResumeSectionBlock extends BaseSectionBlock {
   left_col_span?: number | string;
   right_col_span?: number | string;
@@ -179,6 +188,12 @@ export interface ResumeSectionBlock extends BaseSectionBlock {
   stackTitle?: string;
   stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
   Stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
+  education_label?: string;
+  education_title?: string;
+  certifications_label?: string;
+  certifications_title?: string;
+  certifications?: CertificationItem[];
+  education?: CertificationItem[];
 }
 
 // ============================================================================
