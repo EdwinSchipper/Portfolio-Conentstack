@@ -27,7 +27,7 @@ const cascadiaMono = Cascadia_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://edwinschipper.nl"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.edwinschipper.nl"
   ),
   title: {
     default: "Edwin Schipper",
