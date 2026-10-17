@@ -200,3 +200,43 @@ export async function getPortfolioItems({
     return { items: [], total: 0 };
   }
 }
+
+/**
+ * Fetches lightweight URL and timestamp list of all pages for sitemap generation.
+ */
+export async function getAllPageUrls(): Promise<{ url: string; updatedAt?: string }[]> {
+  if (!apiKey || !deliveryToken || !environment) {
+    return [];
+  }
+
+  try {
+    const result = await stack.contentType("page").entry().find<Page>();
+    return (result.entries || []).map((entry) => ({
+      url: entry.url || "",
+      updatedAt: entry.updated_at,
+    }));
+  } catch (error) {
+    console.error("[Contentstack] Failed to fetch page URLs for sitemap:", error);
+    return [];
+  }
+}
+
+/**
+ * Fetches lightweight URL and timestamp list of all portfolio items for sitemap generation.
+ */
+export async function getAllPortfolioUrls(): Promise<{ url: string; updatedAt?: string }[]> {
+  if (!apiKey || !deliveryToken || !environment) {
+    return [];
+  }
+
+  try {
+    const result = await stack.contentType("portfolio_item").entry().find<PortfolioItem>();
+    return (result.entries || []).map((entry) => ({
+      url: entry.url || "",
+      updatedAt: entry.updated_at,
+    }));
+  } catch (error) {
+    console.error("[Contentstack] Failed to fetch portfolio URLs for sitemap:", error);
+    return [];
+  }
+}
