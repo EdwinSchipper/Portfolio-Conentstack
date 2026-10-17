@@ -119,7 +119,6 @@ export interface BaseSectionBlock extends BaseEntity {
   title?: string;
   section_intro?: string;
   intro?: string;
-  columns?: "1" | "2" | "3" | "4" | string;
 }
 
 // ============================================================================
@@ -256,11 +255,13 @@ export interface GridSocials extends BaseEntity {
 }
 
 export interface CardSectionBlock extends BaseSectionBlock {
+  columns?: "1" | "2" | "3" | "4" | string;
   label_cards?: string;
   cards?: CardSectionItem[];
 }
 
 export interface NumberedSectionBlock extends BaseSectionBlock {
+  columns?: "1" | "2" | "3" | "4" | string;
   label_numbered?: string;
   items?: NumberedItem[];
   numbered_items?: NumberedItem[];
