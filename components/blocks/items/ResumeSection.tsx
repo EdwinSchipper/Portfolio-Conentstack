@@ -798,7 +798,7 @@ export default function ResumeSection({
       className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
     >
       <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
-        <div className="sm:grid grid-cols-1 lg:grid-cols-12 gap-12 lg:ga1p-16 xl:ga1p-20 items-start space-x-24">
+        <div className="sm:grid grid-cols-1 lg:grid-cols-12 gap-12 lg:ga1p-16 items-start sm:space-x-24 space-y-24 sm:space-y-0">
 
           {/* Intro / Sidebar Column */}
           <div className={introColClass}>
