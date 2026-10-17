@@ -63,15 +63,36 @@ export function buildPortfolioMetadata(item: PortfolioItem): Metadata {
 
 /**
  * Builds metadata for the homepage.
+ * Uses title.absolute to override the parent template so the homepage title
+ * has complete, literal control without duplicate suffixes.
  */
 export function buildHomepageMetadata(homepage?: Homepage): Metadata {
-  const title = homepage?.seo?.meta_title || homepage?.title || DEFAULT_TITLE;
+  const metaTitle =
+    homepage?.seo?.meta_title ||
+    homepage?.meta_title ||
+    homepage?.seo_title;
+
+  // If the Contentstack title is just "homepage" or "Homepage", provide a rich fallback
+  const isGenericTitle =
+    !metaTitle &&
+    (!homepage?.title || homepage.title.toLowerCase().trim() === "homepage");
+
+  const title = metaTitle || (isGenericTitle ? "Edwin Schipper | Ontwerpbureau Schipper" : homepage?.title || DEFAULT_TITLE);
+
   const description =
-    homepage?.seo?.meta_description || DEFAULT_DESCRIPTION;
-  const ogImageUrl = homepage?.seo?.og_image?.url;
+    homepage?.seo?.meta_description ||
+    homepage?.meta_description ||
+    homepage?.description ||
+    DEFAULT_DESCRIPTION;
+
+  const ogImageUrl =
+    homepage?.seo?.og_image?.url ||
+    (typeof homepage?.og_image === "object" ? homepage?.og_image?.url : undefined);
 
   return {
-    title,
+    title: {
+      absolute: title,
+    },
     description,
     openGraph: {
       title,

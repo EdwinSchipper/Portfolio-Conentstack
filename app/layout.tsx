@@ -47,6 +47,7 @@ export default function RootLayout({
     <html
       lang="nl-NL"
       className={`${outfit.variable} ${newsreader.variable} ${cascadiaMono.variable}`}
+      suppressHydrationWarning
     >
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body className="bg-background-100 dark:bg-background-800">
