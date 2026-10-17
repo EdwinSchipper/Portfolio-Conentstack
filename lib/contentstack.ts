@@ -1,3 +1,4 @@
+import { cache } from "react";
 import contentstack, { QueryOperation } from "@contentstack/delivery-sdk";
 import ContentstackLivePreview, { IStackSdk } from "@contentstack/live-preview-utils";
 import { getContentstackEndpoint, type ContentstackEndpoints } from "@contentstack/utils";
@@ -46,8 +47,9 @@ export function initLivePreview(): void {
 
 /**
  * Fetches the singleton homepage entry and resolves referenced modular blocks.
+ * Memoized with React cache() to prevent duplicate requests when used in generateMetadata and page.
  */
-export async function getHomePage(): Promise<Homepage | undefined> {
+export const getHomePage = cache(async function getHomePage(): Promise<Homepage | undefined> {
   const result = await stack
     .contentType("homepage")
     .entry()
@@ -61,12 +63,13 @@ export async function getHomePage(): Promise<Homepage | undefined> {
     }
     return entry;
   }
-}
+});
 
 /**
  * Fetches a single page entry matching the provided URL path.
+ * Memoized with React cache() to prevent duplicate requests when used in generateMetadata and page.
  */
-export async function getPage(url: string): Promise<Page | undefined> {
+export const getPage = cache(async function getPage(url: string): Promise<Page | undefined> {
   const result = await stack
     .contentType("page")
     .entry()
@@ -82,12 +85,13 @@ export async function getPage(url: string): Promise<Page | undefined> {
     }
     return entry;
   }
-}
+});
 
 /**
  * Fetches a single portfolio item entry matching the provided URL slug.
+ * Memoized with React cache() to prevent duplicate requests when used in generateMetadata and page.
  */
-export async function getPortfolioItemByUrl(url: string): Promise<PortfolioItem | undefined> {
+export const getPortfolioItemByUrl = cache(async function getPortfolioItemByUrl(url: string): Promise<PortfolioItem | undefined> {
   const result = await stack
     .contentType("portfolio_item")
     .entry()
@@ -102,7 +106,7 @@ export async function getPortfolioItemByUrl(url: string): Promise<PortfolioItem 
     }
     return entry;
   }
-}
+});
 
 export interface GetPortfolioItemsOptions {
   limit?: number;

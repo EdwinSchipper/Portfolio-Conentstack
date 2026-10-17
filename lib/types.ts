@@ -55,6 +55,13 @@ export interface CSLPAttribute {
 }
 export type CSLPFieldMapping = CSLPAttribute;
 
+export interface SeoFields {
+  meta_title?: string;
+  meta_description?: string;
+  og_image?: File | null;
+  no_index?: boolean;
+}
+
 export interface SystemFields {
   uid?: string;
   created_at?: string;
@@ -69,6 +76,7 @@ export interface SystemFields {
   locale?: string;
   publish_details?: PublishDetails;
   title?: string;
+  seo?: SeoFields;
 }
 
 /** A block! */

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Outfit, Newsreader, Cascadia_Mono } from "next/font/google";
 import "./globals.css";
 import { Header, Footer } from "@/components/ui";
+import { GoogleTagManager } from "@next/third-parties/google";
+import { GTMPageTracker } from "@/components/analytics";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -24,8 +26,14 @@ const cascadiaMono = Cascadia_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Edwin Schipper",
-  description: "Portfolio Website",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://edwinschipper.nl"
+  ),
+  title: {
+    default: "Edwin Schipper",
+    template: "%s | Edwin Schipper",
+  },
+  description: "Portfolio Website van Edwin Schipper",
 };
 
 export default function RootLayout({
@@ -33,12 +41,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode; // Type definition for children prop
 }>) {
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+
   return (
     <html
       lang="nl-NL"
       className={`${outfit.variable} ${newsreader.variable} ${cascadiaMono.variable}`}
     >
+      {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body className="bg-background-100 dark:bg-background-800">
+        {gtmId && <GTMPageTracker />}
         <Header />
         <main className="">{children}</main>
         <Footer />
